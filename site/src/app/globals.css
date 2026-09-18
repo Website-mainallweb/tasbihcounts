@@ -6,6 +6,11 @@
    so switching theme inside the widget re-skins the whole page.
    ========================================================================== */
 
+/* Cascade layers, lowest first: the shell's element defaults, then the
+   counter's scoped base, then its utilities (counter.css). Every unlayered
+   rule in this file still beats all of them. */
+@layer theme, shell, base, components, utilities;
+
 /* ---------- 1. SHELL TOKENS ----------
    The colours below are the fallback only: counter.css, loaded after this
    file, sets the palette for every theme (light, dark, noor, heritage). */
@@ -114,26 +119,32 @@ body {
   overflow-x: clip;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+/* Element defaults sit in the lowest layer, so the counter's utilities (and
+   every class rule in this file) win over them without a fight. */
+@layer shell {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentColor;
+  }
 }
 
-a {
-  color: var(--accent);
-  text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
-  text-underline-offset: 3px;
-}
-
-a:hover {
-  color: var(--accent-hover);
-  text-decoration-color: currentColor;
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 6px;
+@layer shell {
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 }
 
 /* Fixed, not absolute: after scrolling, an absolute link appeared at the top of

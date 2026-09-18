@@ -104,10 +104,10 @@ export const AD_SLOTS = {
 export const LOGO = {
   src: "/images/tasbih-counts-logo.png",
   width: 1200,
-  height: 300,
+  height: 263,
   alt: SITE_NAME,
-  light: { src: "/images/logo-light.svg", width: 632, height: 158 },
-  dark: { src: "/images/logo-dark.svg", width: 632, height: 158 },
+  light: { src: "/images/logo-light.png", width: 720, height: 158 },
+  dark: { src: "/images/logo-dark.png", width: 720, height: 158 },
 };
 
 export const SOCIAL_IMAGE = {

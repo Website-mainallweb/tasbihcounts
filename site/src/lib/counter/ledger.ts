@@ -143,6 +143,8 @@ function load(): void {
   if (typeof S.lifetime !== "number") S.lifetime = 0;
   S.lastDay = todayKey();
   if (r.migrated) saveCold();
+  // Anything read before this load (a view taken before the ledger started) is stale.
+  snapshot = null;
 }
 
 function setOthers(o: Combine.Others): void {
@@ -674,6 +676,8 @@ function every(fn: () => void, ms: number): void {
 
 function boot(): void {
   load();
+  lastRev = Storage.readRev(store);
+  emit();
   void Storage.requestPersistence();
 
   sync = createSyncClient(
