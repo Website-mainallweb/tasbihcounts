@@ -335,12 +335,27 @@ function syncedToday(): boolean {
   return Object.keys(watermark).some((k) => k.startsWith(p));
 }
 
+const REFUSED = {
+  today: "Today's counts are already saved to your account and cannot be erased here",
+  all: "Your history is saved to your account. To erase it, write to us to delete the account",
+};
+
+/**
+ * Asked before "Clear today" or "Erase everything" is armed: when the account
+ * already holds it, say so and refuse, rather than asking for a second tap that
+ * can only fail.
+ */
+export function refuses(what: "today" | "all"): boolean {
+  adoptIfChanged();
+  const no = what === "today" ? syncedToday() : Object.keys(watermark).length > 0;
+  if (no) show({ text: REFUSED[what], tone: "bad" });
+  return no;
+}
+
 /** Remove today's record from this device. Refused once it has been synced. */
 export function clearToday(): { ok: boolean; reason?: string } {
   adoptIfChanged();
-  if (syncedToday()) {
-    return { ok: false, reason: "Today's counts are already saved to your account and cannot be erased here." };
-  }
+  if (syncedToday()) return { ok: false, reason: REFUSED.today };
   const gone = S.hist[todayKey()]?.c ?? 0;
   S.lifetime = Math.max(0, (S.lifetime || 0) - gone);
   delete S.hist[todayKey()];
@@ -353,12 +368,7 @@ export function clearToday(): { ok: boolean; reason?: string } {
 /** Erase this device's whole record. Refused once anything has been synced. */
 export function eraseAll(): { ok: boolean; reason?: string } {
   adoptIfChanged();
-  if (Object.keys(watermark).length) {
-    return {
-      ok: false,
-      reason: "Your history is saved to your account. To erase it, write to us to delete the account.",
-    };
-  }
+  if (Object.keys(watermark).length) return { ok: false, reason: REFUSED.all };
   outbox = {};
   const keep = { owner: S.owner };
   S = { ...fresh(), ...keep } as S_;

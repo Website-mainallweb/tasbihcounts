@@ -6,6 +6,7 @@ import { THEME_BOOTSTRAP } from "@/lib/theme-bootstrap";
 import { ADSENSE_ACCOUNT, LANG, ROBOTS_CONTENT, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 import "./counter.css";
+import "./njc.css";
 
 /**
  * The document itself: <html>, the fonts, the metadata, and the few scripts that

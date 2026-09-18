@@ -110,7 +110,7 @@ test.describe("the counter", () => {
     await ready(page);
 
     await expect.poll(async () => (await hot(page)).rec.c).toBe(5);
-    await expect(page.locator('.tc [data-stat="today"]:visible').first()).toHaveText("5");
+    await expect(page.locator('#njc [data-stat="today"]:visible').first()).toHaveText("5");
   });
 
   test("a guided routine credits each step to its own dhikr", async ({ page }) => {
@@ -140,7 +140,7 @@ test.describe("the counter", () => {
 
     await page.goto("/?d=subhanallah");
     await ready(page);
-    await expect(page.locator(".tc .counter-digits").first()).toHaveText("5");
+    await expect(page.locator("#njcDigits").first()).toHaveText("5");
   });
 
   test("the Library link opens the dhikr sheet", async ({ page }) => {

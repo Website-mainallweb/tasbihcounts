@@ -47,9 +47,9 @@ async function tap(page: Page, times: number) {
   }
 }
 
-const digits = (page: Page) => page.locator(".tc .counter-digits").first().textContent();
+const digits = (page: Page) => page.locator("#njcDigits").first().textContent();
 /** Today as the counter shows it: this device plus every other one on the account. */
-const today = (page: Page) => page.locator('.tc [data-stat="today"]:visible').first().textContent();
+const today = (page: Page) => page.locator('#njc [data-stat="today"]:visible').first().textContent();
 const hot = (page: Page) =>
   page.evaluate(() => JSON.parse(localStorage.getItem("njc.hot") || "null") as {
     outbox: Record<string, unknown>;
@@ -95,10 +95,9 @@ test.describe("two browsers, one account", () => {
     await a.keyboard.press("z");
     await expect.poll(() => digits(a)).toBe("5");
 
-    // Nor erased by clearing the device.
-    await a.locator(".tc").getByRole("button", { name: "More", exact: true }).first().click();
-    await a.getByRole("button", { name: "Clear data from this device" }).click();
-    await a.getByRole("button", { name: "Delete everything" }).click();
+    // Nor erased from this device: the counter says so instead of asking twice.
+    await a.locator(".njc-ctlrail .njc-ctl", { hasText: "Reset" }).first().click();
+    await a.getByRole("button", { name: "Erase everything" }).click();
     await expect(a.getByText("Your history is saved to your account")).toBeVisible();
     await expect.poll(async () => (await hot(a)).rec?.c).toBe(5);
     await a.keyboard.press("Escape");

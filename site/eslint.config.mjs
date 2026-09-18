@@ -69,6 +69,9 @@ const config = [
       "src/app/(site)/terms/page.tsx",
       "src/app/(site)/refund-policy/page.tsx",
       "src/components/ProseWithAds.tsx",
+      // The ring's pre-paint sizing script: the counter's own sizing function,
+      // stringified at build time. No visitor content.
+      "src/components/TasbihCounter.tsx",
       "src/lib/seo.tsx",
       // The home page inlines the name library as window.__njcNames
       // (lib/counter/library.ts). Not visitor content: the rows come from
@@ -116,7 +119,7 @@ const config = [
     // matchMedia, the date) once, after mount, so the server render and the
     // first client render agree. That is the pattern this rule flags; it was
     // written and tested against it in its original project.
-    files: ["src/components/counter/**/*.tsx", "src/components/site/**/*.tsx"],
+    files: ["src/components/counter/**/*.tsx", "src/components/site/**/*.tsx", "src/components/njc/**/*.tsx"],
     rules: { "react-hooks/set-state-in-effect": "off" },
   },
 

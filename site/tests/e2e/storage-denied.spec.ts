@@ -31,7 +31,7 @@ const tap = async (page: Page, times = 1) => {
 };
 
 /** The count on the ring. */
-const ring = (page: Page) => page.locator(".tc .counter-digits").first();
+const ring = (page: Page) => page.locator("#njcDigits").first();
 
 /** Today, as the practice panel shows it. */
 const today = (page: Page) =>

@@ -1,0 +1,797 @@
+/* ==========================================================================
+   THE COUNTER — the ring, its controls, its rails and its sheets.
+   All scoped to .njc. The design is the Nam Jap counter's; the palette, the
+   text and the dhikr are Tasbih Counts'.
+   ========================================================================== */
+
+/* ---------- 1. TOKENS ----------
+   The colours are the site's (counter.css sets them on :root for every theme:
+   light, dark, noor, heritage), so the counter and the page always share one
+   palette. Only what the counter adds of its own is set here. */
+.njc{
+  --radius-xs:8px; --radius-sm:12px; --radius-md:16px; --radius-lg:24px; --radius-xl:32px;
+  --dur-fast:120ms; --dur:180ms; --dur-slow:320ms;
+  --ease:cubic-bezier(.32,.72,0,1); --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-brand:cubic-bezier(.32,.72,0,1); --ease-brand-out:cubic-bezier(.16,1,.3,1);
+  --ring:var(--accent);
+  --font-display:var(--f-literata),Georgia,serif;
+  --font-ui:var(--f-inter),ui-sans-serif,system-ui,-apple-system,sans-serif;
+  /* The dhikr's own script. Arabic, in a Naskh face at a size its marks can breathe in. */
+  --font-dev:var(--font-naskh),"Noto Naskh Arabic","Amiri","Scheherazade New",serif;
+  --app-max:520px; --stage-cap:320px;
+}
+
+/* ---------- 5. BASE ---------- */
+.njc,.njc *,.njc *::before,.njc *::after{box-sizing:border-box}
+.njc{
+  position:relative;margin:0;padding:0;isolation:isolate;
+  background:var(--bg);color:var(--fg);font-family:var(--font-ui);
+  font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;overflow-x:clip;
+}
+/* The reset is wrapped in :where() so it carries ZERO specificity. Written as
+   ".njc button" it scores 0-1-1 and quietly beat every component class below
+   it (0-1-0) — chips and controls lost their padding, border and font size. */
+.njc :where(button){font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer;text-align:inherit}
+.njc :where(input){font:inherit;color:inherit}
+.njc :where(svg){display:block}
+.njc :focus{outline:none}
+.njc :focus-visible{outline:2px solid var(--ring);outline-offset:3px;border-radius:var(--radius-xs)}
+.njc .tabular{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.njc .dev{font-family:var(--font-dev);direction:rtl;unicode-bidi:isolate}
+.njc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+.njc-glow{position:absolute;inset:-20% -10% auto -10%;height:520px;pointer-events:none;z-index:0;
+  background:radial-gradient(50% 50% at 50% 42%,rgb(var(--glow)/var(--glow-alpha)) 0%,rgb(var(--glow)/0) 100%)}
+.njc-veil{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:linear-gradient(to right,color-mix(in oklab,var(--fg) 4%,transparent) 1px,transparent 1px),
+                   linear-gradient(to bottom,color-mix(in oklab,var(--fg) 4%,transparent) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(70% 55% at 50% 35%,#000 0%,transparent 100%);
+          mask-image:radial-gradient(70% 55% at 50% 35%,#000 0%,transparent 100%)}
+
+.njc-shell{position:relative;z-index:1;max-width:var(--app-max);margin:0 auto;padding:12px 16px 24px}
+
+/* ---------- 6. GRID ---------- */
+.njc-grid{display:grid;grid-template-columns:1fr;gap:22px}
+.njc-col{min-width:0;display:flex;flex-direction:column;container-type:inline-size}
+.njc-rail{min-width:0;display:grid;gap:20px;align-content:start}
+
+/* ---------- 7. HEADER STATS ---------- */
+.njc-hstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
+  border-bottom:1px solid var(--border);padding-bottom:12px;flex-shrink:0}
+.njc-hstat{text-align:center;min-width:0}
+/* Same reason: these numbers change on every tap. */
+.njc-hstat b{contain:size layout style;height:1.05em}
+.njc-hstat i{font-style:normal;display:block;font-size:0.5938rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--fg-subtle)}
+.njc-hstat b{display:block;margin-top:3px;font-family:var(--font-display);font-weight:500;line-height:1;
+  font-size:1.125rem;color:var(--fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-hstat.em b{font-size:1.3125rem;color:var(--fg)}
+
+/* ---------- 8. TOP BAR ---------- */
+.njc-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.njc-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.njc-om{width:36px;height:36px;flex-shrink:0;display:grid;place-items:center;border-radius:9999px;
+  background:var(--accent-soft);color:var(--accent);font-family:var(--font-dev);font-size:1.1875rem;line-height:1}
+.njc-brand .bt{min-width:0;line-height:1.2}
+.njc-brand b{display:block;font-family:var(--font-display);font-size:1rem;font-weight:600;letter-spacing:-.015em;
+  color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-brand small{display:block;font-size:0.5938rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--fg-subtle);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-iconbtn{width:38px;height:38px;flex-shrink:0;border-radius:9999px;border:1px solid var(--border);
+  background:var(--surface);color:var(--fg-muted);display:grid;place-items:center;font-size:0.875rem;
+  transition:all var(--dur) var(--ease-brand)}
+.njc-iconbtn:hover{border-color:var(--border-strong);color:var(--fg)}
+.njc-iconbtn:active{transform:scale(.96)}
+
+/* ---------- 9. SELECT BAR ---------- */
+.njc-selectbar{margin-top:10px;display:flex;width:100%;flex-shrink:0;align-items:center;gap:12px;
+  border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--surface);
+  padding:9px 14px;text-align:left;min-height:56px;box-shadow:var(--shadow-sm);
+  transition:all var(--dur) var(--ease-brand)}
+.njc-selectbar:active{transform:scale(.985)}
+.njc-selectbar .dot{display:grid;place-items:center;height:34px;width:34px;flex-shrink:0;border-radius:9999px;
+  background:var(--accent-soft);color:var(--accent)}
+.njc-selectbar .txt{min-width:0;flex:1}
+.njc-selectbar .txt b{display:block;font-size:0.9375rem;font-weight:600;line-height:1.25;color:var(--fg);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-selectbar .txt span{display:block;font-size:0.7188rem;line-height:1.3;color:var(--fg-muted);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-selectbar .dv{flex-shrink:1;max-width:38%;font-family:var(--font-dev);direction:rtl;font-size:1.1875rem;line-height:1.7;
+  color:var(--fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---------- 10. CHIPS ---------- */
+.njc-chiprow{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;
+  margin:12px -16px 0;padding:0 16px 4px;flex-shrink:0}
+.njc-chiprow::-webkit-scrollbar{display:none}
+/* Centred with auto margins rather than justify-content:center. On a scrolling
+   row that overflows, justify-content:center pushes the first chips past the
+   left edge where no amount of scrolling reaches them - that is why "Count up"
+   showed as a stray bracket on tablets. Auto margins centre a row that fits and
+   collapse to nothing on a row that does not, so the start stays reachable. */
+.njc-chiprow>:first-child{margin-left:auto}
+.njc-chiprow>:last-child{margin-right:auto}
+.njc-chip{display:inline-flex;flex-shrink:0;align-items:center;white-space:nowrap;border-radius:9999px;
+  border:1px solid var(--border);background:var(--surface);color:var(--fg-muted);
+  padding:0 14px;min-height:44px;font-size:0.8125rem;font-weight:500;transition:all 200ms var(--ease-brand)}
+.njc-chip:hover{border-color:var(--border-strong);color:var(--fg)}
+.njc-chip:active{transform:scale(.97)}
+.njc-chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--fg-on-accent)}
+.njc-chip.outline{border-style:dashed;border-color:var(--border-strong);background:transparent}
+.njc-mode{font-size:0.7813rem}
+.njc-mode[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink);border-color:var(--accent)}
+
+/* ---------- 11. TAP SURFACE + STAGE ---------- */
+/* The surface is exactly as tall as the ring plus its labels. It used to be a
+   flex-grow item inside a full-viewport column, which is what produced the
+   dead space above and below the ring once the tool sits inside a page that
+   already has a header and a footer. */
+.njc-surface{position:relative;margin:0 auto;display:flex;width:100%;flex:0 0 auto;
+  flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  touch-action:manipulation;user-select:none;-webkit-user-select:none;cursor:pointer;padding:4px 0}
+/* Some air between the name bar and the ring, and the ring and the controls. The
+   sizer counts these margins, so the controls still fit on one screen. */
+.njc:not(.immersive) .njc-surface{margin-top:12px;margin-bottom:8px}
+/* The fallback matters: if --stage-px were ever missing the width would be
+   invalid, the ring would collapse to nothing and the container-query font
+   size would collapse with it. */
+.njc-stage{position:relative;display:grid;place-items:center;flex-shrink:0;
+  width:var(--stage-px,min(72vw,320px));height:var(--stage-px,min(72vw,320px));container-type:inline-size;
+  /* The stage has a fixed size, so a new number inside it never has to re-lay
+     out the page around it. Not paint: bubbles and ripples draw outside it. */
+  contain:size layout style}
+.njc-halo{position:absolute;inset:-14%;border-radius:9999px;pointer-events:none;
+  background:radial-gradient(circle,rgb(var(--glow)/.16) 0%,rgb(var(--glow)/.05) 52%,rgb(var(--glow)/0) 72%);
+  animation:njc-breathe 5.5s ease-in-out infinite}
+@keyframes njc-breathe{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.045);opacity:.78}}
+.njc-svg{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.njc-arc{transition:stroke-dashoffset 300ms var(--ease-brand-out)}
+/* The mala: the beads themselves carry the progress; the arc is drawn only
+   when the bead ring is switched off in Settings. */
+.njc-arc{display:none}
+.njc-nobeads .njc-arc{display:inline}
+/* No transitions here: 54 SVG beads animating fill on the main thread took the
+   counter from 46 to 32 frames a second on a throttled phone. */
+.njc-bead-dot{fill:var(--bead-off)}
+.njc-bead-num,.njc-bead-halo{display:none}
+.njc-bead-num{fill:var(--fg-on-accent);font-family:var(--font-ui);font-weight:600;text-anchor:middle;dominant-baseline:central}
+.njc-bead-halo{fill:var(--accent);opacity:.2}
+.njc-bead.on .njc-bead-dot{fill:var(--accent)}
+.njc-bead.on .njc-bead-num{display:inline}
+/* Server-rendered stand-in for the beads, gone the moment the real ones exist. */
+.njc-beadph{fill:none;stroke:var(--bead-off);stroke-width:4.4;stroke-linecap:round;stroke-dasharray:0 5.236;
+  transform:rotate(-86.67deg);transform-box:view-box;transform-origin:50% 50%}
+#njcBeads:not(:empty)+.njc-beadph,.njc-nobeads .njc-beadph{display:none}
+.njc{--bead-off:color-mix(in oklab,var(--border) 70%,var(--fg) 8%)}
+/* Everything that names the count sits inside the ring. */
+.njc-center{contain:layout style;position:relative;display:flex;width:66%;max-width:66%;flex-direction:column;align-items:center;text-align:center}
+.njc-lotus,.njc-divider svg{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.njc-divider svg{stroke-width:2.4}
+.njc-lotus{width:15cqw;height:auto;margin-bottom:.4cqw;color:var(--accent);opacity:.45}
+.njc-digits{font-family:var(--font-display);font-variant-numeric:tabular-nums lining-nums;
+  font-feature-settings:"tnum" 1,"lnum" 1;font-weight:700;letter-spacing:-.03em;line-height:1;
+  max-width:100%;color:color-mix(in oklab,var(--fg) 78%,var(--accent));font-size:min(29cqw,calc(92cqw / var(--digits)))}
+.njc-roll{animation:njc-roll 220ms var(--ease-brand-out) both}
+@keyframes njc-roll{from{opacity:0;transform:translate3d(0,.42em,0)}
+  to{opacity:1;transform:none}}
+.njc-tlabel{margin-top:1.2cqw;font-size:clamp(.72rem,3.8cqw,1.2rem);font-weight:500;line-height:1.2;color:var(--fg)}
+.njc-rlabel{margin-top:.4cqw;font-size:clamp(.62rem,3.1cqw,1rem);line-height:1.25;color:var(--fg-muted)}
+.njc-timerline{margin-top:7px;border-radius:9999px;border:1px solid var(--border);background:var(--surface);
+  padding:3px 11px;font-size:0.7188rem;font-weight:500;color:var(--fg-muted)}
+.njc-ripple{position:absolute;height:220px;width:220px;margin:-110px 0 0 -110px;border-radius:9999px;
+  pointer-events:none;background:radial-gradient(circle,rgb(var(--glow)/.4) 0%,rgb(var(--glow)/.12) 45%,rgb(var(--glow)/0) 70%);
+  animation:njc-rip 620ms var(--ease-brand-out) forwards}
+@keyframes njc-rip{from{transform:scale(.4);opacity:.9}to{transform:scale(1);opacity:0}}
+.njc-burst{position:absolute;inset:0;border-radius:9999px;border:2px solid var(--warm);pointer-events:none;
+  animation:njc-burst 780ms var(--ease-brand-out) forwards}
+@keyframes njc-burst{0%{transform:scale(.86);opacity:.7}100%{transform:scale(1.5);opacity:0}}
+.njc-bubble{position:absolute;bottom:4%;left:50%;z-index:2;pointer-events:none;white-space:nowrap;
+  max-width:84%;overflow:hidden;text-overflow:ellipsis;border-radius:9999px;border:1px solid var(--accent-line);
+  background:color-mix(in oklab,var(--surface) 94%,transparent);padding:4px 12px;font-size:0.75rem;font-weight:500;line-height:1.4;
+  color:var(--accent);box-shadow:var(--shadow-sm);transform:translate(-50%,0);
+  animation:njc-bub 2100ms var(--ease-brand-out) forwards;will-change:transform,opacity}
+.njc-bubble.dv{font-family:var(--font-dev);font-size:0.8125rem;line-height:1.6}
+@keyframes njc-bub{0%{opacity:0;transform:translate(-50%,0) scale(.72)}16%{opacity:.9}
+  100%{opacity:0;transform:translate(calc(-50% + var(--drift,0px)),-190px) scale(1.06)}}
+
+/* The name, its transliteration and its meaning sit inside the ring, under a
+   lotus divider. The stage has a fixed size, so filling them never moves the
+   controls (the old CLS reason for holding lines open below the ring). */
+.njc-phrase{margin-top:2.2cqw;text-align:center;width:100%;max-width:100%;min-width:0}
+.njc-divider{display:flex;align-items:center;justify-content:center;gap:1.6cqw;color:var(--accent);margin-bottom:1.4cqw}
+.njc-divider i{height:1px;flex:1;max-width:22cqw;background:linear-gradient(90deg,transparent,var(--accent-line))}
+.njc-divider i:last-child{background:linear-gradient(90deg,var(--accent-line),transparent)}
+.njc-divider svg{width:5.4cqw;height:auto;opacity:.55}
+.njc-phrase .big{font-family:var(--font-dev);font-size:clamp(1rem,7cqw,2.2rem);line-height:1.6;font-weight:600;
+  color:color-mix(in oklab,var(--fg) 78%,var(--accent));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.njc-phrase .sub{margin-top:.2cqw;font-size:clamp(.62rem,3.1cqw,1.05rem);line-height:1.3;color:var(--fg);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.njc-phrase .mean{margin-top:.2cqw;font-size:clamp(.56rem,2.9cqw,.95rem);line-height:1.3;color:var(--fg-subtle);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.njc-phrase .sub:empty,.njc-phrase .mean:empty{display:none}
+/* The ring narrows toward its bottom, so the lower lines get less width. As a
+   flex item the phrase used to grow to its text (min-width:auto), and a long
+   name or meaning ran straight out of the ring. */
+.njc-phrase .sub{max-width:92%;margin-inline:auto}
+.njc-phrase .mean{max-width:84%;margin-inline:auto}
+.njc:not([data-long="0"]) .njc-phrase .big{white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;
+  -webkit-line-clamp:2;line-height:1.25;font-size:clamp(.8rem,5.2cqw,1.7rem)}
+.njc[data-long="2"] .njc-phrase .big{font-size:clamp(.72rem,4.3cqw,1.4rem)}
+.njc:not([data-long="0"]) .njc-lotus{display:none}
+.njc[data-long="2"] .njc-digits{font-size:min(25cqw,calc(84cqw / var(--digits)))}
+/* A small ring cannot hold every line: the meaning goes first, then the lotus,
+   then the transliteration and the divider. */
+@container (max-width:290px){ .njc-phrase .mean{display:none} .njc-lotus{display:none} }
+@container (max-width:220px){ .njc-phrase .sub,.njc-divider{display:none} .njc-rlabel{display:none} }
+@media(min-width:768px){ #njcHist{min-height:190px} }
+@media(min-width:1280px){ .njc-rail.left .njc-scroll{height:470px} }
+
+/* ---------- 12. CONTROL RAIL ---------- */
+.njc-ctlrail{margin-top:6px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;flex-shrink:0;
+  max-width:430px;margin-inline:auto;width:100%}
+.njc-ctl{display:flex;min-height:50px;min-width:0;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);
+  color:var(--fg-muted);padding:0 2px;font-size:0.625rem;font-weight:500;transition:all 200ms var(--ease-brand)}
+.njc-ctl:hover{border-color:var(--border-strong);color:var(--fg)}
+.njc-ctl:active{transform:scale(.96)}
+.njc-ctl.primary{border-color:var(--accent);background:var(--accent);color:var(--fg-on-accent);box-shadow:var(--shadow-sm)}
+.njc-ctl.quiet{border-color:transparent;background:transparent;color:var(--fg-subtle)}
+.njc-ctl.quiet:hover{background:var(--surface-sunken);color:var(--danger)}
+.njc-ctl:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.njc-ctl .lb{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.15}
+.njc-ctl .lg{display:none}
+
+/* ---------- 13. PANELS ---------- */
+.njc-panel{border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--surface);
+  padding:16px;box-shadow:var(--shadow-sm);contain:layout style}
+.njc-ptitle{font-size:0.5938rem;font-weight:600;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--fg-subtle);margin-bottom:12px}
+.njc-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.njc-kv>div{border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface-2);
+  padding:9px 11px;min-width:0}
+.njc-kv b{display:block;font-family:var(--font-display);font-size:1.1875rem;font-weight:500;line-height:1.15;
+  color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-kv span{display:block;font-size:0.5938rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--fg-subtle);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-chart{display:flex;align-items:flex-end;justify-content:space-between;gap:5px;height:104px;margin-top:2px}
+.njc-cc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;
+  justify-content:flex-end}
+.njc-cb{width:100%;border-radius:6px 6px 3px 3px;background:var(--accent);opacity:.8;min-height:3px;
+  transition:height 520ms var(--ease-out)}
+.njc-cc.today .njc-cb{background:var(--warm);opacity:1}
+.njc-cc small{font-size:0.5938rem;color:var(--fg-subtle)}
+.njc-cc em{font-size:0.5938rem;font-style:normal;font-weight:600;color:var(--fg-muted)}
+.njc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--border);font-size:0.8125rem}
+.njc-row:last-child{border-bottom:none}
+.njc-row .k{color:var(--fg-muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.njc-row .v{font-weight:500;color:var(--fg);flex-shrink:0}
+.njc-scroll{max-height:240px;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;
+  overscroll-behavior:contain}
+.njc-scroll::-webkit-scrollbar{width:8px}
+.njc-scroll::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:9999px}
+.njc-lib{display:grid;gap:4px}
+/* The row carries the look; the star, the name and your own name's edit and
+   remove buttons sit in it side by side (B34). */
+.njc-librow{display:flex;align-items:center;gap:4px;min-width:0;border-radius:var(--radius-md);
+  border:1px solid transparent;padding:0 9px 0 4px;transition:all 160ms var(--ease-brand)}
+.njc-librow:hover{border-color:var(--border);background:var(--surface-2)}
+.njc-librow:has(.njc-libitem[aria-current="true"]){border-color:var(--accent-line);background:var(--accent-soft)}
+.njc-libitem{display:flex;align-items:center;gap:10px;flex:1;width:100%;min-width:0;border:0;background:none;
+  color:inherit;font:inherit;padding:8px 0;text-align:left;cursor:pointer}
+.njc-libitem .n{flex:1;min-width:0}
+/* A name is the thing being chosen, so it wraps rather than ending in "…":
+   "Hare Krishna Hare Rama" was cut on every phone and in the desktop rail. */
+.njc-libitem .n b{display:block;font-size:0.8125rem;font-weight:500;color:var(--fg);overflow-wrap:anywhere}
+/* B59: up to two lines, so a longer meaning ("Samb Sadashiv") is read whole. */
+.njc-libitem .n span{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-size:0.6563rem;
+  color:var(--fg-subtle);overflow:hidden}
+.njc-libitem .a{font-family:var(--font-dev);direction:rtl;font-size:1rem;line-height:1.7;color:var(--fg-muted);flex-shrink:1;max-width:40%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}
+/* The star is its own target inside the row. 16x18 was under the 24px minimum;
+   the padding makes it 28x30 and the negative margin keeps the row unchanged. */
+.njc-star{flex-shrink:0;border:0;background:none;color:var(--fg-muted);font:inherit;font-size:0.875rem;line-height:1;
+  min-width:28px;min-height:30px;padding:0;border-radius:9999px;cursor:pointer}
+.njc-star.on{color:var(--warm)}
+
+/* ---------- 14. SHEETS ---------- */
+.njc-scrim{position:fixed;inset:0;z-index:2147483000;background:rgb(0 0 0/.45);backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity var(--dur) var(--ease)}
+.njc-scrim.open{opacity:1;pointer-events:auto}
+.njc-sheet{position:fixed;left:0;right:0;bottom:0;z-index:2147483001;max-height:88dvh;display:flex;
+  flex-direction:column;border-radius:var(--radius-xl) var(--radius-xl) 0 0;border:1px solid var(--border);
+  border-bottom:none;background:var(--surface);color:var(--fg);box-shadow:var(--shadow-lg);
+  transform:translate3d(0,101%,0);transition:transform var(--dur-slow) var(--ease-out);
+  visibility:hidden;padding-bottom:env(safe-area-inset-bottom)}
+.njc-sheet.open{transform:none;visibility:visible}
+@media(min-width:768px){
+  .njc-sheet{left:50%;right:auto;bottom:auto;top:50%;width:min(520px,92vw);max-height:84dvh;
+    border-radius:var(--radius-xl);border-bottom:1px solid var(--border);
+    transform:translate(-50%,-46%) scale(.97);opacity:0;
+    transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease-out)}
+  .njc-sheet.open{transform:translate(-50%,-50%) scale(1);opacity:1}
+}
+.njc-grab{width:38px;height:4px;border-radius:9999px;background:var(--border-strong);margin:10px auto 0;flex-shrink:0}
+@media(min-width:768px){.njc-grab{display:none}}
+.njc-shead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;flex-shrink:0}
+.njc-shead h3{margin:0;font-family:var(--font-display);font-size:1.0625rem;font-weight:600;letter-spacing:-.015em}
+.njc-sbody{overflow:auto;padding:0 18px 22px;scrollbar-width:thin;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch}
+.njc-close{width:34px;height:34px;flex-shrink:0;border-radius:9999px;border:1px solid var(--border);
+  color:var(--fg-muted);display:grid;place-items:center;font-size:0.875rem}
+.njc-search,.njc-input{width:100%;border-radius:var(--radius-md);border:1px solid var(--border);
+  background:var(--surface-2);padding:11px 13px;font-size:1rem;outline:none;color:var(--fg)}
+.njc-search{margin-bottom:10px}
+/* #11: adding your own mantra was below all 39 names. */
+.njc-searchrow{display:flex;gap:8px;align-items:stretch;margin-bottom:10px}
+.njc-searchrow .njc-search{flex:1;min-width:0;margin-bottom:0}
+.njc-searchrow .njc-btn{flex:none;white-space:nowrap}
+.njc-search:focus,.njc-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.njc-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.njc-rsub{margin:-2px 0 10px;font-size:0.7813rem;line-height:1.45;color:var(--fg-muted)}
+/* #12: the numbers sat at the left of tiles that read as buttons. */
+.njc-tbtn{min-height:50px;text-align:center;border-radius:var(--radius-md);border:1px solid var(--border);
+  background:var(--surface-2);font-family:var(--font-display);font-size:1rem;font-weight:500;color:var(--fg);
+  transition:all 160ms var(--ease-brand)}
+.njc-tbtn:hover{border-color:var(--border-strong)}
+.njc-tbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+.njc-field{display:flex;align-items:center;gap:8px;margin-top:10px}
+.njc-field .njc-input{flex:1;min-width:0}
+.njc-btn{min-height:46px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);
+  padding:0 16px;font-size:0.8438rem;font-weight:500;color:var(--fg-muted);transition:all 160ms var(--ease-brand);
+  flex-shrink:0;white-space:nowrap}
+.njc-btn:hover{border-color:var(--border-strong);color:var(--fg)}
+.njc-btn.primary{border-color:var(--accent);background:var(--accent);color:var(--fg-on-accent)}
+.njc-btn.danger{border-color:var(--danger);background:var(--danger-soft);color:var(--danger)}
+.njc-btn.block{width:100%;display:block;text-align:center}
+.njc-opt{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:13px 0;
+  border-bottom:1px solid var(--border);text-align:left}
+.njc-opt:last-of-type{border-bottom:none}
+.njc-opt .l{min-width:0}
+.njc-opt .l b{display:block;font-size:0.8438rem;font-weight:500;color:var(--fg)}
+.njc-opt .l span{display:block;font-size:0.6875rem;line-height:1.4;color:var(--fg-subtle)}
+.njc-sw{position:relative;width:46px;height:28px;flex-shrink:0;border-radius:9999px;
+  background:var(--border-strong);transition:background var(--dur) var(--ease)}
+.njc-sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:9999px;
+  background:#fff;box-shadow:var(--shadow-sm);transition:left var(--dur) var(--ease-out)}
+/* The state lives on the button (role=switch, aria-checked); the track only draws it. */
+.njc-opt[aria-checked="true"] .njc-sw{background:var(--accent)}
+.njc-opt[aria-checked="true"] .njc-sw::after{left:21px}
+.njc-seg{display:flex;gap:6px;flex-wrap:wrap}
+.njc-segb{border-radius:9999px;border:1px solid var(--border);background:var(--surface-2);padding:9px 14px;
+  font-size:0.7813rem;font-weight:500;color:var(--fg-muted);min-height:40px}
+.njc-segb[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+/* A destructive option asking for its second tap. */
+.njc-opt[data-armed] .l b{color:var(--danger)}
+.njc-btn.danger[data-armed]{background:var(--danger);border-color:var(--danger);color:#fff}
+.njc-fieldmsg{margin:8px 0 0;font-size:0.7813rem;line-height:1.4;color:var(--danger)}
+.njc-empty{font-size:0.8125rem;color:var(--fg-subtle);padding:12px 0}
+.njc-del{flex-shrink:0;margin-left:6px;min-width:28px;height:28px;padding:0 6px;border-radius:9999px;
+  display:inline-grid;place-items:center;font-size:0.75rem;color:var(--fg-subtle);border:1px solid var(--border)}
+.njc-del[data-armed]{color:var(--danger);border-color:var(--danger)}
+
+/* ---------- 15. MILESTONE ---------- */
+.njc-mile{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));
+  z-index:2147482000;width:min(360px,calc(100vw - 28px));border-radius:var(--radius-lg);
+  border:1px solid var(--warm);background:var(--surface);color:var(--fg);padding:15px;box-shadow:var(--shadow-lg);
+  animation:njc-pop 240ms var(--ease-brand-out) both}
+@keyframes njc-pop{0%{transform:translateX(-50%) scale(.9);opacity:0}
+  60%{transform:translateX(-50%) scale(1.03)}100%{transform:translateX(-50%) scale(1);opacity:1}}
+.njc-mile p.t{font-size:0.875rem;font-weight:500;color:var(--warm);margin:0}
+.njc-mile p.s{margin:4px 0 0;font-size:0.75rem;line-height:1.45;color:var(--fg-muted)}
+.njc-mile .acts{margin-top:11px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.njc-mile .acts button{min-height:44px;border-radius:9999px;border:1px solid var(--border);
+  background:var(--surface);font-size:0.75rem;font-weight:500;color:var(--fg-muted);padding:0 4px}
+.njc-mile .acts button.primary{border-color:var(--accent);background:var(--accent);color:var(--fg-on-accent)}
+.njc-pill{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));
+  z-index:2147482000;pointer-events:none;width:fit-content;max-width:calc(100vw - 28px);border-radius:9999px;
+  border:1px solid var(--warm);background:var(--surface);padding:9px 18px;font-size:0.8125rem;font-weight:500;
+  color:var(--warm);box-shadow:var(--shadow-lg);animation:njc-pop 240ms var(--ease-brand-out) both;text-align:center}
+
+/* ---------- 16. IMMERSIVE (full screen) ----------
+   Only the ring, the name and the control rail survive. The rail MUST survive:
+   hiding it too left no way back out except the Escape key. */
+.njc:fullscreen,.njc:-webkit-full-screen{background:var(--bg);overflow-y:auto}
+/* The backdrop is what shows while the browser switches to full screen. It is
+   black by default, which read as a 1-2 second black screen on a phone. */
+.njc::backdrop{background:var(--bg,#faf8f4)}
+
+/* Only the side rails and the quick-chip row step aside. Everything a reader
+   uses while chanting stays: the round and today counters, the name control,
+   the ring, the control rail and the mode chips. */
+.njc.immersive .njc-rail,
+.njc.immersive #njcQuick{display:none}
+
+/* Full screen is exactly one screen. The shell used to be min-height:100dvh
+   INSIDE a box that already pads for the notch, so it was taller than the screen
+   and had to scroll; and the ring was sized in JS from a viewport that had not
+   finished changing. Now the column fills the box, and the ring is capped by the
+   room its own row actually has (100cqh), so nothing can push past the bottom. */
+.njc.immersive{display:flex;flex-direction:column}
+/* Full screen only: the chosen name, highlighted, above the ring, and a tap cue
+   under it. Hidden everywhere else. */
+.njc-fsname,.njc-fstap{display:none}
+.njc.immersive .njc-fsname{display:flex;align-items:baseline;justify-content:center;gap:8px;max-width:100%;min-width:0;
+  height:44px;margin:8px 0 0;flex:0 0 auto;padding:0 18px;border-radius:9999px;border:1px solid var(--accent-line);
+  background:var(--accent-soft);color:var(--accent-ink);overflow:hidden;white-space:nowrap}
+.njc.immersive .njc-fsname b{font-family:var(--font-dev);font-weight:600;font-size:1.3rem;line-height:44px;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.njc.immersive .njc-fstap{display:flex;align-items:center;justify-content:center;gap:10px;height:48px;margin:0;flex:0 0 auto;
+  padding:0 22px 0 6px;border-radius:9999px;color:var(--fg-on-accent);font-size:.9375rem;font-weight:600;letter-spacing:.02em;
+  background:linear-gradient(135deg,var(--accent-hover),var(--accent) 55%,var(--warm));
+  box-shadow:0 6px 18px -6px rgb(var(--glow)/.55),inset 0 1px 0 rgb(255 255 255/.18)}
+.njc.immersive .njc-fstap i{display:grid;place-items:center;width:36px;height:36px;border-radius:9999px;
+  background:rgb(255 255 255/.18)}
+.njc.immersive .njc-fstap i::before{content:"";width:18px;height:18px;border-radius:50%;box-sizing:border-box;
+  border:2px solid rgb(255 255 255/.6);background:radial-gradient(circle,currentColor 0 3.2px,transparent 3.6px)}
+.njc.immersive .njc-surface:active .njc-fstap{transform:scale(.96)}
+/* The page glow is a fixed 520px band. On a short full screen (a phone on its
+   side, a laptop) it hung below the bottom edge and made the counter scroll. */
+.njc.immersive .njc-glow{inset:0;height:auto}
+/* The desktop grid aligns its columns to the top (or the centre); in full
+   screen the one column must fill the height or the ring's row has no room. */
+#njc.immersive .njc-grid{align-items:stretch}
+.njc.immersive .njc-shell{display:flex;flex-direction:column;flex:1 1 auto;
+  min-height:0;width:100%;padding:10px 16px calc(10px + env(safe-area-inset-bottom));max-width:none}
+.njc.immersive .njc-grid{flex:1;min-height:0;display:flex;grid-template-columns:none;
+  width:100%;max-width:min(720px,100%);margin-inline:auto;gap:0}
+.njc.immersive .njc-col{flex:1;min-height:0;width:100%;align-items:stretch}
+
+/* Stats, then the name, then the ring in whatever room is left, then the
+   controls and the modes on the floor. Nothing is pinned hard to either edge:
+   the surface flexes, so the ring settles in the middle. */
+.njc.immersive .njc-top{display:flex;order:0;flex:0 0 auto;margin-bottom:6px}
+.njc.immersive .njc-brand{display:none}          /* the site header names it */
+.njc.immersive .njc-top>div{margin-left:auto}
+.njc.immersive .njc-hstats{display:grid;order:1;flex:0 0 auto}
+.njc.immersive .njc-selectbar{display:flex;order:2;margin-top:10px;flex:0 0 auto}
+.njc.immersive .njc-surface{order:3;flex:1;min-height:0;padding:0;justify-content:center;container-type:size}
+/* Name at the top, ring in the middle, count button at the bottom. Not auto
+   margins: the ring sizer reads margins, and an auto margin read as the whole gap. */
+.njc.immersive .njc-surface{justify-content:space-between}
+/* 94px: the name pill (44 + 14) and the tap cue (26 + 10) share the row. */
+.njc.immersive .njc-stage{width:max(120px,min(var(--stage-px,320px),calc(100cqh - 132px),100cqw));
+  height:max(120px,min(var(--stage-px,320px),calc(100cqh - 132px),100cqw));margin-block:10px}
+/* 640, not 460. From a 560px column up the controls become labelled pills, and
+   at 460 their labels were cut to "E..." and "Target...". */
+.njc.immersive .njc-ctlrail{order:4;flex:0 0 auto;margin-top:14px;width:100%;max-width:640px}
+.njc.immersive .njc-modes{display:flex;order:5;flex:0 0 auto;margin-top:10px;margin-bottom:14px;padding-bottom:2px}
+
+/* ---------- 17. RESPONSIVE — three real layouts ---------- */
+@media(max-width:767px){
+  /* No forced viewport height. The tool is a block inside a page that already
+     has a header and a footer, so stretching it to 100dvh only guaranteed the
+     bottom of it was cut off and left dead space in the middle. */
+  .njc-rail{margin-top:2px}
+  .njc-modes{padding-bottom:2px}
+  /* All five modes on one phone row. At desktop padding they needed 408px
+     against a 358px column, so "Haptic" was cut in half at the right edge on
+     every phone. Padding that tracks the width fits them from 360 up; the row
+     still scrolls on anything narrower. */
+  .njc-modes{gap:5px}
+  .njc-modes>*{flex:1 0 auto;padding-inline:clamp(5px,1.8vw,14px);font-size:0.75rem}
+}
+/* Under 360 the five cannot share one row at a readable size: two rows. */
+@media(max-width:359px){
+  .njc-modes{flex-wrap:wrap;overflow-x:visible}
+  .njc-modes>:first-child,.njc-modes>:last-child{margin-inline:0}
+}
+/* The quick-chip row is shown nowhere. On a phone and a tablet the select bar is
+   the name control, and the row cost the ring 60px. On desktop the Library rail
+   sits right beside it with the same names, and the row was wider than its
+   column, so the last chip was cut off mid-word. */
+#njcQuick{display:none}
+/* A tall phone has room for a larger ring; the sizer still clamps it against
+   the height actually left over. */
+@media(max-width:767px) and (min-height:760px){ .njc{--stage-cap:360px} }
+/* Landscape phone. One screen is not physically available at 360px of height,
+   so stop pretending: drop the full-height column and let the page scroll. */
+@media(max-width:767px) and (max-height:520px){
+  .njc-col{min-height:0}
+  .njc-hstats{padding-bottom:6px}
+  .njc-selectbar{min-height:48px;margin-top:6px}
+  .njc-surface{padding:2px 0}
+}
+@media(min-width:768px){
+  /* Full bleed. The shell padding is the only gutter, so the tool fills the
+     page instead of sitting in a narrow band with empty margins each side. */
+  .njc{--app-max:100%;--stage-cap:460px}
+  /* The same gutter the header and footer use, so their edges line up. */
+  .njc-shell{padding:14px var(--page-gutter) 26px}
+  /* One column until 1280, the way the phone lays it out. The counter used to
+     sit beside a 286px practice panel from 768 up; once the sidebar arrived that
+     left the counter column 214px wide on a 768 tablet, and a ring smaller than
+     the one on a phone. The panel now goes underneath. */
+  .njc-grid{grid-template-columns:minmax(0,1fr);align-items:start}
+  .njc-col{width:100%;max-width:580px;margin-inline:auto}
+  .njc:not(.immersive) .njc-surface{margin-top:18px;margin-bottom:12px}
+  .njc-chart{height:112px}
+  /* Keep the rails close to the height of the counter column so the three
+     columns read as one block instead of one tall column beside a short one. */
+  .njc-scroll{max-height:190px}
+  /* The library panel in the right rail is a duplicate from here up: on a
+     tablet the quick-chip row and the All names sheet already cover it, and
+     on desktop it has its own left rail. Leaving it in made the right column
+     962px against a 706px counter column — that height difference IS the
+     dead space that showed up beside and under the counter. */
+  #njcLibPanel2{display:none}
+}
+/* The pill rail only when the CENTRE COLUMN is wide enough for five pills —
+   a container query, not a viewport one. The viewport says nothing useful
+   here: at 1440px the column is 544px because two rails take 600px of it, and
+   a viewport-keyed rule wrapped "More" onto a second line. */
+@container (min-width:560px){
+  .njc-ctlrail{display:flex;justify-content:center;gap:7px;flex-wrap:nowrap;max-width:none}
+  .njc-ctl{min-height:48px;flex-direction:row;gap:8px;border-radius:9999px;padding:0 16px;font-size:0.8125rem;flex:0 1 auto}
+  .njc-ctl .lg{display:inline}
+  .njc-ctl .sm{display:none}
+}
+/* Moved up from 1024 when the sidebar arrived. These rules read the window, not
+   the room the counter actually has, and a 200px sidebar at 1024 would have left
+   a three-column layout 824px to fit into. Below 1280 the counter is a single
+   column; Library and Settings, which the rails carried, are in the sidebar. */
+@media(min-width:1280px){
+  .njc{--app-max:100%;--stage-cap:400px}
+  /* Fractional rails, so the three columns grow with the page and the ring
+     keeps its share instead of shrinking into a very wide centre column. */
+  /* Equal rails, so the ring sits on the same centre line as the page title and
+     the header nav. The right rail used to be 1.1fr with a larger minimum,
+     which pushed the ring 16px left of centre at 1366 and 24px at 1920. The
+     grid stops at the page width the header and footer share, rather than
+     stretching two 500px rails across a 1920 screen. */
+  .njc-grid{grid-template-columns:minmax(260px,1fr) minmax(0,1.55fr) minmax(260px,1fr);gap:22px;
+    max-width:var(--page-max);margin-inline:auto}
+  .njc-col{order:2}
+  .njc-rail.left{order:1;display:grid}
+  .njc-rail.right{order:3}
+  .njc-hstats{display:none}
+  .njc-selectbar{display:none}
+  /* With the duplicate gone, let the left rail's list grow into the room it
+     has, so the three columns end up close to the same height. */
+  .njc-rail.left .njc-scroll{max-height:470px}
+}
+/* The practice rail (weekly chart + stats + milestone) is ~712px and taller than
+   the ring column, so a top-aligned grid leaves a blank band under the ring — most
+   visible for a signed-in Premium user, where the "not saving" notice that used to
+   pad the column is gone. Centre the three columns on one middle line so the slack
+   splits above and below instead of piling under the controls. Only above 920px of
+   height: below that (a 1366x768 or 1920x900 laptop) centring a ~680px column in a
+   712px row would push the mode chips past the bottom of the screen, so those keep
+   the top-aligned layout they already had. */
+@media(min-width:1280px) and (min-height:920px){
+  .njc-grid{align-items:center}
+}
+/* 1279, not 1023. The three-column layout moved to 1280 when the sidebar
+   arrived and this line stayed behind, so between 1024 and 1279 the library
+   rail appeared inside a layout that had no column for it - the counter was
+   shoved right and its controls fell off the bottom of a landscape tablet. */
+@media(max-width:1279px){.njc-rail.left{display:none}}
+@media(min-width:768px) and (max-width:1279px){
+  /* Practice and history sit under the counter, side by side. */
+  .njc-rail.right{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:880px;margin-inline:auto}
+}
+@media(min-width:1500px){
+  .njc{--app-max:100%;--stage-cap:470px}
+  .njc-grid{grid-template-columns:minmax(280px,1fr) minmax(0,1.5fr) minmax(280px,1fr);gap:26px}
+}
+@media(max-height:600px) and (max-width:1023px){
+  .njc-hstats{padding-bottom:8px}
+}
+/* A landscape tablet, 1024x768 or 1180x820. The single column stacked six
+   things above and below the ring and left it 233px — smaller than on a phone.
+   The Round / Today / Streak tiles repeat what the ring (Mala) and the practice
+   panel directly below already show, and the hint repeats the ring itself, so
+   both give their height back. Full screen keeps the tiles: it has the room. */
+@media(min-width:768px) and (max-width:1279px) and (min-height:501px) and (max-height:820px){
+  .njc-hstats{display:none}
+}
+/* A phone on its side, or any window this short. One column cannot hold the ring
+   and its controls in 360-430px of height, so the column splits: the ring on the
+   left, and the stats, the name, the controls and the modes on the right, all on
+   screen together. Keyed on the id so it outranks the full-screen rules, which
+   want the same split. The engine reads display:grid on the column as the cue
+   to size the ring from the left side only. */
+/* 480, not 600: a 568x320 phone on its side stayed stacked and its controls sat
+   185px below the bottom of the screen. */
+@media(orientation:landscape) and (max-height:500px) and (min-width:480px){
+  /* The ring is bounded by the height, not the width, so the controls side gets
+     the larger share: at an even split the five modes did not fit in it. */
+  #njc .njc-col{display:grid;max-width:none;align-items:center;column-gap:clamp(16px,3vw,32px);
+    grid-template-columns:minmax(0,1fr) minmax(min(330px,55%),1.25fr);
+    grid-template-rows:1fr auto auto auto auto 1fr;
+    grid-template-areas:"surface ." "surface stats" "surface select" "surface ctl" "surface modes" "surface ."}
+  #njc .njc-hstats{grid-area:stats}
+  #njc .njc-selectbar{grid-area:select;margin-top:10px}
+  #njc .njc-surface{grid-area:surface;margin-top:0;margin-bottom:0;padding:0}
+  #njc.immersive .njc-surface{align-self:stretch;justify-content:center}
+  #njc.immersive .njc-fsname,#njc.immersive .njc-fstap{display:none}
+  #njc.immersive .njc-stage{width:max(120px,min(var(--stage-px,320px),100cqh,100cqw));height:max(120px,min(var(--stage-px,320px),100cqh,100cqw))}
+  #njc .njc-ctlrail{grid-area:ctl;margin-top:10px;max-width:none}
+  #njc .njc-modes{grid-area:modes;margin-top:10px}
+  /* Half a column is too narrow for the labelled pills the container query
+     picks from the column's full width, so keep the compact five-up rail. */
+  #njc .njc-ctlrail{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+  #njc .njc-ctl{flex-direction:column;gap:2px;border-radius:var(--radius-md);padding:0 2px;font-size:0.625rem;min-height:46px}
+  #njc .njc-ctl .lg{display:none}
+  #njc .njc-ctl .sm{display:inline}
+  /* Below 768 the phone shell stops at 520px, which left the controls side
+     300px at 667x375 — too narrow for the modes. Side by side it needs the
+     full width. */
+  #njc{--app-max:100%}
+  #njc .njc-modes>*{flex:1 0 auto;padding-inline:clamp(4px,.9vw,12px);font-size:0.75rem}
+  /* In the page the site header and the title already take 130px of a 360px
+     screen; the tiles repeat the ring's Mala and the header's streak, so they
+     go. Full screen has no header and keeps them. */
+  #njc:not(.immersive) .njc-hstats{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .njc *,.njc *::before,.njc *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important}
+  .njc-halo,.njc-ripple{animation:none!important}
+  .njc-bubble{display:none}
+}
+
+/* ---------- 18. FULL SCREEN FALLBACK ----------
+   iPhone Safari has no element fullscreen. When the native API is missing or
+   refuses, the engine adds .njc-faux-fs and pins the counter over the page
+   instead, so the button always does what the copy says it does. */
+.njc.njc-faux-fs{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);overflow-y:auto;
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
+}
+html.njc-fs-lock,html.njc-fs-lock body{overflow:hidden}
+/* main carries position:relative;z-index:1, which traps the counter's z-index
+   inside it and let the site header paint over the pinned counter. While the
+   fallback is on, the page chrome steps out of the way entirely. */
+html.njc-fs-lock main{z-index:auto}
+html.njc-fs-lock .site-header,
+html.njc-fs-lock .site-footer{display:none}
+
+/* ---------- 19. BRAND ROW MOVED TO THE PAGE HEADER ----------
+   The widget's own brand line duplicated the site header. It stays in the DOM
+   because the engine owns those two buttons and the page header only proxies
+   clicks to them; it is shown again in full screen, where the site header is
+   gone, with the wordmark dropped and the buttons kept. */
+.njc-top{display:none}
+
+/* ---------- 20. NOTHING CHOSEN YET ----------
+   A new visitor has picked no name. The select bar reads as the next step
+   rather than as a filled-in field. */
+.njc.njc-noname .njc-selectbar{border-color:var(--accent-line);background:var(--accent-soft)}
+.njc.njc-noname .njc-selectbar .dot{color:var(--accent);background:var(--surface)}
+.njc.njc-noname .njc-phrase .big{color:var(--accent-ink);font-family:var(--font-ui);font-weight:500;
+  font-size:clamp(.7rem,3.8cqw,1rem);white-space:normal}
+
+/* ---------- 21. ANOTHER TAB IS COUNTING ----------
+   Two tabs each hold their own copy of the counter's state and each write all
+   of it, so whichever saves last discards the other's whole session. Only one
+   tab counts; this is what the others look like. The stage is dimmed rather
+   than hidden — the numbers are still the user's numbers, and they update as
+   the other tab counts — and the hint says why tapping does nothing.
+
+   The hint is display:none on the narrowest layout (rule 465), so the reason
+   has to come back for this state or the tab would look merely broken. */
+
+/* ---------- 22. NOTICE STRIP ----------
+   What alert() used to do, without blocking the page or reading like an error.
+   It sits above the counter so it cannot cover the ring or the controls. */
+.njc-notice{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 12px;
+  border:1px solid var(--border-strong);border-radius:var(--radius-sm);
+  background:var(--surface);box-shadow:var(--shadow-sm);font-size:0.8125rem;line-height:1.45}
+.njc-notice p{margin:0;flex:1 1 auto;min-width:0;color:var(--fg-muted)}
+.njc-notice.good{border-color:var(--accent-line);background:var(--accent-soft)}
+.njc-notice.good p{color:var(--fg)}
+.njc-notice.bad{border-color:var(--warm)}
+.njc-notice .act{flex:0 0 auto;padding:6px 12px;border:1px solid var(--accent);border-radius:999px;
+  background:var(--accent);color:var(--fg-on-accent);font:inherit;font-weight:600;font-size:0.7813rem;cursor:pointer}
+.njc-notice .act:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.njc-notice .x{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;
+  border:0;border-radius:8px;background:transparent;color:var(--fg-subtle);font-size:0.8125rem;cursor:pointer}
+.njc-notice .x:hover{background:var(--surface-sunken);color:var(--fg)}
+/* A phone: the message and its close button share the first row, the action
+   takes the second. With a flex-basis of auto the message claimed the whole
+   row and pushed the close button onto a line of its own, under the text. */
+@media(max-width:460px){
+  .njc-notice{flex-wrap:wrap;align-items:flex-start}
+  .njc-notice p{flex:1 1 0}
+  .njc-notice .act{order:3;width:100%}
+}
+/* HB1: on a short screen the inline notice (backup reminder, "not saving")
+   pushed the ring to its floor and the controls off the bottom — because the
+   ring cannot shrink far enough to absorb it. Float it as a dismissible bottom
+   toast instead, so it leaves the counter's own height alone (stageSize skips
+   fixed elements, so the ring and controls lay out as if it were not there). */
+@media(max-height:740px){
+  .njc-host .njc-notice{
+    position:fixed;left:50%;transform:translateX(-50%);
+    top:calc(env(safe-area-inset-top,0px) + 66px);
+    width:min(440px,calc(100% - 24px));margin:0;z-index:39;
+    box-shadow:var(--shadow-lg)}
+}
+
+/* ---------- 2026-09-13 REDESIGN TOUCHES ----------
+   The mode chips sit in one rounded box, lined up the same on every device;
+   the name bar reads as the main control; History shows three days with View all. */
+
+/* Mode chips: one pill-shaped box, the five modes sharing it evenly. The row
+   used to bleed 16px past the column on both sides (margin -16px), so it never
+   lined up with the control rail above it. */
+#njc .njc-modes{margin:10px 0 0;padding:2px;gap:2px;min-width:0;overflow-x:auto;flex-wrap:nowrap;
+  border:1px solid var(--border);border-radius:9999px;background:var(--surface-sunken)}
+#njc .njc-modes>*{flex:1 0 auto;justify-content:center;margin:0;min-height:40px;border-radius:9999px;
+  padding-inline:clamp(6px,1.6vw,14px);border-color:transparent;background:transparent;font-size:0.7813rem}
+#njc .njc-modes>*:hover{border-color:transparent;background:var(--surface);color:var(--fg)}
+#njc .njc-modes>[aria-pressed="true"]{border-color:var(--accent-line);background:var(--surface);
+  color:var(--accent-ink);font-weight:600;box-shadow:var(--shadow-sm)}
+@media(max-width:359px){
+  #njc .njc-modes{flex-wrap:wrap;border-radius:22px}
+  #njc .njc-modes>*{flex:1 1 30%}
+}
+/* Short screens: the box must cost the ring nothing against the old bare chips (44px). */
+@media(max-height:820px){
+  #njc .njc-modes>*{min-height:38px}
+}
+@media(orientation:landscape) and (max-height:500px) and (min-width:480px){
+  #njc .njc-modes>*{padding-inline:clamp(3px,.8vw,10px);font-size:0.7188rem}
+}
+
+/* The name bar: the control people touch first, so it looks like one. */
+#njc .njc-selectbar{border-color:var(--accent-line);
+  background:linear-gradient(135deg,var(--surface) 0%,var(--surface) 55%,var(--accent-soft) 100%);
+  box-shadow:0 1px 2px rgb(0 0 0 / .04),0 6px 18px -10px rgb(var(--glow) / .45)}
+#njc .njc-selectbar:hover{border-color:var(--accent)}
+#njc .njc-selectbar .dot{background:var(--accent);color:var(--fg-on-accent)}
+#njc .njc-selectbar .txt b{font-size:0.9688rem}
+#njc .njc-selectbar .dv{color:var(--accent-ink)}
+
+/* Today / Mala / Total above the ring: all three read as numbers of equal weight. */
+#njc .njc-hstat b{color:var(--fg);font-variant-numeric:tabular-nums}
+#njc .njc-hstat.em b{color:var(--accent)}
+
+/* History: three rows and a button. */
+@media(min-width:768px){ #njc #njcHist{min-height:120px} }
+#njc .njc-histmore{margin-top:10px;min-height:40px;font-size:0.8125rem;font-weight:600;color:var(--accent-ink)}
+#njc .njc-histmore[hidden]{display:none}
+
+/* Group headings in the full name list. */
+#njc .njc-group{margin:14px 4px 6px;font-size:0.6875rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--fg-subtle)}
+#njc .njc-group:first-child{margin-top:2px}
+
+/* B67: long totals step down a size instead of ending in "…". */
+#njc .njc-hstat b[data-long="1"]{font-size:0.9375rem}
+#njc .njc-hstat b[data-long="2"]{font-size:0.7813rem}
+#njc .njc-kv b[data-long="1"]{font-size:1rem}
+#njc .njc-kv b[data-long="2"]{font-size:0.8438rem}
+
+/* A short screen (a small phone, a 600px-tall laptop): a slimmer pill and button,
+   so the ring keeps its size. */
+@media(max-height:700px){
+  .njc.immersive .njc-fsname{height:34px;margin-top:4px}
+  .njc.immersive .njc-fsname b{font-size:1.05rem;line-height:34px}
+  .njc.immersive .njc-fstap{height:38px;font-size:.8125rem;padding-right:16px}
+  .njc.immersive .njc-fstap i{width:28px;height:28px}
+  .njc.immersive .njc-stage{width:max(120px,min(var(--stage-px,320px),calc(100cqh - 96px),100cqw));
+    height:max(120px,min(var(--stage-px,320px),calc(100cqh - 96px),100cqw));margin-block:6px}
+}
+
+/* ---------- 23. TASBIH COUNTS ADDITIONS ---------- */
+/* The lines inside the ring that are not Arabic read left to right. */
+.njc-phrase .sub,.njc-phrase .mean{direction:ltr}
+/* A long Arabic phrase (a dua, the Talbiyah) wraps inside the ring. */
+.njc:not([data-long="0"]) .njc-phrase .big{line-height:1.5}
+/* The counter's sheets sit over the sticky site header while they are open. */
+html.njc-sheet-open .njc-host{position:relative;z-index:60}
+/* Options that cannot apply to this dhikr (a rite is seven, a routine sets its
+   own targets) are shown, but quiet. */
+.njc-ctl[aria-disabled="true"]{opacity:.38}
+/* Ripples, bubbles and bursts are drawn into their own layer over the ring, so
+   React never has to reconcile around them. */
+.njc-fx{position:absolute;inset:0;pointer-events:none;z-index:2}
+/* The status line (offline, a link that named nothing) sits above the stats. */
+.njc-status:empty{display:none}
+.njc-status{margin-bottom:8px}
+/* In full screen the counter is pinned over everything (z 9999); the dhikr
+   picker, which lives beside it, has to open above it. */
+html.njc-fs-lock .njc-dhikr{position:relative;z-index:10000}

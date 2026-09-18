@@ -196,7 +196,7 @@ test.describe("the log-in popup", () => {
   test("typing in the popup does not count on the counter", async ({ page }) => {
     await page.goto("/");
     await at(page, 1440, 900);
-    const count = page.locator(".tc .counter-digits").first();
+    const count = page.locator("#njcDigits").first();
     const before = await count.textContent();
     await header(page).getByRole("link", { name: "Log in" }).click();
     const email = page.locator("dialog.auth-dialog input[type=email]");
@@ -252,7 +252,7 @@ test.describe("every destination leads somewhere", () => {
 
     await header(page).locator('.site-nav > a[href="/#settings"]').click();
     await page.waitForURL((u) => u.pathname === "/");
-    await expect(page.getByRole("dialog", { name: "More" })).toBeVisible();
+    await expect(page.getByRole("dialog", { name: "Settings" })).toBeVisible();
   });
 
   test("Library in the phone drawer opens the sheet", async ({ page }) => {

@@ -128,7 +128,7 @@ test("a hostile file is capped, and nothing is added until the user agrees", asy
   expect(await page.evaluate(() => ({} as Record<string, unknown>).polluted)).toBeUndefined();
 
   // Nothing from the file reached the page as markup.
-  expect(await page.locator(".tc img").count()).toBe(0);
+  expect(await page.locator("#njc img").count()).toBe(0);
 });
 
 test("a file with nothing new says so, and asks nothing", async ({ page }) => {

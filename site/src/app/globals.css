@@ -603,7 +603,7 @@ body:has(.auth-page, .account-layout, .premium, .admin) .promo-bar {
 }
 
 /* B23: a short laptop screen needs those 40px for the counter's controls. */
-@media (max-height: 820px) {
+@media (max-height: 699px) {
   body:has(.counter-slot) .promo-bar {
     display: none;
   }
@@ -2596,23 +2596,6 @@ html.auth-open {
   color: var(--accent-ink);
 }
 
-/* The counter has to fit one screen, controls included: on a phone, and on
-   any screen short enough that the title would push the controls below the
-   fold (a 1366x768 laptop, a phone on its side). There the page title is kept
-   for search engines and screen readers but takes no room. */
-@media (max-width: 767px), (max-height: 820px) {
-  .counter-head {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-}
-
 @media (min-width: 768px) {
   .counter-head {
     max-width: none;
@@ -2623,12 +2606,9 @@ html.auth-open {
   }
 }
 
-/* The counter's sheets live inside its frame's stacking context (z-10), so
-   while one is open the frame is lifted above the sticky header. Otherwise the
-   header keeps painting over the sheet and stays undimmed by its scrim. */
-.tc [data-tool-frame]:has([role="dialog"]) {
-  z-index: 60;
-}
+/* The counter's sheets live inside its own stacking context, so while one is
+   open the whole widget is lifted above the sticky header (njc.css). The
+   dhikr picker is rendered beside the counter, in .tc, and needs no lift. */
 
 /* A landscape tablet: the title keeps its size but gives up some air. */
 @media (min-width: 768px) and (max-height: 820px) {
