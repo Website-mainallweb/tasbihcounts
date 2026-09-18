@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "bhaktinamjap-prod",
+      "name": "tasbih-prod",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "--prefix",
@@ -14,7 +14,7 @@
       "autoPort": true
     },
     {
-      "name": "bhaktinamjap-dev",
+      "name": "tasbih-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "--prefix",
@@ -26,25 +26,13 @@
       "autoPort": true
     },
     {
-      "name": "bhaktinamjap-dev-lan",
+      "name": "tasbih-dev-lan",
       "runtimeExecutable": "node",
       "runtimeArgs": [
         "-e",
         "process.env.NJC_E2E='1';require('child_process').spawn('npm',['--prefix','site','run','dev','--','-H','0.0.0.0'],{stdio:'inherit',shell:true,env:process.env}).on('exit',c=>process.exit(c))"
       ],
       "port": 3000
-    },
-    {
-      "name": "admin-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "admin",
-        "run",
-        "dev"
-      ],
-      "port": 3200,
-      "autoPort": true
     },
     {
       "name": "site-preview",
@@ -62,18 +50,30 @@
       "autoPort": true
     },
     {
-      "name": "admin-preview",
+      "name": "ref-toolsweb",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "--prefix",
-        "admin",
+        "C:/Users/RAJAN/Pictures/toolsweb",
         "run",
-        "start",
+        "dev"
+      ],
+      "port": 3300,
+      "autoPort": true
+    },
+    {
+      "name": "ref-bhakti",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "C:/Users/RAJAN/Music/bhaktinamjap/site",
+        "run",
+        "dev",
         "--",
         "-p",
-        "3201"
+        "3400"
       ],
-      "port": 3201,
+      "port": 3400,
       "autoPort": true
     }
   ]

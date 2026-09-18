@@ -118,10 +118,10 @@ insert into public.app_flags (key, enabled, note) values
 -- be changed after creation and a row cannot be deleted at all; a name that
 -- should no longer be offered is unpublished, and the history stays readable.
 create table public.names (
-  id              text primary key check (id ~ '^[a-z0-9]{1,64}$'),
-  devanagari      text not null check (char_length(devanagari) between 1 and 120),
-  transliteration text not null check (char_length(transliteration) between 1 and 120),
-  meaning         text not null check (char_length(meaning) between 1 and 200),
+  id              text primary key check (id ~ '^[a-z0-9]+(-[a-z0-9]+)*$' and char_length(id) <= 64),
+  devanagari      text not null check (char_length(devanagari) between 1 and 300),
+  transliteration text not null check (char_length(transliteration) between 1 and 300),
+  meaning         text not null check (char_length(meaning) between 1 and 300),
   -- 'mantra' groups the longer ones into their own section; null is a plain name.
   grp             text check (grp in ('mantra')),
   -- What order the library shows them in. Not unique: reordering a list through
