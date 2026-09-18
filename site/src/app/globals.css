@@ -2621,11 +2621,10 @@ html.auth-open {
   }
 }
 
-/* The counter's sheets live inside its own stacking context, so while one is
-   open the whole widget is lifted above the sticky header. Otherwise the
-   header keeps painting over the modal and stays undimmed by the scrim. */
-html.njc-sheet-open .njc-host {
-  position: relative;
+/* The counter's sheets live inside its frame's stacking context (z-10), so
+   while one is open the frame is lifted above the sticky header. Otherwise the
+   header keeps painting over the sheet and stays undimmed by its scrim. */
+.tc [data-tool-frame]:has([role="dialog"]) {
   z-index: 60;
 }
 

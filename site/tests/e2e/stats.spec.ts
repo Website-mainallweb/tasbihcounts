@@ -229,8 +229,9 @@ test.describe("the per-dhikr breakdown the counter records", () => {
     };
 
     await tap(5);
-    // The quick chips above the ring switch the dhikr.
-    await page.getByRole("button", { name: "Astaghfirullah", exact: true }).first().click();
+    // Switch the dhikr the way a link does (the quick chips are not on a phone).
+    await page.waitForTimeout(500);
+    await page.goto("/?d=astaghfirullah");
     await expect(page.getByRole("button", { name: /^Count Astaghfirullah. Currently/ })).toBeVisible();
     await tap(3);
 

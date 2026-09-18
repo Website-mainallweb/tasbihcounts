@@ -72,7 +72,7 @@ import {
   deleteSession,
   getSnapshot,
   putSession,
-  putSnapshot,
+  putSnapshot as putDhikrSnapshot,
   putCustomDhikr,
   deleteCustomDhikr,
   clearSnapshot,
@@ -89,7 +89,19 @@ import { normaliseRiteState } from "@/core/rites";
 import { useSequences } from "@/stores/sequences-store";
 import { useSettings } from "./settings-store";
 
-const flusher = createFlusher(1200);
+// Short enough that a reload straight after counting keeps the ring's last taps.
+const flusher = createFlusher(300);
+
+/**
+ * Snapshots are kept per dhikr, and a routine's state carries its first step's
+ * dhikr id. Saving a routine under that key overwrote the plain count: finish
+ * 33-33-34 and SubhanAllah reopened at 1 instead of where it was left. A routine
+ * is never restored from a snapshot (hydrate() rebuilds a plain counter), so its
+ * state is simply not stored there.
+ */
+function putSnapshot(state: CounterState): Promise<void> {
+  return state.routine ? Promise.resolve() : putDhikrSnapshot(state);
+}
 
 /**
  * The in-flight hydration, if there is one.

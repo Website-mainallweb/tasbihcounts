@@ -15,9 +15,9 @@ const mark = (ink, warm, t = "") =>
     .join("")}<circle cx="12" cy="3" r="${ACCENT}" fill="${warm}"/></g>`;
 
 const SERIF = "Literata, Georgia, 'Times New Roman', serif";
-const logo = (ink, warm) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 632 197" width="632" height="197">
-${mark(ink, warm, "translate(2 34) scale(5.4)")}
-<text x="140" y="124" font-family="${SERIF}" font-size="68" font-weight="600" letter-spacing="-1" fill="${ink}">Tasbih<tspan fill="${warm}">Counts</tspan></text>
+const logo = (ink, warm) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 632 150" width="632" height="150">
+${mark(ink, warm, "translate(2 10) scale(5.4)")}
+<text x="140" y="100" font-family="${SERIF}" font-size="68" font-weight="600" letter-spacing="-1" fill="${ink}">Tasbih<tspan fill="${warm}">Counts</tspan></text>
 </svg>`;
 
 mkdirSync(new URL("images/", pub), { recursive: true });
@@ -41,11 +41,11 @@ head.writeUInt16LE(1, 10); head.writeUInt16LE(32, 12); head.writeUInt32LE(p32.le
 writeFileSync(new URL("favicon.ico", pub), Buffer.concat([head, p32]));
 
 // The header lock-ups, as PNG so next/image serves them at header size.
-await png(logo("#1b1a17", "#17705e"), "images/logo-light.png", 632, 197);
-await png(logo("#f2efe8", "#57b598"), "images/logo-dark.png", 632, 197);
+await png(logo("#1b1a17", "#17705e"), "images/tc-logo-light.png", 632, 150);
+await png(logo("#f2efe8", "#57b598"), "images/tc-logo-dark.png", 632, 150);
 
 // Schema.org logo, and the social card.
-await png(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 632 197" width="1200" height="374"><rect width="632" height="197" fill="#ffffff"/>${logo("#1b1a17", "#17705e").replace(/<\/?svg[^>]*>/g, "")}</svg>`, "images/tasbih-counts-logo.png", 1200, 374);
+await png(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 632 150" width="1200" height="285"><rect width="632" height="150" fill="#ffffff"/>${logo("#1b1a17", "#17705e").replace(/<\/?svg[^>]*>/g, "")}</svg>`, "images/tasbih-counts-logo.png", 1200, 285);
 await png(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
 <rect width="1200" height="630" fill="#faf8f4"/>
 <circle cx="600" cy="250" r="230" fill="#17705e" opacity=".07"/>

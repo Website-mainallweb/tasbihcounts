@@ -125,6 +125,24 @@ test.describe("the counter", () => {
     expect(n.subhanallah.r).toBe(1);
   });
 
+  test("a finished routine does not overwrite the plain dhikr's count", async ({ page }) => {
+    // The routine's state carries its first step's dhikr id; saved as that
+    // dhikr's snapshot, SubhanAllah reopened at 1 instead of where it was left.
+    await page.goto("/");
+    await ready(page);
+    await tap(page, 5);
+    await page.waitForTimeout(600);
+
+    await page.goto("/?r=after-salah-33-33-34");
+    await ready(page);
+    await tap(page, 34);
+    await page.waitForTimeout(600);
+
+    await page.goto("/?d=subhanallah");
+    await ready(page);
+    await expect(page.locator(".tc .counter-digits").first()).toHaveText("5");
+  });
+
   test("the Library link opens the dhikr sheet", async ({ page }) => {
     await page.goto("/#library");
     await expect(page.getByRole("dialog", { name: /choose dhikr/i })).toBeVisible();
