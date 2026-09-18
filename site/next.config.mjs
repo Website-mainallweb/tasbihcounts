@@ -85,7 +85,15 @@ const csp = [
   //
   // In production every response is already https, so the directive has nothing
   // left to upgrade and its absence here changes nothing that is under test.
-  ...(process.env.NJC_E2E === "1" ? [] : ["upgrade-insecure-requests"]),
+  //
+  // Also dropped for the dev server and for a build served on the LAN (LAN=1):
+  // a phone opening http://<this machine's IP>:3000 would otherwise ask for every
+  // stylesheet, script and image over https, which that address does not serve,
+  // and get a page with no CSS. Browsers exempt localhost, which is why the
+  // desktop never showed it.
+  ...(process.env.NJC_E2E === "1" || process.env.LAN === "1" || process.env.NODE_ENV !== "production"
+    ? []
+    : ["upgrade-insecure-requests"]),
 ].join("; ");
 
 /* Who may put this site in an iframe.

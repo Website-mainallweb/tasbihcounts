@@ -2,6 +2,15 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "tasbih-lan",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-e",
+        "process.env.LAN=\"1\";require(\"child_process\").spawn(\"npm\",[\"--prefix\",\"site\",\"run\",\"dev\"],{stdio:\"inherit\",shell:true,env:process.env}).on(\"exit\",c=>process.exit(c))"
+      ],
+      "port": 3000
+    },
+    {
       "name": "tasbih-prod",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
