@@ -13,7 +13,7 @@
  * Sign-in, account, admin and every API are never touched: they must always be
  * live. Firebase's messaging worker keeps its own narrower scope.
  */
-const CACHE = "njc-offline-v1";
+const CACHE = "tc-offline-v1";
 const PAGES = ["/", "/streak/", "/stats/"];
 const NEVER = /^\/(api|auth|account|admin|login)(\/|$)/;
 /* B42: every deploy adds its own hashed files and nothing took the old ones out.

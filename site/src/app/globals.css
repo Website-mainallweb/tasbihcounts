@@ -2548,8 +2548,8 @@ html.auth-open {
   align-items: center;
   gap: 14px;
   margin: 0;
-  font-family: var(--font-dev);
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-weight: 500;
   font-size: clamp(1.75rem, 6.4vw, 2.5rem);
   line-height: 1.25;
   color: var(--accent);
@@ -2594,6 +2594,21 @@ html.auth-open {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent-ink);
+}
+
+/* On a phone the counter has to fit one screen, controls included, so the
+   page title is kept for search engines and screen readers but takes no room. */
+@media (max-width: 767px) {
+  .counter-head {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 @media (min-width: 768px) {

@@ -28,7 +28,7 @@ self.addEventListener("push", (event) => {
     "/";
 
   event.waitUntil(
-    self.registration.showNotification(String(notification.title || "Bhakti Nam Jap").slice(0, 120), {
+    self.registration.showNotification(String(notification.title || "Tasbih Counts").slice(0, 120), {
       body: String(notification.body || "").slice(0, 240),
       icon: "/icons/icon-192.png",
       badge: "/icons/icon-192.png",

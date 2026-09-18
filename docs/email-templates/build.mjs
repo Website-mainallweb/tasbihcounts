@@ -12,11 +12,11 @@ const out = join(here, "out");
 mkdirSync(out, { recursive: true });
 
 const C = {
-  bg: "#fdf8f0", card: "#ffffff", border: "#ece0cd", fg: "#1f1a14", muted: "#5c5145", subtle: "#766a5c",
-  accent: "#b0561d", accentDark: "#944815", soft: "#fbeee1", line: "#e6cba7", sunken: "#f4ecdd",
+  bg: "#faf8f4", card: "#ffffff", border: "#e8e1d6", fg: "#1b1a17", muted: "#57514a", subtle: "#6f6961",
+  accent: "#17705e", accentDark: "#135c4d", soft: "#e6f0ec", line: "#bcd6cd", sunken: "#f1ece4",
 };
 const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
-const DEV = "'Noto Sans Devanagari','Tiro Devanagari Hindi',-apple-system,'Segoe UI',Arial,sans-serif";
+const ARABIC = "'Noto Naskh Arabic','Amiri','Scheherazade New',serif";
 const SITE = "{{ .SiteURL }}";
 
 function button(href, label) {
@@ -50,8 +50,8 @@ function layout({ preheader, eyebrow, title, body }) {
 
 <tr><td style="padding:0 6px 16px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-<td style="font-family:${FONT};font-size:17px;font-weight:800;letter-spacing:-0.2px;color:${C.fg}"><a href="${SITE}" target="_blank" style="color:${C.fg};text-decoration:none"><span style="color:${C.accent}">&#10022;</span> Bhakti Nam Jap</a></td>
-<td align="right" style="font-family:${DEV};font-size:15px;color:${C.accent}">&#2344;&#2366;&#2350; &#2332;&#2346;</td>
+<td style="font-family:${FONT};font-size:17px;font-weight:800;letter-spacing:-0.2px;color:${C.fg}"><a href="${SITE}" target="_blank" style="color:${C.fg};text-decoration:none"><span style="color:#b9713a">&#9679;</span> Tasbih Counts</a></td>
+<td align="right" style="font-family:${ARABIC};font-size:17px;color:${C.accent}" dir="rtl" lang="ar">&#1587;&#1615;&#1576;&#1618;&#1581;&#1614;&#1575;&#1606;&#1614; &#1649;&#1604;&#1604;&#1617;&#1614;&#1648;&#1607;&#1616;</td>
 </tr></table>
 </td></tr>
 
@@ -64,7 +64,7 @@ ${body}
 
 <tr><td align="center" style="padding:22px 16px 6px;font-family:${FONT};font-size:12.5px;line-height:1.6;color:${C.subtle}">
 Questions? Just reply to this email.<br>
-<a href="${SITE}" target="_blank" style="color:${C.accentDark};text-decoration:none;font-weight:600">Bhakti Nam Jap</a> &middot; Count, chant and keep your daily sadhana in rhythm.
+<a href="${SITE}" target="_blank" style="color:${C.accentDark};text-decoration:none;font-weight:600">Tasbih Counts</a> &middot; Count your dhikr and keep your daily remembrance steady.
 </td></tr>
 
 </table>
@@ -77,7 +77,7 @@ const ignore = "If you did not ask for this, you can ignore this email &mdash; n
 /** key -> [subject, html] ; keys match the Management API's mailer_* names */
 const T = {
   magic_link: [
-    "Your Bhakti Nam Jap log-in code",
+    "Your Tasbih Counts log-in code",
     layout({
       preheader: "Your log-in code, valid for 15 minutes.",
       eyebrow: "Log in",
@@ -86,57 +86,57 @@ const T = {
         p("Type this code on the log-in page to open your account. It is the quickest way in, and no mail app can use it up before you do.") +
         /* B65: the same mail goes out straight after a purchase (Supabase has one
            template for both), so it says what a new buyer needs to hear too. */
-        p("<b style=\"color:#1f1a14\">Just bought Premium?</b> Thank you &mdash; your payment went through and Premium is active on this email. Log in with the code below on each device you use.") +
+        p("<b style=\"color:#1b1a17\">Just bought Premium?</b> Thank you &mdash; your payment went through and Premium is active on this email. Log in with the code below on each device you use.") +
         code("{{ .Token }}") +
         p("Or log in with one tap:", "margin:22px 0 6px;text-align:center") +
-        button("{{ .ConfirmationURL }}", "Log in to Bhakti Nam Jap") +
+        button("{{ .ConfirmationURL }}", "Log in to Tasbih Counts") +
         note(`The code and the button each work <b>once</b> and expire in <b>15 minutes</b>. ${ignore}`),
     }),
   ],
   recovery: [
-    "Choose a new password for Bhakti Nam Jap",
+    "Choose a new password for Tasbih Counts",
     layout({
       preheader: "Open the page and press Set new password. The link lasts 15 minutes.",
       eyebrow: "Password",
       title: "Choose a new password",
       body:
-        p("You asked to set or reset the password for your account. Open the page below and press <b style=\"color:#1f1a14\">Set new password</b>.") +
+        p("You asked to set or reset the password for your account. Open the page below and press <b style=\"color:#1b1a17\">Set new password</b>.") +
         button("{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery", "Choose a new password") +
         note(`The link works <b>once</b> and expires in <b>15 minutes</b>. Opening it changes nothing until you press the button on the page, and until then your old password still works. ${ignore}`),
     }),
   ],
   confirmation: [
-    "Confirm your email for Bhakti Nam Jap",
+    "Confirm your email for Tasbih Counts",
     layout({
       preheader: "One tap to confirm this email address.",
       eyebrow: "Welcome",
       title: "Confirm your email address",
-      body: p("Press the button to confirm this email address for your Bhakti Nam Jap account.") +
+      body: p("Press the button to confirm this email address for your Tasbih Counts account.") +
         button("{{ .ConfirmationURL }}", "Confirm email address") + note(ignore),
     }),
   ],
   invite: [
-    "Your Bhakti Nam Jap account is ready",
+    "Your Tasbih Counts account is ready",
     layout({
       preheader: "Open your account with one tap.",
       eyebrow: "Welcome",
       title: "Your account is ready",
-      body: p("An account has been made for you on Bhakti Nam Jap. Press the button to open it.") +
+      body: p("An account has been made for you on Tasbih Counts. Press the button to open it.") +
         button("{{ .ConfirmationURL }}", "Open my account") + note(ignore),
     }),
   ],
   email_change: [
-    "Confirm your new email for Bhakti Nam Jap",
+    "Confirm your new email for Tasbih Counts",
     layout({
       preheader: "Confirm the new email address for your account.",
       eyebrow: "Account",
       title: "Confirm your new email",
-      body: p("Press the button to use <b style=\"color:#1f1a14\">{{ .NewEmail }}</b> as the email address for your Bhakti Nam Jap account.") +
+      body: p("Press the button to use <b style=\"color:#1b1a17\">{{ .NewEmail }}</b> as the email address for your Tasbih Counts account.") +
         button("{{ .ConfirmationURL }}", "Confirm new email") + note(ignore),
     }),
   ],
   reauthentication: [
-    "{{ .Token }} is your Bhakti Nam Jap verification code",
+    "{{ .Token }} is your Tasbih Counts verification code",
     layout({
       preheader: "Your verification code.",
       eyebrow: "Verification",
@@ -154,13 +154,13 @@ const notice = (key, subject, title, text) => {
     body: p(text) + note("If this was not you, reset your password straight away from the log-in page and reply to this email so we can help."),
   })];
 };
-notice("password_changed_notification", "Your Bhakti Nam Jap password was changed", "Your password was changed", "The password for your Bhakti Nam Jap account ({{ .Email }}) was just changed.");
-notice("email_changed_notification", "Your Bhakti Nam Jap email was changed", "Your email address was changed", "The email address for your Bhakti Nam Jap account was just changed.");
-notice("phone_changed_notification", "Your Bhakti Nam Jap phone number was changed", "Your phone number was changed", "The phone number on your Bhakti Nam Jap account ({{ .Email }}) was just changed.");
-notice("identity_linked_notification", "A log-in method was added to your Bhakti Nam Jap account", "A log-in method was added", "A new way to log in was just added to your Bhakti Nam Jap account ({{ .Email }}).");
-notice("identity_unlinked_notification", "A log-in method was removed from your Bhakti Nam Jap account", "A log-in method was removed", "A way to log in was just removed from your Bhakti Nam Jap account ({{ .Email }}).");
-notice("mfa_factor_enrolled_notification", "A verification method was added to your Bhakti Nam Jap account", "A verification method was added", "A new verification method was just added to your Bhakti Nam Jap account ({{ .Email }}).");
-notice("mfa_factor_unenrolled_notification", "A verification method was removed from your Bhakti Nam Jap account", "A verification method was removed", "A verification method was just removed from your Bhakti Nam Jap account ({{ .Email }}).");
+notice("password_changed_notification", "Your Tasbih Counts password was changed", "Your password was changed", "The password for your Tasbih Counts account ({{ .Email }}) was just changed.");
+notice("email_changed_notification", "Your Tasbih Counts email was changed", "Your email address was changed", "The email address for your Tasbih Counts account was just changed.");
+notice("phone_changed_notification", "Your Tasbih Counts phone number was changed", "Your phone number was changed", "The phone number on your Tasbih Counts account ({{ .Email }}) was just changed.");
+notice("identity_linked_notification", "A log-in method was added to your Tasbih Counts account", "A log-in method was added", "A new way to log in was just added to your Tasbih Counts account ({{ .Email }}).");
+notice("identity_unlinked_notification", "A log-in method was removed from your Tasbih Counts account", "A log-in method was removed", "A way to log in was just removed from your Tasbih Counts account ({{ .Email }}).");
+notice("mfa_factor_enrolled_notification", "A verification method was added to your Tasbih Counts account", "A verification method was added", "A new verification method was just added to your Tasbih Counts account ({{ .Email }}).");
+notice("mfa_factor_unenrolled_notification", "A verification method was removed from your Tasbih Counts account", "A verification method was removed", "A verification method was just removed from your Tasbih Counts account ({{ .Email }}).");
 
 const patch = {};
 for (const [key, [subject, html]] of Object.entries(T)) {
