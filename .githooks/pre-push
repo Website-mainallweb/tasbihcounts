@@ -1,0 +1,17 @@
+#!/bin/sh
+# Convenience, not the gate — `--no-verify` skips this, and CI does not.
+# Runs the same command CI runs, so a red push is usually caught before it
+# becomes a red build on Hostinger.
+#
+# Enable once per clone:  git config core.hooksPath .githooks
+#
+# Set SKIP_CHECK=1 to push without it when you know why.
+[ "$SKIP_CHECK" = "1" ] && exit 0
+
+echo "pre-push: npm run check (SKIP_CHECK=1 to skip)"
+cd "$(git rev-parse --show-toplevel)/site" || exit 1
+npm run check || {
+  echo
+  echo "pre-push: check failed — push aborted."
+  exit 1
+}

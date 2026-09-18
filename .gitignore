@@ -1,0 +1,27 @@
+# The WordPress backup. It carries wp-config.php with live database
+# credentials and salts, so it must never leave this machine.
+public_html.zip
+extract/
+
+# Node / Next
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# Local env
+.env
+.env.*
+!.env.example
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local run logs, reference screenshots and one-off drill scripts
+*.log
+*.exit
+referdoc/
+.wip/

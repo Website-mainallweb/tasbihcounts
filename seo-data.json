@@ -1,0 +1,103 @@
+{
+  "_source": "Rank Math editor store + live rendered <head>, extracted 2026-09-08",
+  "site": {
+    "name": "Bhakti Nam Jap",
+    "locale": "en_US",
+    "titleSeparator": "-",
+    "tempDomain": "https://slateblue-mandrill-605528.hostingersite.com",
+    "logo": "/wp-content/uploads/2025/10/Bhakti-Nam-Jap-.png",
+    "logoSize": "675x222",
+    "defaultOgImage": "/wp-content/uploads/2025/10/BhaktiNamJap-Social-Image.png",
+    "ogImageSize": "1200x630",
+    "ogImageAlt": "Bhakti Nam Jap counter",
+    "twitterCard": "summary_large_image",
+    "twitterUseFacebook": true,
+    "knowledgeGraph": { "type": ["Person", "Organization"], "name": "Bhakti Nam Jap" }
+  },
+  "globalRobots": {
+    "index": true,
+    "follow": true,
+    "advanced": { "max-snippet": -1, "max-video-preview": -1, "max-image-preview": "large" },
+    "rendered": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    "noindexEmptyCategoryTagArchives": true
+  },
+  "pages": [
+    {
+      "wpId": 29, "path": "/", "slug": "home-2",
+      "titleTemplate": "Bhakti Nam Jap – Digital Nam Jap Counter",
+      "renderedTitle": "Bhakti Nam Jap – Digital Nam Jap Counter",
+      "description": "Bhakti Nam Jap is an online Nam Jap counter to track daily mantra chanting. Stay focused, deepen devotion, and grow spiritually with ease.",
+      "focusKeywords": ["Bhakti Nam Jap", "Nam Jap Counter", "Online Nam Jap Counter", "नाम जप काउंटर"],
+      "primaryKeyword": "Bhakti Nam Jap",
+      "rankMathScore": 81,
+      "ogType": "website",
+      "canonical": "/",
+      "datePublished": "2025-10-15T08:18:01+05:30",
+      "schemaTemplate": "Article",
+      "schemaGraph": ["Person+Organization", "WebSite", "ImageObject", "BreadcrumbList", "WebPage", "Person", "Article"]
+    },
+    {
+      "wpId": 47, "path": "/about-us/", "slug": "about-us",
+      "titleTemplate": "%title% %sep% %sitename%",
+      "renderedTitle": "About Us - Bhakti Nam Jap",
+      "description": "Discover the purpose behind Bhakti Nam Jap Counter — a free spiritual tool for mantra chanting, meditation, and devotion, made for seekers worldwide.",
+      "focusKeywords": ["Bhakti Nam Jap", "Nam jap", "Nam Jap Counter"],
+      "primaryKeyword": "Bhakti Nam Jap",
+      "rankMathScore": 56,
+      "ogType": "article",
+      "canonical": "/about-us/",
+      "h1": "About Us",
+      "schemaTemplate": "Article",
+      "schemaGraph": ["Person+Organization", "WebSite", "ImageObject", "BreadcrumbList", "WebPage", "Person", "Article"]
+    },
+    {
+      "wpId": 49, "path": "/contact-us/", "slug": "contact-us",
+      "titleTemplate": "%title% %sep% %sitename%",
+      "renderedTitle": "Contact US - Bhakti Nam Jap",
+      "description": "Get in touch with Bhakti Nam Jap Counter for support, feedback, or guidance. Connect with us to enhance your daily mantra chanting experience.",
+      "focusKeywords": ["Bhakti Nam Jap", "Nam Jap Counter", "Nam Jap"],
+      "primaryKeyword": "Bhakti Nam Jap",
+      "rankMathScore": 53,
+      "ogType": "article",
+      "canonical": "/contact-us/",
+      "schemaTemplate": "Article",
+      "schemaGraph": ["Person+Organization", "WebSite", "ImageObject", "BreadcrumbList", "WebPage", "Person", "Article"]
+    },
+    {
+      "wpId": 3, "path": "/privacy-policy/", "slug": "privacy-policy",
+      "titleTemplate": "%title% %sep% %sitename%",
+      "renderedTitle": "Privacy Policy - Bhakti Nam Jap",
+      "description": "Learn how Bhakti Nam Jap Counter protects your privacy. Your mantra counts and spiritual practice remain secure, anonymous, and device-based.",
+      "focusKeywords": ["Bhakti Nam Jap", "Nam Jap Counter", "Nam Jap"],
+      "primaryKeyword": "Bhakti Nam Jap",
+      "rankMathScore": 57,
+      "ogType": "article",
+      "canonical": "/privacy-policy/",
+      "h1": "Privacy Policy",
+      "schemaTemplate": "Article",
+      "schemaGraph": ["Person+Organization", "WebSite", "ImageObject", "BreadcrumbList", "WebPage", "Person", "Article"]
+    },
+    {
+      "wpId": 45, "path": "/blog/", "slug": "blog",
+      "titleTemplate": "%title% %sep% %sitename%",
+      "renderedTitle": "Blog - Bhakti Nam Jap",
+      "description": null,
+      "focusKeywords": [],
+      "rankMathScore": 6,
+      "canonical": "/blog/",
+      "note": "Posts page. 0 posts published. No description, no keywords, no H1.",
+      "schemaGraph": ["Person", "WebSite", "BreadcrumbList", "CollectionPage"]
+    }
+  ],
+  "websiteSchema": {
+    "searchAction": "/?s={search_term_string}",
+    "publisherRef": "#person"
+  },
+  "sitemap": { "index": "/sitemap_index.xml", "children": ["/page-sitemap.xml"] },
+  "robotsTxt": "User-agent: Googlebot\nDisallow: /\n\nUser-agent: *\nAllow: /\n",
+  "warnings": [
+    "robots.txt blocks Googlebot entirely (Hostinger temp-domain default). Must be removed on the real domain.",
+    "Homepage slug is home-2 in WP but serves at / as front page.",
+    "Blog page has no SEO data and zero posts."
+  ]
+}

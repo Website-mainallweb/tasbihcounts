@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.env*.local
+next-env.d.ts
+
+# Playwright
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
+
+# Restore drill exports: real checkout emails. Delete after each drill.
+/.restore-drill

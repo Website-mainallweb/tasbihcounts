@@ -1,0 +1,958 @@
+/*
+ * The admin panel's stylesheet, scoped to .admin-root.
+ *
+ * The panel and the site are one Next application, so these rules load into the
+ * same document as the counter's. Every selector is therefore prefixed: the
+ * panel's h1 must not become the site's h1. The wrapper is app/admin/layout.tsx.
+ *
+ * The look is a working tool, not a landing page: a light neutral ground, one
+ * accent borrowed from the site so the two read as one product, and a single
+ * elevation step. Emphasis is spent on the things that cost money to misread —
+ * the billing alert, the test-mode banner, the destructive buttons — and
+ * withheld everywhere else, so that when something is coloured it means
+ * something.
+ */
+
+.admin-root {
+  color-scheme: light dark;
+
+  /* Neutrals */
+  --bg: #f6f5f3;
+  --panel: #ffffff;
+  --panel-2: #fbfaf8;
+  --line: #e4e0d9;
+  --line-soft: #efece6;
+  --ink: #1e1b16;
+  --ink-soft: #5d574d;
+  --ink-faint: #8b8479;
+
+  /* One accent, from the site */
+  --accent: #a86a16;
+  --accent-ink: #ffffff;
+  --accent-soft: #fdf3e2;
+  --accent-line: #ecd6ab;
+
+  --good: #1f7a44;
+  --good-soft: #eaf6ee;
+  --danger: #b3261e;
+  --danger-soft: #fdecea;
+  --danger-line: #f3c9c5;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 2px rgba(30, 27, 22, 0.06), 0 1px 3px rgba(30, 27, 22, 0.04);
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  .admin-root {
+    --bg: #14120f;
+    --panel: #1c1a16;
+    --panel-2: #211e19;
+    --line: #322e27;
+    --line-soft: #2a261f;
+    --ink: #f3efe8;
+    --ink-soft: #b3aca1;
+    --ink-faint: #837c72;
+
+    --accent: #e0a14a;
+    --accent-ink: #1a1208;
+    --accent-soft: #2a2015;
+    --accent-line: #4a3a20;
+
+    --good: #6cc78c;
+    --good-soft: #17251b;
+    --danger: #ef8279;
+    --danger-soft: #2a1614;
+    --danger-line: #4a2420;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.admin-root *,
+.admin-root *::before,
+.admin-root *::after {
+  box-sizing: border-box;
+}
+
+/* ---- shell: rail left, content right ------------------------------------ */
+
+/*
+ * The content is first in the DOM and the rail second, so a screen reader and
+ * the tab key reach the page before the menu. `order` puts the rail back on the
+ * left visually, and on a narrow screen puts it on top, where a thumb expects a
+ * menu — a full-height column at 375px would leave the tables no room at all.
+ */
+.admin-root .admin-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.admin-root .admin-main {
+  order: 2;
+  min-width: 0; /* lets a wide table scroll instead of stretching the grid */
+}
+
+.admin-root .admin-side {
+  order: 1;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+@media (min-width: 900px) {
+  .admin-root .admin-shell {
+    grid-template-columns: 15.5rem minmax(0, 1fr);
+  }
+
+  .admin-root .admin-main {
+    order: 2;
+  }
+
+  .admin-root .admin-side {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 1.15rem 0.85rem;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+    /* Stays put while a long table scrolls: the way out is always in reach. */
+    position: sticky;
+    top: 0;
+    /* dvh, not vh. Chrome reported 100vh as 641px in a 591px viewport, which put
+       Sign out below the fold on a rail that otherwise fits exactly. dvh is the
+       height actually available, browser chrome and all; vh stays as the
+       fallback for anything that does not know the unit. */
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    /* Nothing in the rail may scroll sideways; a child that overflows is a bug
+       to fix, not a scrollbar to live with. */
+    overflow-x: hidden;
+  }
+}
+
+/* ---- brand -------------------------------------------------------------- */
+
+.admin-root .side-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  margin-right: auto;
+}
+
+.admin-root .side-mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.admin-root .side-name {
+  display: flex;
+  flex-direction: column;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.admin-root .side-name small {
+  font-weight: 400;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+@media (min-width: 900px) {
+  .admin-root .side-brand {
+    margin: 0 0 1.25rem;
+    padding: 0 0.5rem;
+  }
+}
+
+/* ---- navigation --------------------------------------------------------- */
+
+.admin-root .side-nav {
+  display: flex;
+  gap: 0.15rem;
+  /* On a phone the sections scroll sideways rather than wrapping into four
+     rows and pushing the page down. */
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 -0.25rem;
+  padding: 0 0.25rem;
+}
+
+.admin-root .side-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-root .side-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: none;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  white-space: nowrap;
+  /* WCAG 2.2 target size; this gets used on a phone. */
+  min-height: 44px;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.admin-root .side-nav svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  opacity: 0.8;
+}
+
+.admin-root .side-nav a:hover {
+  background: var(--panel-2);
+  color: var(--ink);
+}
+
+/* Where you are. Not decoration: nine screens look alike at a glance, and
+   acting on the right row of the wrong page is the mistake this prevents. */
+.admin-root .side-nav a[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.admin-root .side-nav a[aria-current="page"] svg {
+  opacity: 1;
+}
+
+@media (min-width: 900px) {
+  .admin-root .side-nav {
+    display: block;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+
+  .admin-root .side-nav a {
+    margin: 0 0 0.1rem;
+    /* 40, not 44: the pointer target rule is about touch, and this breakpoint is
+       a mouse. It buys back the row the rail needs on a 600px-tall laptop. */
+    min-height: 40px;
+  }
+}
+
+/* ---- who, and the way out ----------------------------------------------- */
+
+.admin-root .side-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.admin-root .side-avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-root .side-who {
+  /* flex-basis 0, not auto: a long address would otherwise claim its full
+     natural width, push past the rail and give it a horizontal scrollbar. */
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+  .admin-root .side-foot {
+    flex-wrap: wrap;
+    margin: auto 0 0;
+    padding: 0.9rem 0.5rem 0;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .admin-root .side-foot form {
+    flex: 1 1 100%;
+    margin: 0.55rem 0 0;
+  }
+
+  .admin-root .side-out {
+    width: 100%;
+  }
+}
+
+/* ---- page frame --------------------------------------------------------- */
+
+.admin-root .wrap {
+  max-width: 68rem;
+  padding: 1.75rem 1.25rem 4rem;
+}
+
+@media (min-width: 900px) {
+  .admin-root .wrap {
+    padding: 2.25rem 2rem 5rem;
+  }
+}
+
+/* ---- type --------------------------------------------------------------- */
+
+.admin-root h1 {
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 1.9rem);
+  line-height: 1.2;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.022em;
+  font-weight: 650;
+}
+
+.admin-root h2 {
+  font-size: 1.02rem;
+  font-weight: 620;
+  margin: 0 0 0.7rem;
+  letter-spacing: -0.01em;
+}
+
+.admin-root h3 {
+  font-size: 0.97rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-root .eyebrow {
+  margin: 0 0 0.3rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.admin-root .lede {
+  color: var(--ink-soft);
+  margin: 0 0 1.75rem;
+  max-width: 46rem;
+  font-size: 0.95rem;
+}
+
+.admin-root .note {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.admin-root .pending {
+  color: var(--ink-faint);
+  font-size: 0.86rem;
+  margin: 0.3rem 0 0;
+}
+
+.admin-root a {
+  color: var(--accent);
+  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  text-underline-offset: 2px;
+}
+
+.admin-root a:hover {
+  text-decoration-color: currentColor;
+}
+
+.admin-root code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.87em;
+  background: var(--panel-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+  padding: 0.08em 0.34em;
+}
+
+.admin-root .back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+
+.admin-root .back:hover {
+  color: var(--accent);
+}
+
+/* ---- cards -------------------------------------------------------------- */
+
+.admin-root .card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin: 0 0 1.1rem;
+}
+
+.admin-root .grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin: 0 0 1.75rem;
+}
+
+.admin-root .stat {
+  margin: 0;
+  padding: 1.1rem 1.15rem;
+}
+
+.admin-root .stat-label {
+  margin: 0;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.admin-root .stat-value {
+  margin: 0.3rem 0 0;
+  font-size: clamp(1.6rem, 1.3rem + 1.4vw, 2.1rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  /* Tabular figures so a column of numbers lines up as it changes. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- messages ----------------------------------------------------------- */
+
+.admin-root .banner,
+.admin-root .error,
+.admin-root .ok {
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.95rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  border: 1px solid;
+}
+
+.admin-root .banner {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--ink);
+}
+
+.admin-root .error {
+  background: var(--danger-soft);
+  border-color: var(--danger-line);
+  color: var(--ink);
+}
+
+.admin-root .ok {
+  background: var(--good-soft);
+  border-color: color-mix(in srgb, var(--good) 35%, transparent);
+  color: var(--ink);
+}
+
+/* The one thing in the panel allowed to shout: money taken, nothing delivered. */
+.admin-root .alert {
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-line);
+  border-left: 4px solid var(--danger);
+  border-radius: var(--radius);
+  padding: 1.15rem 1.25rem;
+  margin: 0 0 1.75rem;
+}
+
+.admin-root .alert h2 {
+  color: var(--danger);
+}
+
+.admin-root .alert p {
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
+}
+
+.admin-root .protected {
+  border-left: 3px solid var(--good);
+  background: var(--panel);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 0.85rem 1rem;
+  margin: 1.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+/* ---- forms -------------------------------------------------------------- */
+
+.admin-root label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 550;
+  color: var(--ink-soft);
+  margin: 0 0 0.35rem;
+}
+
+.admin-root input[type="email"],
+.admin-root input[type="password"],
+.admin-root input[type="text"],
+.admin-root select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  margin: 0 0 1rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  min-height: 44px;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.admin-root select {
+  appearance: none;
+  padding-right: 2rem;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.admin-root input:focus,
+.admin-root select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.admin-root input:focus-visible,
+.admin-root button:focus-visible,
+.admin-root a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admin-root .form {
+  max-width: 26rem;
+}
+
+.admin-root .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: flex-end;
+  margin: 0 0 1.25rem;
+  padding: 0.95rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.admin-root .toolbar input[type="text"],
+.admin-root .toolbar input[type="email"],
+.admin-root .toolbar select {
+  margin: 0;
+  width: auto;
+  min-width: 12rem;
+}
+
+.admin-root .toolbar label {
+  margin: 0 0 0.3rem;
+}
+
+/* ---- buttons ------------------------------------------------------------ */
+
+.admin-root button {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.6rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-ink);
+  cursor: pointer;
+  min-height: 44px;
+  transition: filter 0.12s ease, background-color 0.12s ease;
+}
+
+.admin-root button:hover {
+  filter: brightness(1.07);
+}
+
+.admin-root button:active {
+  filter: brightness(0.95);
+}
+
+.admin-root button.quiet,
+.admin-root button.btn-quiet {
+  background: var(--panel);
+  color: var(--ink-soft);
+  border-color: var(--line);
+}
+
+.admin-root button.quiet:hover,
+.admin-root button.btn-quiet:hover {
+  background: var(--panel-2);
+  color: var(--ink);
+  filter: none;
+}
+
+.admin-root button.danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.admin-root button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* A link that should read as a button: exports, "add a name". */
+.admin-root .pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 550;
+  text-decoration: none;
+  white-space: nowrap;
+  min-height: 40px;
+}
+
+.admin-root .pill:hover {
+  background: var(--panel-2);
+  color: var(--ink);
+  border-color: var(--ink-faint);
+}
+
+.admin-root .row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 1rem 0 0;
+}
+
+/* ---- tables ------------------------------------------------------------- */
+
+.admin-root .scroll {
+  overflow-x: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.admin-root table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+}
+
+.admin-root th,
+.admin-root td {
+  text-align: left;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.admin-root thead th {
+  position: sticky;
+  top: 0;
+  background: var(--panel-2);
+  color: var(--ink-faint);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  border-bottom: 1px solid var(--line);
+  z-index: 1;
+}
+
+.admin-root tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-root tbody tr:hover td {
+  background: var(--panel-2);
+}
+
+.admin-root td.wrapcell {
+  white-space: normal;
+  min-width: 15rem;
+}
+
+.admin-root .alert .scroll {
+  box-shadow: none;
+  background: transparent;
+  border-color: var(--danger-line);
+}
+
+/* ---- pills, states ------------------------------------------------------ */
+
+.admin-root .pill-state,
+.admin-root td .pill,
+.admin-root .pill.pill-good,
+.admin-root .pill.pill-bad {
+  min-height: 0;
+}
+
+.admin-root td .pill,
+.admin-root h3 .pill {
+  display: inline-block;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  min-height: 0;
+}
+
+.admin-root td .pill-good,
+.admin-root h3 .pill-good {
+  color: var(--good);
+  border-color: color-mix(in srgb, var(--good) 40%, transparent);
+  background: var(--good-soft);
+}
+
+.admin-root td .pill-bad,
+.admin-root h3 .pill-bad {
+  color: var(--danger);
+  border-color: var(--danger-line);
+  background: var(--danger-soft);
+}
+
+/* ---- definition lists --------------------------------------------------- */
+
+.admin-root .facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1.1rem;
+  margin: 0;
+}
+
+.admin-root .facts > div {
+  margin: 0;
+  min-width: 0;
+}
+
+.admin-root .facts dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.admin-root .facts dd {
+  margin: 0.2rem 0 0;
+  word-break: break-word;
+  font-size: 0.93rem;
+}
+
+.admin-root ul.plain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-root ul.plain li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 0.9rem;
+}
+
+.admin-root ul.plain li:last-child {
+  border-bottom: 0;
+}
+
+/* ---- switches ----------------------------------------------------------- */
+
+.admin-root .switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.admin-root .switch:first-of-type {
+  padding-top: 0;
+}
+
+.admin-root .switch:last-of-type {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.admin-root .switch-text {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
+.admin-root .switch-text h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-root .switch-text p {
+  margin: 0.25rem 0 0;
+  font-size: 0.87rem;
+  color: var(--ink-soft);
+}
+
+/* ---- danger zone -------------------------------------------------------- */
+
+.admin-root .danger-zone {
+  border-color: var(--danger-line);
+}
+
+.admin-root .danger-zone h2 {
+  color: var(--danger);
+}
+
+/* ---- pager -------------------------------------------------------------- */
+
+.admin-root .pager {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 1.1rem 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+/* ---- sign-in ------------------------------------------------------------ */
+
+.admin-root .signin {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.25rem;
+}
+
+.admin-root .signin-card {
+  width: 100%;
+  max-width: 24rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 2rem 1.75rem;
+  text-align: center;
+}
+
+.admin-root .signin-card .side-mark {
+  margin: 0 auto 1rem;
+  width: 44px;
+  height: 44px;
+  font-size: 1.4rem;
+}
+
+.admin-root .signin-card h1 {
+  margin: 0 0 0.4rem;
+}
+
+.admin-root .signin-card .lede {
+  margin: 0 0 1.5rem;
+  font-size: 0.92rem;
+}
+
+.admin-root button.google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  background: var(--panel);
+  color: var(--ink);
+  border-color: var(--line);
+  font-weight: 550;
+  padding: 0.7rem 1.2rem;
+}
+
+.admin-root button.google:hover {
+  background: var(--panel-2);
+  border-color: var(--ink-faint);
+  filter: none;
+}
+
+.admin-root .signin-note {
+  margin: 1.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+/* ---- accessibility ------------------------------------------------------ */
+
+.admin-root .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-root * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

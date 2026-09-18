@@ -1,0 +1,45 @@
+{
+  "name": "bhaktinamjap",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "secrets": "node scripts/check-secrets.mjs",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run secrets && npm run authz && npm run guards && npm audit --audit-level=high && npm run build && npm run bundle",
+    "authz": "node scripts/check-auth-handlers.mjs",
+    "verify:rls:remote": "node scripts/verify-rls-remote.mjs",
+    "verify:auth:remote": "node scripts/verify-auth-remote.mjs",
+    "bundle": "node scripts/check-bundle.mjs",
+    "restore:drill": "node scripts/restore-drill.mjs",
+    "guards": "node scripts/check-admin-guards.mjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.116.0",
+    "firebase": "12.19.0",
+    "next": "^16.3.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "server-only": "0.0.1",
+    "zod": "4.6.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@electric-sql/pglite": "0.5.8",
+    "@playwright/test": "^1.49.0",
+    "@types/node": "22.20.1",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^16.3.4",
+    "typescript": "5.7.2",
+    "vitest": "^5.0.0"
+  }
+}

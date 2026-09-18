@@ -1,0 +1,225 @@
+/**
+ * Every value here was read off the live WordPress site (Rank Math editor
+ * store plus the rendered <head>) so the migrated pages emit byte-identical
+ * SEO. Change SITE_URL to the real domain and nothing else needs touching.
+ */
+
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://bhaktinamjap.com"
+).replace(/\/$/, "");
+
+export const SITE_NAME = "Bhakti Nam Jap";
+export const SITE_TAGLINE = "Digital Nam Jap Counter";
+export const LOCALE = "en_US";
+export const LANG = "en-US";
+export const TITLE_SEPARATOR = "-";
+
+export const PRIVACY_EMAIL = "japnamecontact@gmail.com";
+
+/**
+ * The one address the legal pages give for support, refunds and privacy
+ * grievances. Built from the site's own domain rather than written out, so a
+ * preview or staging build names its own domain and the address cannot drift
+ * from the canonical one.
+ */
+export const SUPPORT_EMAIL = `contact@${new URL(SITE_URL).hostname.replace(/^www\./, "")}`;
+
+export const SOCIAL = {
+  instagram: "https://www.instagram.com/bhaktinamjap/",
+  facebook: "https://www.facebook.com/profile.php?id=61582297268045",
+};
+
+export const GOOGLE_TAG_ID = "GT-5R7TVL64";
+
+/**
+ * A window property that runs analytics away from the live domain. Only the
+ * end-to-end suite sets it, so the CSP is still checked against the real tag —
+ * and the suite answers the tag's hits itself, so none of them reach Google.
+ */
+export const ANALYTICS_OVERRIDE = "__njcForceAnalytics";
+
+/**
+ * The publisher this site belongs to, and the id in public/ads.txt. The first
+ * account was registered as an organization when it had to be an individual,
+ * so it was closed and this one replaces it. The old id — pub-6952798071579220
+ * — is dead; nothing should refer to it again.
+ */
+export const ADSENSE_ACCOUNT = "ca-pub-1966021383086490";
+
+/**
+ * One slot id per position on the page. Empty means "do not ask for an ad
+ * here": AdSlot renders nothing, so a position can wait for its unit without
+ * anything else changing.
+ *
+ * Every id is empty right now because the units belonged to the closed
+ * account, and a slot id is only valid for the publisher that created it. The
+ * new account is still in review; once it is approved, create the units and
+ * fill these in. The layout, the spacing and the formats each position expects
+ * are all still here and were built against the ids below:
+ *
+ *   mobileContent   4751183621   display
+ *   tabletRail      5893864587   display
+ *   desktopRail     9641537908   display
+ *   milestone       8010208687   display
+ *   articleInline   6675473538   in-article
+ *   articleEnd      6477635163   multiplex
+ *
+ * There is deliberately no in-feed unit: that format needs a list of posts to
+ * sit between, and the blog has none yet.
+ */
+export const AD_SLOTS = {
+  /** Below the counter, above the article. Phones and tablets. */
+  mobileContent: "",
+  /** The 286px column beside the counter at tablet widths. Not sticky. */
+  tabletRail: "",
+  /** The right rail at desktop widths. Sticky, and never wider than 300px. */
+  desktopRail: "",
+  /** Inside the milestone card, kept clear of its buttons. */
+  milestone: "",
+  /**
+   * In-article, for the prose itself. Google asks for it two paragraphs into
+   * the article and never in a sidebar, so it is only used inside .prose.
+   */
+  articleInline: "",
+  /** Multiplex, the grid that closes out an article. */
+  articleEnd: "",
+};
+
+/**
+ * Two lock-ups of the same mark: the wordmark is black ink in one and white in
+ * the other, so the header can follow the counter's light and dark themes.
+ * LOGO.src is the schema.org logo and stays the original WordPress asset.
+ */
+/**
+ * The schema logo and the social card keep the exact URLs the WordPress site
+ * published, files and all, so every value in the head is unchanged.
+ */
+export const LOGO = {
+  src: "/wp-content/uploads/2025/10/Bhakti-Nam-Jap-.png",
+  width: 675,
+  height: 222,
+  alt: SITE_NAME,
+  light: { src: "/images/logo-light-v2.png", width: 632, height: 197 },
+  dark: { src: "/images/logo-dark-v2.png", width: 632, height: 197 },
+};
+
+export const SOCIAL_IMAGE = {
+  src: "/wp-content/uploads/2025/10/BhaktiNamJap-Social-Image.png",
+  width: 1200,
+  height: 630,
+  alt: "Bhakti Nam Jap counter",
+  type: "image/png",
+};
+
+/**
+ * Rank Math emitted its max-* directives inside the one robots meta tag.
+ * Next's structured `robots` field splits those onto a googlebot tag, so the
+ * string is written out verbatim through `other` instead.
+ */
+// Directive order copied from the old head as well as the directives.
+export const ROBOTS_CONTENT =
+  "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large";
+
+export const NAV = [
+  { label: "Nam Jap Counter", href: "/" },
+  { label: "About Us", href: "/about-us/" },
+  { label: "Contact Us", href: "/contact-us/" },
+  { label: "Privacy Policy", href: "/privacy-policy/" },
+  { label: "Terms of Service", href: "/terms/" },
+  { label: "Refund Policy", href: "/refund-policy/" },
+];
+
+/**
+ * Page-level SEO, lifted verbatim from Rank Math.
+ * dateModified (B71): the last real change to the page's copy; move it with the copy.
+ */
+export const PAGE_SEO = {
+  home: {
+    path: "/",
+    title: "Bhakti Nam Jap – Digital Nam Jap Counter",
+    description:
+      "Bhakti Nam Jap is an online Nam Jap counter to track daily mantra chanting. Stay focused, deepen devotion, and grow spiritually with ease.",
+    keywords: [
+      "Bhakti Nam Jap",
+      "Nam Jap Counter",
+      "Online Nam Jap Counter",
+      "नाम जप काउंटर",
+    ],
+    ogType: "website" as const,
+    datePublished: "2025-10-15T08:18:01+05:30",
+    dateModified: "2026-09-11T12:00:00+05:30",
+  },
+  about: {
+    path: "/about-us/",
+    title: `About Us ${TITLE_SEPARATOR} ${SITE_NAME}`,
+    description:
+      "Discover the purpose behind Bhakti Nam Jap Counter — a free spiritual tool for mantra chanting, meditation, and devotion, made for seekers worldwide.",
+    keywords: ["Bhakti Nam Jap", "Nam jap", "Nam Jap Counter"],
+    ogType: "article" as const,
+    datePublished: "2025-10-15T09:47:00+05:30",
+    dateModified: "2026-09-11T12:00:00+05:30",
+  },
+  contact: {
+    path: "/contact-us/",
+    title: `Contact Us ${TITLE_SEPARATOR} ${SITE_NAME}`,
+    description:
+      "Get in touch with Bhakti Nam Jap Counter for support, feedback, or guidance. Connect with us to enhance your daily mantra chanting experience.",
+    keywords: ["Bhakti Nam Jap", "Nam Jap Counter", "Nam Jap"],
+    ogType: "article" as const,
+    datePublished: "2025-10-15T09:47:00+05:30",
+    dateModified: "2026-09-11T12:00:00+05:30",
+  },
+  privacy: {
+    path: "/privacy-policy/",
+    title: `Privacy Policy ${TITLE_SEPARATOR} ${SITE_NAME}`,
+    // Rewritten with the policy itself: the old line promised "anonymous" and
+    // said nothing of ads, analytics or the Premium plan.
+    description:
+      "How Bhakti Nam Jap handles your data: your counts stay on your device, what ads and analytics use, and what the optional Premium plan needs.",
+    keywords: ["Bhakti Nam Jap", "Nam Jap Counter", "Nam Jap"],
+    ogType: "article" as const,
+    datePublished: "2025-09-30T12:01:00+05:30",
+    dateModified: "2026-09-13T12:00:00+05:30",
+  },
+  terms: {
+    path: "/terms/",
+    title: `Terms of Service ${TITLE_SEPARATOR} ${SITE_NAME}`,
+    description:
+      "The terms for using Bhakti Nam Jap, the free online nam jap counter, and its one-time ₹200 lifetime Premium plan.",
+    keywords: ["Bhakti Nam Jap", "Nam Jap Counter"],
+    ogType: "article" as const,
+    datePublished: "2026-09-10T12:00:00+05:30",
+    dateModified: "2026-09-10T12:00:00+05:30",
+  },
+  refund: {
+    path: "/refund-policy/",
+    title: `Refund & Cancellation Policy ${TITLE_SEPARATOR} ${SITE_NAME}`,
+    description:
+      "Bhakti Nam Jap Premium is a one-time ₹200 lifetime payment. How delivery works, why there is nothing to cancel, and when a refund is given.",
+    keywords: ["Bhakti Nam Jap", "Nam Jap Counter"],
+    ogType: "article" as const,
+    datePublished: "2026-09-10T12:00:00+05:30",
+    dateModified: "2026-09-13T12:00:00+05:30",
+  },
+  premium: {
+    path: "/premium/",
+    title: `Premium ${TITLE_SEPARATOR} ${SITE_NAME}`,
+    description:
+      "Bhakti Nam Jap Premium: one payment of ₹200 for life — no ads, your practice on every device, and daily reminders.",
+    keywords: ["Bhakti Nam Jap", "Nam Jap Counter", "Premium"],
+    ogType: "article" as const,
+    datePublished: "2026-09-11T09:00:00+05:30",
+    dateModified: "2026-09-13T12:00:00+05:30",
+  },
+  blog: {
+    path: "/blog/",
+    title: `Blog ${TITLE_SEPARATOR} ${SITE_NAME}`,
+    // Rank Math had no description on this page; leaving it absent keeps the
+    // <head> the same as the WordPress output.
+    description: undefined as string | undefined,
+    keywords: [] as string[],
+    ogType: "website" as const,
+    datePublished: "2025-10-15T09:47:00+05:30",
+    dateModified: "2025-10-15T09:47:00+05:30",
+  },
+};

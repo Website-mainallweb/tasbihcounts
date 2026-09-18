@@ -1,0 +1,80 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "bhaktinamjap-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "site",
+        "run",
+        "start"
+      ],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "bhaktinamjap-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "site",
+        "run",
+        "dev"
+      ],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "bhaktinamjap-dev-lan",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-e",
+        "process.env.NJC_E2E='1';require('child_process').spawn('npm',['--prefix','site','run','dev','--','-H','0.0.0.0'],{stdio:'inherit',shell:true,env:process.env}).on('exit',c=>process.exit(c))"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "admin-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "admin",
+        "run",
+        "dev"
+      ],
+      "port": 3200,
+      "autoPort": true
+    },
+    {
+      "name": "site-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "site",
+        "run",
+        "start",
+        "--",
+        "-p",
+        "3105"
+      ],
+      "port": 3105,
+      "autoPort": true
+    },
+    {
+      "name": "admin-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "admin",
+        "run",
+        "start",
+        "--",
+        "-p",
+        "3201"
+      ],
+      "port": 3201,
+      "autoPort": true
+    }
+  ]
+}

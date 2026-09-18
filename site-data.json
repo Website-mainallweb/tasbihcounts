@@ -1,0 +1,125 @@
+{
+  "_source": "WP REST API + admin screens + rendered front-end, extracted 2026-09-08",
+  "wordpress": {
+    "siteTitle": "Bhakti Nam Jap",
+    "tagline": "Digital Nam Jap Counter",
+    "language": "en-US",
+    "timezone": "Asia/Kolkata",
+    "gmtOffset": 5.5,
+    "permalinkStructure": "/%postname%/",
+    "categoryBase": "default",
+    "tagBase": "default",
+    "siteIcon": "/wp-content/uploads/2025/10/Untitled-design.png",
+    "siteLogoAttachmentId": 99,
+    "theme": "Astra",
+    "pageBuilder": "Elementor 4.2.4"
+  },
+  "navigation": {
+    "primaryMenu": [
+      { "label": "Nam Jap Counter", "href": "/" },
+      { "label": "Blog", "href": "/blog/" },
+      { "label": "About Us", "href": "/about-us/" },
+      { "label": "Contact US", "href": "/contact-us/" },
+      { "label": "Privacy Policy", "href": "/privacy-policy/" }
+    ],
+    "note": "Same menu rendered twice, desktop and mobile"
+  },
+  "socialProfiles": {
+    "instagram": "https://www.instagram.com/bhaktinamjap/",
+    "facebook": "https://www.facebook.com/profile.php?id=61582297268045"
+  },
+  "analytics": {
+    "googleTagId": "GT-5R7TVL64",
+    "siteKitConnected": false,
+    "searchConsoleVerificationMeta": "none found in head"
+  },
+  "pwa": {
+    "plugin": "PWA for WP 1.7.88",
+    "manifestUrl": "/pwa-manifest.json",
+    "themeColor": "#D5E0EB",
+    "installPrompt": "Add Bhakti Nam Jap to your Homescreen!",
+    "icons": [
+      { "rel": "icon", "href": "/Favicon.png" },
+      { "rel": "icon", "sizes": "32x32", "href": "/wp-content/uploads/2025/10/Untitled-design-150x150.png" },
+      { "rel": "icon", "sizes": "192x192", "href": "/wp-content/uploads/2025/10/Untitled-design-300x300.png" },
+      { "rel": "apple-touch-icon", "sizes": "192x192", "href": "/wp-content/uploads/2025/10/Untitled-design.png" },
+      { "rel": "apple-touch-icon", "sizes": "512x512", "href": "/wp-content/uploads/2025/10/Untitled-design.png" }
+    ]
+  },
+  "headingOutline": {
+    "/": {
+      "h1": ["नाम जप काउंटर"],
+      "h2": [
+        "Bhakti Nam Jap Counter – Digital Online Nam Jap Counter",
+        "What is Bhakti Nam Jap Tools?",
+        "How to Use Bhakti Nam Jap Count Tool",
+        "Key Features of Bhakti Nam Jap Counter",
+        "What is Mala in Nam Jap Counter",
+        "Understanding of Online Nam Jap Counter Stats",
+        "Why Use Bhakti Nam Jap – Digital Online Nam Jap Counter",
+        "Benefits of Daily Chanting with Bhakti Nam Jap",
+        "Bhakti Nam Jap Counter Full Screen",
+        "Uses of Nam Jap Counter Count and Reset Buttons",
+        "Tips for Using Nam Jap Counter",
+        "Follow Bhakti Nam Jap Counter on Social Media"
+      ]
+    },
+    "/about-us/": { "h1": ["About Us"], "h2": [] },
+    "/contact-us/": { "h1": ["Contact US"], "h2": [] },
+    "/privacy-policy/": {
+      "h1": ["Privacy Policy"],
+      "h2": ["Our Commitment to Your Privacy"],
+      "h3": ["Information We Collect", "How Your Data Is Used", "Data Storage", "Third-Party & Advertising", "Your Rights", "Children's Privacy", "Contact", "Spiritual Assurance"]
+    }
+  },
+  "counter": {
+    "wpcodeSnippetId": 27,
+    "name": "Tools",
+    "type": "javascript",
+    "sizeChars": 22076,
+    "functionCount": 16,
+    "storage": "localStorage, client side only, no backend",
+    "status": "active",
+    "extracted": false,
+    "blockedReason": "browser tool content filter; user to supply source"
+  },
+  "otherActiveSnippets": [
+    { "id": 209, "name": "Favicon", "type": "html", "location": "Site Wide Header" }
+  ],
+  "media": {
+    "count": 27,
+    "logo": "/wp-content/uploads/2025/10/Bhakti-Nam-Jap-.png",
+    "socialImage": "/wp-content/uploads/2025/10/BhaktiNamJap-Social-Image.png",
+    "siteIcon": "/wp-content/uploads/2025/10/Untitled-design.png",
+    "note": "10 images under 2026/05 belong to the trashed blog posts"
+  },
+  "trashedPosts": {
+    "count": 17,
+    "titles": [
+      "3 Rules for Chanting the Holy Name (Nam Jap)",
+      "Top 3 Best Naam Japa Counter Apps That Can Be Used Daily",
+      "How to Focus Your Mind on a Nam Jap Counter",
+      "When Is Naam Jap and Sadhana Considered Successful: Full Guide",
+      "How to Complete the First 1 Lakh Naam Jap Count?",
+      "Does a Jap Counter Tool Give the Same Benefits as Mala Jap?",
+      "Daily 15 Minute Radha Naam Jap Changes Your Life",
+      "Should We Do Naam Jap or Mantra Jap: Which One Is Best?",
+      "Meditation vs Nam Jap: Which Is Best",
+      "How Is It Possible to Do Daily Naam Jap Consistently?",
+      "Top 3 Gods Name Available on Name Jap Counter Tools",
+      "Top 3 Digital Naam Jap Counter Websites",
+      "How to Do Nam Jap While Working?",
+      "How Much Naam Jap Should I Do Daily Using a Naam Jap Counter?",
+      "Physical Nam Jap Counter vs Digital Nam Jap Counter",
+      "How to Select Custom Name in Nam Jap Counter?",
+      "How to Use the BhaktiNamJap Counter Tool?"
+    ]
+  },
+  "redirects": { "rankMathRedirectionsModule": "disabled", "count": 0 },
+  "stillNeeded": [
+    "WPCode snippet 27 JavaScript source",
+    "Counter HTML markup and CSS from the Elementor homepage",
+    "public_html for the uploads folder images",
+    "Real domain name"
+  ]
+}
