@@ -519,7 +519,7 @@ export function CounterTool({ preselect }: { preselect?: Preselect } = {}) {
         {/* ---------- centre: first on every device ---------- */}
         <div
           data-counter-col=""
-          className="order-1 flex min-w-0 flex-col md:block lg:order-2"
+          className="order-1 flex min-w-0 flex-col md:sticky md:top-[calc(var(--header-h)+12px)] md:block lg:static lg:order-2"
           style={
             {
               containerType: "inline-size",
@@ -624,7 +624,7 @@ export function CounterTool({ preselect }: { preselect?: Preselect } = {}) {
               it used to be ran 483px wide and pushed More clean off a 375px
               screen: the control was there, but on no phone could anyone see
               it. From md up there is room for the original pills. */}
-          <div className="mt-2 grid shrink-0 grid-cols-4 items-stretch gap-1.5 md:flex md:justify-center md:gap-2">
+          <div className="mt-2 grid shrink-0 grid-cols-4 items-stretch gap-1.5 lg:flex lg:justify-center lg:gap-2">
             <Control
               label={immersive ? "Exit" : "Full screen"}
               onClick={toggleImmersive}
@@ -677,7 +677,7 @@ export function CounterTool({ preselect }: { preselect?: Preselect } = {}) {
 
           {/* Modes, visible on every device. Nothing important hides in a sheet. */}
           <div
-            className="overflow-guard -mx-4 mt-2 flex shrink-0 gap-2 px-4 md:justify-center"
+            className="overflow-guard -mx-4 mt-2 flex shrink-0 gap-2 px-4 md:justify-center-safe"
             style={{ paddingBottom: "var(--tap-safe-bottom)" }}
             role="group"
             aria-label="Counting mode"
@@ -865,7 +865,7 @@ function Control({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`flex min-h-[52px] min-w-0 shrink-0 flex-col items-center justify-center gap-0.5 rounded-[var(--radius-md)] border px-1 text-[10.5px] font-medium transition-all duration-200 md:min-h-[48px] md:flex-row md:gap-2 md:rounded-full md:px-4 md:text-[13px] ${
+      className={`flex min-h-[52px] min-w-0 shrink-0 flex-col items-center justify-center gap-0.5 rounded-[var(--radius-md)] border px-1 text-[10.5px] font-medium transition-all duration-200 lg:min-h-[48px] lg:flex-row lg:gap-2 lg:rounded-full lg:px-4 lg:text-[13px] ${
         primary
           ? "border-accent bg-accent text-fg-on-accent shadow-soft hover:shadow-card"
           : quiet

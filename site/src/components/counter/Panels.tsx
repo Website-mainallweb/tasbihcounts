@@ -34,7 +34,7 @@ export function LibraryPanel({ onMore }: { onMore: () => void }) {
   const s = useCounter();
 
   return (
-    <aside className="panel-in flex h-full flex-col gap-5">
+    <aside className="panel-in flex flex-col gap-5 md:h-full">
       <PanelCard title="Guided routines" action={{ label: "All", onClick: onMore }}>
         <ul className="grid grid-cols-2 gap-1.5 xl:grid-cols-1">
           {ROUTINES.map((r) => {
@@ -62,7 +62,7 @@ export function LibraryPanel({ onMore }: { onMore: () => void }) {
       </PanelCard>
 
       <PanelCard title="Dhikr library" action={{ label: "Search", onClick: onMore }}>
-        <ul className="thin-scroll grid grid-cols-2 gap-1 sm:grid-cols-3 xl:max-h-[46vh] xl:grid-cols-1 xl:overflow-y-auto xl:pe-1">
+        <ul className="thin-scroll grid grid-cols-2 gap-1 @lg:grid-cols-3 xl:max-h-[46vh] xl:grid-cols-1 xl:overflow-y-auto xl:pe-1">
           {DHIKR.map((d) => {
             const active = !s.state.routine && d.id === s.state.dhikrId;
             return (
@@ -119,7 +119,7 @@ export function PracticePanel({ section = "all" }: { section?: "all" | "stats" |
   const isRite = s.state.mode === "rite";
 
   return (
-    <aside className="panel-in flex h-full flex-col gap-5">
+    <aside className="panel-in flex flex-col gap-5 md:h-full">
       <SeasonCard />
 
       {showStats ? (

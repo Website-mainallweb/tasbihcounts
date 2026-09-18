@@ -30,7 +30,7 @@ export default function TasbihCounter({ preselect }: { preselect?: Preselect }) 
     <div className="tc">
       {/* The same frame the counter sits in on its own site: the glow, and the
           page padding its full-bleed rows are measured against. */}
-      <section className="brand-glow grid-veil relative overflow-hidden">
+      <section className="brand-glow grid-veil relative overflow-x-clip">
         <div data-tool-frame="" className="page-frame relative z-10 pt-2 md:pt-5">
           <LedgerNotice />
           <CounterTool preselect={preselect} />

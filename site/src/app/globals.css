@@ -603,7 +603,7 @@ body:has(.auth-page, .account-layout, .premium, .admin) .promo-bar {
 }
 
 /* B23: a short laptop screen needs those 40px for the counter's controls. */
-@media (max-height: 699px) {
+@media (max-height: 820px) {
   body:has(.counter-slot) .promo-bar {
     display: none;
   }
@@ -2596,9 +2596,11 @@ html.auth-open {
   color: var(--accent-ink);
 }
 
-/* On a phone the counter has to fit one screen, controls included, so the
-   page title is kept for search engines and screen readers but takes no room. */
-@media (max-width: 767px) {
+/* The counter has to fit one screen, controls included: on a phone, and on
+   any screen short enough that the title would push the controls below the
+   fold (a 1366x768 laptop, a phone on its side). There the page title is kept
+   for search engines and screen readers but takes no room. */
+@media (max-width: 767px), (max-height: 820px) {
   .counter-head {
     position: absolute;
     width: 1px;
