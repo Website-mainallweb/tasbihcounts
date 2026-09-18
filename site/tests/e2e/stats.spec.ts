@@ -218,11 +218,13 @@ test.describe("the per-dhikr breakdown the counter records", () => {
     await expect.poll(() => page.evaluate(() => !!localStorage.getItem("njc.hot"))).toBe(true);
     await expect(page.getByRole("button", { name: /^Count SubhanAllah. Currently/ })).toBeVisible();
 
-    // Space is a tap; spaced past the counter's 40ms de-bounce.
+    // Space is a tap. The clock is pinned (beforeEach), and the counter drops a
+    // tap within 40ms of the last one, so each tap moves the pinned time on.
+    let step = 0;
     const tap = async (n: number) => {
       for (let i = 0; i < n; i++) {
+        await page.clock.setFixedTime(new Date(new Date(FIXED_NOW).getTime() + ++step * 100));
         await page.keyboard.press("Space");
-        await page.waitForTimeout(45);
       }
     };
 

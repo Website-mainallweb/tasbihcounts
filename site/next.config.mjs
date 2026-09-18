@@ -131,7 +131,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   // Dev server only: lets a phone on the same Wi-Fi open the LAN address.
-  allowedDevOrigins: ["10.208.116.250", "192.168.*.*", "10.*.*.*"],
+  allowedDevOrigins: ["10.225.42.250", "10.208.116.250", "192.168.*.*", "10.*.*.*"],
   // The WordPress site served every page with a trailing slash. Keeping that
   // shape means the live URLs Google already has do not move.
   trailingSlash: true,

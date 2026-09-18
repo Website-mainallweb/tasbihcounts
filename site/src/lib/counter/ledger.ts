@@ -680,6 +680,9 @@ function boot(): void {
   // Written once at start, so this installation keeps its source id from the
   // first visit rather than from the first tap.
   saveTapIfUnsaved();
+  // And the cold half, so the history always has a home on disk, not only
+  // after the first setting or day changes.
+  if (store.getItem(Storage.COLD_KEY) === null) saveCold();
   emit();
   void Storage.requestPersistence();
 
