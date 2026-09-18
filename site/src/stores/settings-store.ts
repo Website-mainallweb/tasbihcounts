@@ -97,8 +97,12 @@ export const useSettings = create<SettingsStore>((set, get) => ({
     // A first-time mobile user who feels nothing may conclude the tap did not
     // register. Only applied when the user has never chosen for themselves.
     const neverChosen = !("vibration" in (stored as object)) || stored.vibration === false;
-    const firstRun =
-      typeof localStorage !== "undefined" && !localStorage.getItem("tc.settings");
+    let firstRun = false;
+    try {
+      firstRun = typeof localStorage !== "undefined" && !localStorage.getItem("tc.settings");
+    } catch {
+      /* storage refused: treat as a returning visit, change nothing */
+    }
 
     const vibration =
       firstRun && neverChosen && supported && isTouchPrimary() ? true : stored.vibration;

@@ -46,7 +46,7 @@ test.describe("the sign-in page", () => {
     test(`${name}: renders whole, with every way in`, async ({ page }) => {
       await page.setViewportSize({ width, height });
       await page.goto("/login/");
-      await expect(page.locator("main h1")).toHaveText("Log in to Bhakti Nam Jap");
+      await expect(page.locator("main h1")).toHaveText("Log in to Tasbih Counts");
       await expect(page.getByRole("button", { name: "Continue with Google" })).toBeVisible();
       await expect(page.getByLabel("Email address")).toBeVisible();
       // A password is the first way in since 2026-09-12; the email link and the

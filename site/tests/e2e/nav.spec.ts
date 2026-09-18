@@ -196,7 +196,7 @@ test.describe("the log-in popup", () => {
   test("typing in the popup does not count on the counter", async ({ page }) => {
     await page.goto("/");
     await at(page, 1440, 900);
-    const count = page.locator("#njc .njc-digits").first();
+    const count = page.locator(".tc .counter-digits").first();
     const before = await count.textContent();
     await header(page).getByRole("link", { name: "Log in" }).click();
     const email = page.locator("dialog.auth-dialog input[type=email]");
@@ -241,7 +241,7 @@ test.describe("every destination leads somewhere", () => {
     await at(page, 1440, 900);
 
     await header(page).locator('.site-nav > a[href="/#library"]').click();
-    await expect(page.locator("#shName")).toHaveClass(/open/);
+    await expect(page.getByRole("dialog", { name: /choose dhikr/i })).toBeVisible();
     // The hash described an action, not a place.
     expect(new URL(page.url()).hash).toBe("");
   });
@@ -252,7 +252,7 @@ test.describe("every destination leads somewhere", () => {
 
     await header(page).locator('.site-nav > a[href="/#settings"]').click();
     await page.waitForURL((u) => u.pathname === "/");
-    await expect(page.locator("#shMore")).toHaveClass(/open/);
+    await expect(page.getByRole("dialog", { name: "More" })).toBeVisible();
   });
 
   test("Library in the phone drawer opens the sheet", async ({ page }) => {
@@ -261,6 +261,6 @@ test.describe("every destination leads somewhere", () => {
     await toggle(page).click();
     await drawer(page).locator('a[href="/#library"]').click();
     await expect(drawer(page)).toBeHidden();
-    await expect(page.locator("#shName")).toHaveClass(/open/);
+    await expect(page.getByRole("dialog", { name: /choose dhikr/i })).toBeVisible();
   });
 });

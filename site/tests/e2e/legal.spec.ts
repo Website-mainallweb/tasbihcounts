@@ -38,7 +38,7 @@ for (const [path, heading] of LEGAL) {
     const res = await page.goto(path);
     expect(res?.status()).toBe(200);
     await expect(page.locator("main h1")).toHaveText(heading);
-    await expect(page).toHaveTitle(`${heading} - Bhakti Nam Jap`);
+    await expect(page).toHaveTitle(`${heading} - Tasbih Counts`);
 
     // The placeholder was filled in everywhere.
     expect(await page.locator("main").innerHTML()).not.toContain("{{");

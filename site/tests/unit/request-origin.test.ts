@@ -14,7 +14,7 @@ vi.mock("next/headers", () => ({
   headers: async () => ({ get: (k: string) => head.get(k.toLowerCase()) ?? null }),
 }));
 
-vi.mock("@/lib/site", () => ({ SITE_URL: "https://bhaktinamjap.com" }));
+vi.mock("@/lib/site", () => ({ SITE_URL: "https://tasbihcounts.com" }));
 
 const { siteOrigin } = await import("@/lib/request-origin");
 
@@ -28,26 +28,26 @@ beforeEach(() => head.clear());
 
 describe("in production", () => {
   test("uses the domain the request came in on", async () => {
-    arrivingAt("bhaktinamjap.com", "https");
-    expect(await siteOrigin()).toBe("https://bhaktinamjap.com");
+    arrivingAt("tasbihcounts.com", "https");
+    expect(await siteOrigin()).toBe("https://tasbihcounts.com");
   });
 
   test("follows a domain change without anything being edited", async () => {
     // The whole point: no constant to update when the site moves.
-    arrivingAt("bhaktinamjap.com", "https");
-    expect(await siteOrigin()).toBe("https://bhaktinamjap.com");
+    arrivingAt("tasbihcounts.com", "https");
+    expect(await siteOrigin()).toBe("https://tasbihcounts.com");
   });
 
   test("keeps www when that is how the visitor arrived", async () => {
-    arrivingAt("www.bhaktinamjap.com", "https");
-    expect(await siteOrigin()).toBe("https://www.bhaktinamjap.com");
+    arrivingAt("www.tasbihcounts.com", "https");
+    expect(await siteOrigin()).toBe("https://www.tasbihcounts.com");
   });
 
   test("sends a buyer to the site, not to the admin subdomain", async () => {
     // The action runs on admin.<domain>, but the person receiving the mail signs
     // in on the site. The label has to come off.
-    arrivingAt("admin.bhaktinamjap.com", "https");
-    expect(await siteOrigin()).toBe("https://bhaktinamjap.com");
+    arrivingAt("admin.tasbihcounts.com", "https");
+    expect(await siteOrigin()).toBe("https://tasbihcounts.com");
   });
 });
 
@@ -75,21 +75,21 @@ describe("when the host cannot be trusted", () => {
   test("falls back for a host that is not ours", async () => {
     // A forged Host header must not become the destination of a reset email.
     arrivingAt("evil.example.com", "https");
-    expect(await siteOrigin()).toBe("https://bhaktinamjap.com");
+    expect(await siteOrigin()).toBe("https://tasbihcounts.com");
   });
 
   test("falls back for a look-alike domain", async () => {
-    arrivingAt("bhaktinamjap.com.evil.example", "https");
-    expect(await siteOrigin()).toBe("https://bhaktinamjap.com");
+    arrivingAt("tasbihcounts.com.evil.example", "https");
+    expect(await siteOrigin()).toBe("https://tasbihcounts.com");
   });
 
   test("falls back when there is no host at all", async () => {
     arrivingAt(null);
-    expect(await siteOrigin()).toBe("https://bhaktinamjap.com");
+    expect(await siteOrigin()).toBe("https://tasbihcounts.com");
   });
 
   test("falls back on a host that is not a host", async () => {
     arrivingAt("not a host");
-    expect(await siteOrigin()).toBe("https://bhaktinamjap.com");
+    expect(await siteOrigin()).toBe("https://tasbihcounts.com");
   });
 });

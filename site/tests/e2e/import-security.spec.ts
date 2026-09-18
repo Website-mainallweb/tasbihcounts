@@ -20,23 +20,13 @@ async function openCounter(page: Page) {
   await page.waitForFunction(() => !!localStorage.getItem("njc.hot"));
 }
 
-async function pickAName(page: Page) {
-  await page.evaluate(() => document.getElementById("njcSelectBar")!.click());
-  await page.waitForSelector("#njcAllList [data-id]");
-  await page.evaluate(() => {
-    (document.querySelector("#njcAllList [data-id]") as HTMLElement).click();
-    (document.querySelector("#shName [data-close]") as HTMLElement | null)?.click();
-  });
-}
-
+/** Space is a tap; spaced past the counter's 40ms de-bounce. */
 async function tap(page: Page, times: number) {
-  await page.evaluate((n) => {
-    const s = document.getElementById("njcSurface")!;
-    for (let i = 0; i < n; i++) {
-      s.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientX: 300, clientY: 400 }));
-      s.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientX: 300, clientY: 400 }));
-    }
-  }, times);
+  await expect(page.getByRole("button", { name: /^Count .*Currently/ })).toBeVisible();
+  for (let i = 0; i < times; i++) {
+    await page.keyboard.press("Space");
+    await page.waitForTimeout(45);
+  }
 }
 
 async function restore(page: Page, name: string, contents: string | Buffer) {
@@ -47,13 +37,12 @@ async function restore(page: Page, name: string, contents: string | Buffer) {
   });
 }
 
-const notice = (page: Page) => page.locator("#njc .njc-notice");
+const notice = (page: Page) => page.locator("[data-ledger-notice]");
 
 async function counterWithTaps(page: Page, taps: number) {
   await openCounter(page);
-  await pickAName(page);
   await tap(page, taps);
-  await expect.poll(async () => (await hot(page)).fields.count).toBe(taps);
+  await expect.poll(async () => (await hot(page)).rec.c).toBe(taps);
 }
 
 /* No test may touch the live site: it is under AdSense review. */
@@ -81,13 +70,13 @@ test("text that is not a backup is refused, runs nothing, and changes nothing", 
 
   expect(await page.evaluate(() => (window as unknown as { __ran?: boolean }).__ran)).toBeUndefined();
   expect(dialogs).toBe(0);
-  expect((await hot(page)).fields.count).toBe(3);
+  expect((await hot(page)).rec.c).toBe(3);
 });
 
 test("a file larger than a backup could be is refused before it is read", async ({ page }) => {
   await counterWithTaps(page, 2);
   await restore(page, "huge.json", Buffer.alloc(5_000_001, 0x20));
-  await expect(notice(page).locator("p")).toHaveText("That file is too large to be a Nam Jap backup");
+  await expect(notice(page).locator("p")).toHaveText("That file is too large to be a Tasbih Counts backup");
   expect((await hot(page)).fields.lifetime).toBe(2);
 });
 
@@ -100,11 +89,11 @@ test("a hostile file is capped, and nothing is added until the user agrees", asy
       lifetime: 1e30,
       malaDone: 1e30,
       hist: {
-        "2026-01-01": { c: 1e15, r: 1e15, s: 1e15, n: { ram: { c: 1e15 }, "<img src=x>": { c: 5 } } },
+        "2026-01-01": { c: 1e15, r: 1e15, s: 1e15, n: { subhanallah: { c: 1e15 }, "<img src=x>": { c: 5 } } },
         "2099-01-01": { c: 777 },
       },
       custom: [{ id: '"><img src=x onerror=alert(1)>', n: "Om‮evil" }],
-      favs: ["<b>", "ram"],
+      favs: ["<b>", "subhanallah"],
     },
   }).replace('"state":{', '"state":{"__proto__":{"polluted":true},');
 
@@ -115,7 +104,7 @@ test("a hostile file is capped, and nothing is added until the user agrees", asy
   // up to that history plus one more crore for a pre-history total — less the 4
   // already counted here.
   await expect(notice(page).locator(".act")).toHaveText("Add them");
-  await expect(notice(page).locator("p")).toContainText("1,99,99,996 chants");
+  await expect(notice(page).locator("p")).toContainText("19,999,996 counts");
 
   // Declined: nothing changed.
   await notice(page).locator(".x").click();
@@ -130,7 +119,7 @@ test("a hostile file is capped, and nothing is added until the user agrees", asy
   const state = (await cold(page)).state;
   expect(state.hist["2026-01-01"].c).toBe(10_000_000);
   expect(state.hist["2026-01-01"].s).toBe(86_400_000);
-  expect(Object.keys(state.hist["2026-01-01"].n)).toEqual(["ram"]);
+  expect(Object.keys(state.hist["2026-01-01"].n)).toEqual(["subhanallah"]);
   expect(state.hist).not.toHaveProperty("2099-01-01");
   expect(state.custom[0].id).toMatch(/^c[A-Za-z0-9_-]+$/);
   expect(state.custom[0].n).toBe("Omevil");
@@ -138,10 +127,8 @@ test("a hostile file is capped, and nothing is added until the user agrees", asy
   expect(state.lifetime).toBeLessThanOrEqual(10_000_004 + 10_000_000);
   expect(await page.evaluate(() => ({} as Record<string, unknown>).polluted)).toBeUndefined();
 
-  // The custom name is shown as text, never as markup.
-  await page.evaluate(() => document.getElementById("njcSelectBar")!.click());
-  await page.waitForSelector("#njcAllList [data-id]");
-  expect(await page.locator("#njcAllList img").count()).toBe(0);
+  // Nothing from the file reached the page as markup.
+  expect(await page.locator(".tc img").count()).toBe(0);
 });
 
 test("a file with nothing new says so, and asks nothing", async ({ page }) => {

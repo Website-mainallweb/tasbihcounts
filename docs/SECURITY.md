@@ -239,7 +239,7 @@ for phishing is enough, which is exactly what happened when a link was clicked f
 morning. The fix is a code the reader types, which nothing can consume on their behalf.
 
 Custom SMTP is now configured on the Supabase project: **smtp.hostinger.com:465 (SSL)**,
-username and sender `contact@bhaktinamjap.com`, sender name "Bhakti Nam Jap" — the mailbox of
+username and sender `contact@tasbihcounts.com`, sender name "Tasbih Counts" — the mailbox of
 the site's own domain, so SPF and DKIM are Hostinger's and the mail lands in the inbox rather
 than spam (verified: both test mails arrived in Gmail's inbox). The password was typed by
 Rajan; it is held encrypted by Supabase and exists nowhere in this repo.

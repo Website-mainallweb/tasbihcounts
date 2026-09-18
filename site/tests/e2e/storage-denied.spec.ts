@@ -21,28 +21,21 @@ const DENY_STORAGE = () => {
   });
 };
 
+/** Space is a tap; spaced past the counter's 40ms de-bounce. */
 const tap = async (page: Page, times = 1) => {
-  await page.evaluate((n) => {
-    const s = document.getElementById("njcSurface")!;
-    for (let i = 0; i < n; i++) {
-      s.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientX: 200, clientY: 300 }));
-      s.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientX: 200, clientY: 300 }));
-    }
-  }, times);
+  await expect(page.getByRole("button", { name: /^Count .*Currently/ })).toBeVisible();
+  for (let i = 0; i < times; i++) {
+    await page.keyboard.press("Space");
+    await page.waitForTimeout(45);
+  }
 };
 
-/** As in counter.spec.ts: the row's own click handler, not a synthetic tap. */
-async function pickAName(page: Page) {
-  await page.evaluate(() => {
-    document.getElementById("njcSelectBar")!.click();
-  });
-  await page.waitForSelector("#njcAllList [data-id]");
-  await page.evaluate(() => {
-    (document.querySelector("#njcAllList [data-id]") as HTMLElement).click();
-    (document.querySelector("#shName [data-close]") as HTMLElement | null)?.click();
-  });
-  await expect(page.locator("#njc")).not.toHaveClass(/njc-noname/);
-}
+/** The count on the ring. */
+const ring = (page: Page) => page.locator(".tc .counter-digits").first();
+
+/** Today, as the practice panel shows it. */
+const today = (page: Page) =>
+  page.evaluate(() => JSON.parse(localStorage.getItem("njc.hot") || "null")?.rec?.c ?? 0);
 
 /** The error screen's own root id — the one signature that cannot be faked. */
 const errorScreen = (page: Page) => page.locator("html#__next_error__");
@@ -80,9 +73,8 @@ test.describe("storage denied at the property", () => {
 
   test("the counter still counts with nowhere to save", async ({ page }) => {
     await page.goto("/");
-    await pickAName(page);
     await tap(page);
-    await expect(page.locator("#njcToday")).toHaveText("1");
+    await expect(ring(page)).toHaveText("1");
     await expect(errorScreen(page)).toHaveCount(0);
   });
 });
@@ -90,14 +82,11 @@ test.describe("storage denied at the property", () => {
 test.describe("storage allowed", () => {
   test("still persists across a reload", async ({ page }) => {
     await page.goto("/");
-    await pickAName(page);
     await tap(page, 3);
-    await expect(page.locator("#njcToday")).toHaveText("3");
+    await expect.poll(() => today(page)).toBe(3);
 
     await page.reload();
-    await expect(page.locator("#njcToday")).toHaveText("3");
-    expect(
-      await page.evaluate(() => localStorage.getItem("njc.hot")),
-    ).not.toBeNull();
+    await expect(page.getByRole("button", { name: /^Count .*Currently/ })).toBeVisible();
+    await expect.poll(() => today(page)).toBe(3);
   });
 });

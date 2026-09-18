@@ -1,4 +1,4 @@
-# Review brief — Bhakti Nam Jap premium build
+# Review brief — Tasbih Counts premium build
 
 Paste this whole thing into a second opinion and ask it to poke holes. It is
 self-contained: everything decided so far, and why.

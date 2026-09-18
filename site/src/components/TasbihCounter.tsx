@@ -28,8 +28,27 @@ export default function TasbihCounter({ preselect }: { preselect?: Preselect }) 
 
   return (
     <div className="tc">
-      <LedgerNotice />
-      <CounterTool preselect={preselect} />
+      {/* The same frame the counter sits in on its own site: the glow, and the
+          page padding its full-bleed rows are measured against. */}
+      <section className="brand-glow grid-veil relative overflow-hidden">
+        <div data-tool-frame="" className="page-frame relative z-10 pt-2 md:pt-5">
+          <LedgerNotice />
+          <CounterTool preselect={preselect} />
+        </div>
+      </section>
+      {/* Restore's file picker. Always mounted, so More → Restore can open it and
+          the sheet can close while the file is read. */}
+      <input
+        id="njcFile"
+        type="file"
+        accept="application/json,.json"
+        hidden
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          e.target.value = "";
+          if (f) Ledger.importBackup(f);
+        }}
+      />
     </div>
   );
 }
@@ -43,6 +62,7 @@ function LedgerNotice() {
   return (
     <div
       role="status"
+      data-ledger-notice=""
       className={`mx-auto mb-3 flex w-full max-w-[720px] items-start gap-3 rounded-[var(--radius-md)] border px-4 py-3 text-[13.5px] leading-relaxed ${
         n.tone === "bad"
           ? "border-danger bg-danger-soft text-fg"
@@ -59,7 +79,7 @@ function LedgerNotice() {
             Ledger.dismissNotice();
             n.onAction?.();
           }}
-          className="shrink-0 rounded-full bg-accent px-3.5 py-1.5 text-[13px] font-medium text-fg-on-accent"
+          className="act shrink-0 rounded-full bg-accent px-3.5 py-1.5 text-[13px] font-medium text-fg-on-accent"
         >
           {n.actionLabel}
         </button>
@@ -68,7 +88,7 @@ function LedgerNotice() {
         type="button"
         aria-label="Dismiss"
         onClick={() => Ledger.dismissNotice()}
-        className="shrink-0 px-1 text-fg-subtle hover:text-fg"
+        className="x shrink-0 px-1 text-fg-subtle hover:text-fg"
       >
         ✕
       </button>

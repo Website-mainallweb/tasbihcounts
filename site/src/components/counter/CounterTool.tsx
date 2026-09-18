@@ -332,6 +332,10 @@ export function CounterTool({ preselect }: { preselect?: Preselect } = {}) {
     };
     const onKey = (e: KeyboardEvent) => {
       if (typing(e.target) || sheet !== "none" || e.repeat) return;
+      // The site's own dialogs (log in, the drawer) sit outside the counter; a
+      // key pressed in one of them is not a count.
+      if (e.target instanceof Element && e.target.closest("dialog, [role='dialog']")) return;
+      if (document.querySelector("dialog[open]") || document.documentElement.classList.contains("nav-open")) return;
       if (e.key === "Escape") {
         if (immersive) {
           e.preventDefault();

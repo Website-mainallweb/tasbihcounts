@@ -48,33 +48,6 @@
       ],
       "port": 3105,
       "autoPort": true
-    },
-    {
-      "name": "ref-toolsweb",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "C:/Users/RAJAN/Pictures/toolsweb",
-        "run",
-        "dev"
-      ],
-      "port": 3300,
-      "autoPort": true
-    },
-    {
-      "name": "ref-bhakti",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "C:/Users/RAJAN/Music/bhaktinamjap/site",
-        "run",
-        "dev",
-        "--",
-        "-p",
-        "3400"
-      ],
-      "port": 3400,
-      "autoPort": true
     }
   ]
 }

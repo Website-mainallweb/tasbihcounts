@@ -100,7 +100,7 @@ edits without custom SMTP.
 
 ## 4. Google sign-in
 
-- OAuth client "Bhakti Nam Jap Web" has the Supabase callback
+- OAuth client "Tasbih Counts Web" has the Supabase callback
   `https://<project ref>.supabase.co/auth/v1/callback` as an authorised redirect URI.
 - The consent screen is in **Testing**: only listed test users can sign in with Google
   (japnamecontact@gmail.com is listed).
@@ -184,7 +184,7 @@ All run from `site/`, all read `site/.env.local`, none print a key:
 
 ---
 
-## 8. The admin panel (admin.bhaktinamjap.com)
+## 8. The admin panel (admin.tasbihcounts.com)
 
 **One application.** The panel is part of the site's Next app, served on a
 subdomain — not a second deployment. There is no second build, no second root
@@ -207,7 +207,7 @@ Applied 2026-09-15 (§2), verified with `npm run verify:rls:remote` (20/20) and
 
 ### First sign-in
 
-1. Open `https://admin.bhaktinamjap.com/` and press **Continue with Google**.
+1. Open `https://admin.tasbihcounts.com/` and press **Continue with Google**.
 2. Sign in with the account whose address is in `ADMIN_EMAILS`. Any other Google
    account gets a 404 — the panel does not say why, on purpose.
 3. **Turn on 2-Step Verification on that Google account.** It is the panel's
@@ -221,5 +221,5 @@ working, the way back in is Google's own account recovery, not this application.
 The consent screen's authorised redirect URI is Supabase's callback, which does
 not change. What does need checking once, before the first sign-in: the
 **Site URL and redirect allow-list** in Supabase Auth (§3) must include
-`https://admin.bhaktinamjap.com/**`, or Google will return the operator to the
+`https://admin.tasbihcounts.com/**`, or Google will return the operator to the
 main domain and the panel will never see the session.

@@ -410,11 +410,11 @@ export function exportBackup(): void {
  */
 export function importBackup(file: File): void {
   if (file.size > Backup.MAX_FILE_BYTES) {
-    show({ text: "That file is too large to be a Tasbih Counts backup.", tone: "bad" });
+    show({ text: "That file is too large to be a Tasbih Counts backup", tone: "bad" });
     return;
   }
   const rd = new FileReader();
-  rd.onerror = () => show({ text: "That file could not be read.", tone: "bad" });
+  rd.onerror = () => show({ text: "That file could not be read", tone: "bad" });
   rd.onload = () => {
     let parsed: Backup.ParsedBackup;
     try {
@@ -423,8 +423,8 @@ export function importBackup(file: File): void {
       show({
         text:
           e instanceof Error && e.message === "too-large"
-            ? "That file is too large to be a Tasbih Counts backup."
-            : "That file could not be read.",
+            ? "That file is too large to be a Tasbih Counts backup"
+            : "That file could not be read",
         tone: "bad",
       });
       return;
@@ -444,7 +444,7 @@ export function importBackup(file: File): void {
         adoptIfChanged();
         const r = Backup.mergeBackup(S, parsed.state);
         if (Storage.tooLarge(r.state)) {
-          show({ text: "That file is too large to be a Tasbih Counts backup.", tone: "bad" });
+          show({ text: "That file is too large to be a Tasbih Counts backup", tone: "bad" });
           return;
         }
         S = { ...S, ...r.state } as S_;
@@ -677,6 +677,9 @@ function every(fn: () => void, ms: number): void {
 function boot(): void {
   load();
   lastRev = Storage.readRev(store);
+  // Written once at start, so this installation keeps its source id from the
+  // first visit rather than from the first tap.
+  saveTapIfUnsaved();
   emit();
   void Storage.requestPersistence();
 

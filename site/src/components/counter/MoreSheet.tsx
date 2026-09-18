@@ -5,7 +5,7 @@
  * Specification sections 23, 24, 24C, 26, 27, 28, 30, 110, 117, 126, 128, 130.
  */
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Sheet, SheetSection, Row, Switch } from "@/components/ui/Sheet";
 import { ShareButton } from "@/components/site/ShareButton";
 import { StorageNotice } from "@/components/site/StorageNotice";
@@ -28,7 +28,6 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
   const st = useSettings();
   const [confirmClear, setConfirmClear] = useState(false);
   const [clearRefused, setClearRefused] = useState<string | null>(null);
-  const file = useRef<HTMLInputElement>(null);
   // Read once per open; the header owns the live account state.
   const account = currentAccount();
 
@@ -460,20 +459,11 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
         <Row
           label="Restore"
           hint="Add the counts from a backup file. Nothing is removed."
-          onClick={() => file.current?.click()}
-        />
-        <input
-          ref={file}
-          type="file"
-          accept="application/json,.json"
-          hidden
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            e.target.value = "";
-            if (f) {
-              Ledger.importBackup(f);
-              onClose();
-            }
+          onClick={() => {
+            // The picker lives beside the counter (TasbihCounter), not in this
+            // sheet, so the sheet can close while the file is read.
+            document.getElementById("njcFile")?.click();
+            onClose();
           }}
         />
         {confirmClear ? (

@@ -1,8 +1,8 @@
-# Bhakti Nam Jap — Next.js
+# Tasbih Counts — Next.js
 
-The WordPress site rebuilt in Next.js 16 (App Router, TypeScript). Every page
-is statically prerendered. There is no database and no backend: the counter
-keeps its state in the visitor's own browser.
+Next.js 16 (App Router, TypeScript). The public pages are prerendered and the
+counter keeps its state in the visitor's own browser; Supabase holds Premium
+accounts, synced practice, payments and the admin panel's data.
 
 ## Run it
 
@@ -78,61 +78,27 @@ To change page copy, edit the HTML in `../content` and regenerate
 
 ## The counter
 
-`namjapcounterFINAL.html` was split into three pieces: its stylesheet became
-`src/app/counter.css`, its markup became a string in
-`src/components/counter-markup.ts`, and its engine became
-`src/components/counter-engine.js` with the IIFE wrapper swapped for a named
-export. `NamJapCounter.tsx` mounts the markup and starts the engine once.
+The counter is the Tasbih Counts app's own: React components in
+`src/components/counter/`, the counting rules in `src/core/`, its state in
+`src/stores/` (zustand, with IndexedDB for per-dhikr snapshots and sessions),
+and the dhikr, routines, rites and 99 Names in `src/content/`.
+`src/components/TasbihCounter.tsx` mounts it inside a `.tc` wrapper.
 
-Changes made to the engine, each for a reported bug:
+**The record lives in the ledger.** `src/lib/counter/ledger.ts` is the data half
+of the old Nam Jap engine with the DOM taken out. Every tap the counter makes is
+reported to it as "n counts and r completed rounds, for this dhikr", and it keeps
+the same `njc.hot` / `njc.cold` storage, the per-day, per-dhikr history, the
+outbox and the sync client as before. Stats, Streak, backups, the account link,
+Premium sync and the admin panel read that record, so none of them changed. A
+round — what a streak day is made of — is a completed target, round or routine
+step, and with no target at all, every 33.
 
-- **Scroll jump.** The ring was sized from `window.innerHeight`. On a phone the
-  URL bar slides away as you scroll, `innerHeight` changes by 60-120px, the
-  ring resized and the page reflowed under the finger. Viewport-driven resizes
-  now go through a guard that ignores height-only changes under 140px, and the
-  ResizeObserver reacts to width only, so it cannot chase its own output.
-- **Full screen with no name control.** Everything marked `njc-hide` was hidden
-  in immersive mode, including the select bar, which is the only way to change
-  the name. The rails, top bar, header stats and mode chips still step aside;
-  the select bar stays. The layout is now a column: name on top, ring in the
-  space that is left, control rail on the floor.
-- **Full-screen fallback.** `requestFullscreen` rejections are caught, and
-  iPhone Safari has no element fullscreen at all, so the counter pins itself
-  over the page instead (`.njc-faux-fs`) with the page chrome hidden. Escape
-  leaves it.
-- **Sheet under the header.** `.njc` sets `isolation:isolate`, so the sheets
-  could not escape the counter's stacking context and the sticky header painted
-  over the open modal. The engine now flags `njc-sheet-open` on `<html>` and the
-  page lifts the widget while a sheet is up.
-- **Scroll position lost on closing a sheet.** The position was captured and
-  never restored. Chrome survives the `overflow:hidden` lock, iOS Safari does
-  not and drops the reader to the top.
-- **Wide-layout spacing.** A 320px ring floated in a 620px column. The ring may
-  now take 58% of the viewport height on tablet and desktop, the caps went up,
-  and the shell and page title lost padding they did not need. From 768px up
-  the widget is full bleed, with fractional rails so the three columns grow
-  with the page instead of leaving margins down both sides.
-- **No name chosen.** The counter used to start on Ram, a name nobody picked.
-  A new visitor now sees "Select a name", the ring and select bar read as a
-  prompt, and the first tap opens the picker instead of counting. Once a name
-  is chosen everything behaves as before.
-- **Two rows of chrome.** The widget's own brand row duplicated the site
-  header, so it is hidden on the page and its language and theme buttons are
-  proxied from the header. It comes back in full screen, wordmark dropped,
-  because the site header is gone there.
-
-The counter owns the page's theme. It writes `data-theme` on `#njc`, a
-`MutationObserver` mirrors that onto `<html>`, and a small inline script in the
-layout reads the stored theme before first paint so a dark theme does not
-flash white.
-
-Nothing in `globals.css` transitions a colour. Chromium leaves a transitioned
-colour stuck at its old value when the change arrives through an inherited
-custom property, which left the page background on the previous theme.
-
-`main` carries `position: relative` and no `z-index`. Adding one makes it a
-stacking context and caps everything inside it, including the counter's sheets,
-below the sticky header. The article's halo uses `z-index: -1` instead.
+**Styles.** `src/app/counter.css` is the counter's stylesheet with Tailwind's
+theme and utilities (no preflight), generated only from the counter's own files.
+Its base styles are scoped under `.tc`, and its tokens (`--bg`, `--accent`…)
+are the site's tokens, so the theme chosen in the counter (light, dark, noor,
+heritage) re-skins the whole page. The shell's element defaults sit in a low
+cascade layer (`globals.css`) so they never override a utility.
 
 ## The header
 

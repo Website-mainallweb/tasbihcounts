@@ -173,13 +173,22 @@ export function isUploadable(session: Session): boolean {
   return session.status === "sealed" && session.count > 0;
 }
 
+let memoryDeviceId: string | null = null;
+
 export function deviceId(): string {
-  if (typeof localStorage === "undefined") return "server";
   const KEY = "tc.deviceId";
-  let id = localStorage.getItem(KEY);
-  if (!id) {
-    id = newId();
-    localStorage.setItem(KEY, id);
+  // Storage that throws on access (including on the property itself) still
+  // gets a stable id for this page's life.
+  try {
+    if (typeof localStorage === "undefined") return "server";
+    let id = localStorage.getItem(KEY);
+    if (!id) {
+      id = newId();
+      localStorage.setItem(KEY, id);
+    }
+    return id;
+  } catch {
+    memoryDeviceId ??= newId();
+    return memoryDeviceId;
   }
-  return id;
 }

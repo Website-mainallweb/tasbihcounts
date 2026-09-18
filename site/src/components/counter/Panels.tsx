@@ -336,6 +336,7 @@ function MiniTile({
         {label}
       </div>
       <div
+        data-stat={label.toLowerCase()}
         className={`tabular mt-0.5 font-display text-[17px] leading-none ${
           accent ? "text-accent" : "text-fg"
         }`}

@@ -54,6 +54,7 @@ function Stat({
         {label}
       </div>
       <div
+        data-stat={label.toLowerCase()}
         className={`tabular mt-1 font-display leading-none ${
           emphasis ? "text-[22px] text-fg" : "text-[19px] text-fg-muted"
         }`}

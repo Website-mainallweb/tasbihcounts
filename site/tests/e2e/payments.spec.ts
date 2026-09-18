@@ -63,7 +63,7 @@ test.describe("the Premium page", () => {
     test(`${name}: the price, what it includes, and the buy card, whole`, async ({ page }) => {
       await page.setViewportSize({ width, height });
       await page.goto("/premium/");
-      await expect(page.locator("main h1")).toHaveText("Bhakti Nam Jap Premium");
+      await expect(page.locator("main h1")).toHaveText("Tasbih Counts Premium");
       await expect(page.locator(".buy-price")).toContainText("₹200");
       await expect(page.getByLabel("Your email")).toBeVisible();
       expect(await sideways(page)).toBeLessThanOrEqual(0);

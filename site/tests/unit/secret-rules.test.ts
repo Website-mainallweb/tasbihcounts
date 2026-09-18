@@ -52,7 +52,7 @@ describe("scanLine catches", () => {
 
 describe("scanLine leaves alone", () => {
   it("ordinary public config", () => {
-    expect(ids("NEXT_PUBLIC_SITE_URL=https://bhaktinamjap.com")).toEqual([]);
+    expect(ids("NEXT_PUBLIC_SITE_URL=https://tasbihcounts.com")).toEqual([]);
     expect(ids("NEXT_PUBLIC_FIREBASE_PROJECT_ID=bhakti-nam-jap")).toEqual([]);
   });
 

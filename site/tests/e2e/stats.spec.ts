@@ -55,7 +55,7 @@ async function seed(
         JSON.stringify({
           lifetime: 5000,
           malaDone: 20,
-          nameId: "ram",
+          nameId: "subhanallah",
           target: 108,
           hist: h,
           ...(more as Record<string, unknown>),
@@ -97,8 +97,8 @@ test.afterEach(() => {
 test.describe("stats", () => {
   test("adds up the week and marks today", async ({ page }) => {
     await seed(page, {
-      [dayKey(0)]: withNames({ ram: 216 }),
-      [dayKey(-1)]: withNames({ ram: 108 }),
+      [dayKey(0)]: withNames({ subhanallah: 216 }),
+      [dayKey(-1)]: withNames({ subhanallah: 108 }),
     });
     await page.goto("/stats/");
 
@@ -107,21 +107,21 @@ test.describe("stats", () => {
   });
 
   test("filters by name", async ({ page }) => {
-    await seed(page, { [dayKey(0)]: withNames({ ram: 216, shiva: 54 }) });
+    await seed(page, { [dayKey(0)]: withNames({ subhanallah: 216, astaghfirullah: 54 }) });
     await page.goto("/stats/");
 
     await expect(total(page)).toHaveText("270");
 
-    await page.locator(".stats .filter select").selectOption("ram");
+    await page.locator(".stats .filter select").selectOption("subhanallah");
     await expect(total(page)).toHaveText("216");
 
-    await page.locator(".stats .filter select").selectOption("shiva");
+    await page.locator(".stats .filter select").selectOption("astaghfirullah");
     await expect(total(page)).toHaveText("54");
   });
 
   test("says when a day cannot be attributed rather than hiding it", async ({ page }) => {
     await seed(page, {
-      [dayKey(0)]: withNames({ ram: 216 }),
+      [dayKey(0)]: withNames({ subhanallah: 216 }),
       [dayKey(-1)]: legacy(500),
     });
     await page.goto("/stats/");
@@ -132,9 +132,9 @@ test.describe("stats", () => {
 
     // Filtered, the old day cannot be attributed — and the page says so instead
     // of letting the drop look like a lapse in practice.
-    await page.locator(".stats .filter select").selectOption("ram");
+    await page.locator(".stats .filter select").selectOption("subhanallah");
     await expect(total(page)).toHaveText("216");
-    await expect(page.locator(".stats .note")).toContainText("before counts were kept per name");
+    await expect(page.locator(".stats .note")).toContainText("before counts were kept per dhikr");
   });
 
   test("offers no filter when nothing has a breakdown", async ({ page }) => {
@@ -144,8 +144,8 @@ test.describe("stats", () => {
     await expect(total(page)).toHaveText("300");
   });
 
-  test("switches between chants and time", async ({ page }) => {
-    await seed(page, { [dayKey(0)]: withNames({ ram: 120 }) });
+  test("switches between counts and time", async ({ page }) => {
+    await seed(page, { [dayKey(0)]: withNames({ subhanallah: 120 }) });
     await page.goto("/stats/");
 
     await expect(total(page)).toHaveText("120");
@@ -155,7 +155,7 @@ test.describe("stats", () => {
   });
 
   test("changes grain and steps back, but never forward past now", async ({ page }) => {
-    await seed(page, { [dayKey(-7)]: withNames({ ram: 54 }), [dayKey(0)]: withNames({ ram: 108 }) });
+    await seed(page, { [dayKey(-7)]: withNames({ subhanallah: 54 }), [dayKey(0)]: withNames({ subhanallah: 108 }) });
     await page.goto("/stats/");
 
     await expect(page.getByRole("button", { name: "Later" })).toBeDisabled();
@@ -176,7 +176,7 @@ test.describe("stats", () => {
 
   test("averages over the days that have happened", async ({ page }) => {
     // Today only. Dividing by seven on any day but Sunday would understate it.
-    await seed(page, { [dayKey(0)]: withNames({ ram: 700 }) });
+    await seed(page, { [dayKey(0)]: withNames({ subhanallah: 700 }) });
     await page.goto("/stats/");
 
     /* Polled, not read once. useSyncExternalStore has no value on the server, so
@@ -190,7 +190,7 @@ test.describe("stats", () => {
   });
 
   test("does not write to the counter's storage", async ({ page }) => {
-    await seed(page, { [dayKey(0)]: withNames({ ram: 108 }) });
+    await seed(page, { [dayKey(0)]: withNames({ subhanallah: 108 }) });
     await page.goto("/stats/");
     const before = await page.evaluate(() => localStorage.getItem("njc.v1"));
 
@@ -203,8 +203,8 @@ test.describe("stats", () => {
   });
 });
 
-test.describe("the per-name breakdown the counter now records", () => {
-  test("attributes taps to the name being chanted, not the day's total", async ({
+test.describe("the per-dhikr breakdown the counter records", () => {
+  test("attributes taps to the dhikr being counted, not the day's total", async ({
     page,
   }) => {
     /*
@@ -215,35 +215,21 @@ test.describe("the per-name breakdown the counter now records", () => {
     await page.goto("/");
     await page.evaluate(() => localStorage.clear());
     await page.reload();
-    await expect(page.locator("#njc")).toBeVisible();
+    await expect.poll(() => page.evaluate(() => !!localStorage.getItem("njc.hot"))).toBe(true);
+    await expect(page.getByRole("button", { name: /^Count SubhanAllah. Currently/ })).toBeVisible();
 
-    const pick = async (index: number) => {
-      await page.evaluate(() => document.getElementById("njcSelectBar")!.click());
-      await expect(page.locator("#shName")).toHaveClass(/open/);
-      await page.waitForSelector("#njcAllList [data-id]");
-      await page.evaluate((i) => {
-        const items = document.querySelectorAll("#njcAllList [data-id]");
-        (items[i] as HTMLElement).click();
-        (document.querySelector("#shName [data-close]") as HTMLElement | null)?.click();
-      }, index);
-      /* Closing a sheet goes back through history (#41), and that popstate lands a
-         moment later. Opening the next sheet inside that moment closed it again. */
-      await expect(page.locator("#shName")).not.toHaveClass(/open/);
-      await page.waitForTimeout(150);
+    // Space is a tap; spaced past the counter's 40ms de-bounce.
+    const tap = async (n: number) => {
+      for (let i = 0; i < n; i++) {
+        await page.keyboard.press("Space");
+        await page.waitForTimeout(45);
+      }
     };
 
-    const tap = (n: number) =>
-      page.evaluate((k) => {
-        const s = document.getElementById("njcSurface")!;
-        for (let i = 0; i < k; i++) {
-          s.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientX: 200, clientY: 300 }));
-          s.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientX: 200, clientY: 300 }));
-        }
-      }, n);
-
-    await pick(0);
     await tap(5);
-    await pick(1);
+    // The quick chips above the ring switch the dhikr.
+    await page.getByRole("button", { name: "Astaghfirullah", exact: true }).first().click();
+    await expect(page.getByRole("button", { name: /^Count Astaghfirullah. Currently/ })).toBeVisible();
     await tap(3);
 
     const hot = await page.evaluate(() =>

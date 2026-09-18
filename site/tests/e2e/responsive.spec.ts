@@ -185,13 +185,13 @@ test("forced analytics runs under the CSP, and its hits stay here", async ({ pag
 
 test("the counter holds together across every breakpoint edge", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("#njc")).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Count .*Currently/ })).toBeVisible();
 
   for (const width of EDGES) {
     await page.setViewportSize({ width, height: 800 });
     // Let the layout settle before measuring.
     await page.waitForTimeout(120);
     expect(await scrollsSideways(page), `sideways scroll at ${width}px`).toBe(false);
-    await expect(page.locator("#njc"), `counter missing at ${width}px`).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Count .*Currently/ }), `counter missing at ${width}px`).toBeVisible();
   }
 });

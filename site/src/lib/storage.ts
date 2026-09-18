@@ -363,8 +363,10 @@ export const DEFAULT_SETTINGS: Settings = {
 };
 
 export function loadSettings(): Settings {
-  if (typeof localStorage === "undefined") return DEFAULT_SETTINGS;
+  // Inside the try: some locked-down contexts throw on the property itself,
+  // and typeof does not guard against a getter that throws.
   try {
+    if (typeof localStorage === "undefined") return DEFAULT_SETTINGS;
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (!raw) return DEFAULT_SETTINGS;
     return { ...DEFAULT_SETTINGS, ...(JSON.parse(raw) as Partial<Settings>) };

@@ -38,27 +38,18 @@ async function openCounter(page: Page) {
   await page.waitForFunction(() => !!localStorage.getItem("njc.hot"));
 }
 
-async function pickAName(page: Page) {
-  await page.evaluate(() => document.getElementById("njcSelectBar")!.click());
-  await page.waitForSelector("#njcAllList [data-id]");
-  await page.evaluate(() => {
-    (document.querySelector("#njcAllList [data-id]") as HTMLElement).click();
-    (document.querySelector("#shName [data-close]") as HTMLElement | null)?.click();
-  });
-}
-
+/** Space is a tap; spaced past the counter's 40ms de-bounce. */
 async function tap(page: Page, times: number) {
-  await page.evaluate((n) => {
-    const s = document.getElementById("njcSurface")!;
-    for (let i = 0; i < n; i++) {
-      s.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientX: 300, clientY: 400 }));
-      s.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientX: 300, clientY: 400 }));
-    }
-  }, times);
+  await expect(page.getByRole("button", { name: /^Count .*Currently/ })).toBeVisible();
+  for (let i = 0; i < times; i++) {
+    await page.keyboard.press("Space");
+    await page.waitForTimeout(45);
+  }
 }
 
-const digits = (page: Page) => page.evaluate(() => document.getElementById("njcDigits")!.textContent);
-const today = (page: Page) => page.evaluate(() => document.getElementById("njcPToday")!.textContent);
+const digits = (page: Page) => page.locator(".tc .counter-digits").first().textContent();
+/** Today as the counter shows it: this device plus every other one on the account. */
+const today = (page: Page) => page.locator('.tc [data-stat="today"]:visible').first().textContent();
 const hot = (page: Page) =>
   page.evaluate(() => JSON.parse(localStorage.getItem("njc.hot") || "null") as {
     outbox: Record<string, unknown>;
@@ -90,7 +81,6 @@ test.describe("two browsers, one account", () => {
     await signedIn(ctxA, user!);
     const a = await ctxA.newPage();
     await openCounter(a);
-    await pickAName(a);
 
     const sent = a.waitForResponse((r) => SYNC.test(r.url()) && r.request().method() === "POST", { timeout: 30_000 });
     await tap(a, 5);
@@ -102,12 +92,16 @@ test.describe("two browsers, one account", () => {
     expect(marks.map((m) => m.c)).toEqual([5]);
 
     // A confirmed tap cannot be undone: GREATEST would bring it straight back.
-    await a.locator("#njcUndo").click({ force: true });
+    await a.keyboard.press("z");
     await expect.poll(() => digits(a)).toBe("5");
 
-    // Nor erased by "reset today".
-    await a.evaluate(() => (document.getElementById("njcRToday") as HTMLElement).click());
+    // Nor erased by clearing the device.
+    await a.locator(".tc").getByRole("button", { name: "More", exact: true }).first().click();
+    await a.getByRole("button", { name: "Clear data from this device" }).click();
+    await a.getByRole("button", { name: "Delete everything" }).click();
+    await expect(a.getByText("Your history is saved to your account")).toBeVisible();
     await expect.poll(async () => (await hot(a)).rec?.c).toBe(5);
+    await a.keyboard.press("Escape");
 
     // A second installation of the same account sees those five as its own day.
     const ctxB = await browser.newContext();
@@ -119,7 +113,6 @@ test.describe("two browsers, one account", () => {
     await expect.poll(() => today(b)).toBe("5");
 
     // And its own taps add to them rather than replacing them.
-    await pickAName(b);
     const sentB = b.waitForResponse((r) => SYNC.test(r.url()) && r.request().method() === "POST", { timeout: 30_000 });
     await tap(b, 3);
     expect((await sentB).status()).toBe(200);
@@ -153,7 +146,6 @@ test.describe("a device with a practice of its own", () => {
     await signedIn(ctx, user);
     const page = await ctx.newPage();
     await openCounter(page);
-    await pickAName(page);
     const sent = sentOk(page);
     await tap(page, taps);
     expect((await sent).status()).toBe(200);
@@ -172,7 +164,6 @@ test.describe("a device with a practice of its own", () => {
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
       await openCounter(page);
-      await pickAName(page);
       await tap(page, 4);
       await expect.poll(() => today(page)).toBe("4");
 
@@ -180,8 +171,8 @@ test.describe("a device with a practice of its own", () => {
       await signedIn(ctx, user);
       await page.reload({ waitUntil: "domcontentloaded" });
       await expect.poll(() => today(page), { timeout: 30_000 }).toBe("6");
-      const ask = page.locator(".njc-notice", { hasText: "from before you signed in" });
-      await expect(ask).toContainText("4 chants");
+      const ask = page.locator("[data-ledger-notice]", { hasText: "from before you signed in" });
+      await expect(ask).toContainText("4 counts");
       expect(await page.evaluate(() => !!localStorage.getItem("njc.stash"))).toBe(true);
 
       // Asked for, they go up as one more device and are added: ten.
@@ -208,7 +199,6 @@ test.describe("a device with a practice of its own", () => {
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
       await openCounter(page);
-      await pickAName(page);
       await tap(page, 3);
       await expect.poll(() => today(page)).toBe("3");
 
@@ -240,7 +230,6 @@ test("a browser that is not signed in never calls the sync routes", async ({ pag
   });
 
   await openCounter(page);
-  await pickAName(page);
   await tap(page, 3);
   // Longer than the 10 s idle debounce, so a flush would have happened by now.
   await page.waitForTimeout(12_000);

@@ -1,6 +1,6 @@
 # Admin back-office — design
 
-`admin.bhaktinamjap.com`, served by the same Next application as the site. One
+`admin.tasbihcounts.com`, served by the same Next application as the site. One
 admin (Rajan), Google sign-in only, no content management system beyond the name
 library.
 
@@ -16,8 +16,8 @@ One application. The panel is served at a subdomain of the same Next app that
 serves the site:
 
 ```text
-bhaktinamjap.com          the site     src/app/(site)/…
-admin.bhaktinamjap.com    the panel    src/app/admin/…
+tasbihcounts.com          the site     src/app/(site)/…
+admin.tasbihcounts.com    the panel    src/app/admin/…
 ```
 
 **Revised 2026-09-15.** This began as a second Next application in an `admin/`
@@ -29,7 +29,7 @@ HTTP hop between the panel and the code it needs.
 
 `src/proxy.ts` rewrites requests whose host starts with `admin.` onto the
 `/admin` routes, and answers `/admin` on the main domain with a 404. A rewrite,
-not a redirect: the address bar keeps saying admin.bhaktinamjap.com, and the
+not a redirect: the address bar keeps saying admin.tasbihcounts.com, and the
 session cookie stays on the host it was set for.
 
 `/auth`, `/api` and `/_next` are explicitly **not** rewritten. They mean the same
@@ -426,7 +426,7 @@ Fixed, with a test of its own.
 1. ~~A second Node application on Hostinger.~~ No longer needed: one project, one
    deployment (§1). Hostinger confirmed the Business plan would allow two, which
    is worth knowing and is no longer used.
-2. **Create the subdomain** `admin.bhaktinamjap.com` in hPanel and point it at the
+2. **Create the subdomain** `admin.tasbihcounts.com` in hPanel and point it at the
    **same** Node application the site runs on — not a new one. No second Git
    deployment, no second build, no second set of environment variables
    (docs/DEPLOY.md §8).
