@@ -315,36 +315,36 @@ describe("the kill switches", () => {
 describe("the name library", () => {
   test("ships with the names the counter already offers, in order", async () => {
     const rows = await db.as(anon, "select id from public.names order by position limit 3");
-    expect(rows.map((r) => r.id)).toEqual(["radha", "shriradha", "radhe"]);
+    expect(rows.map((r) => r.id)).toEqual(["subhanallah", "alhamdulillah", "allahu-akbar"]);
   });
 
   test("a visitor sees published names only", async () => {
-    await db.as(service, "update public.names set published = false where id = 'radhe'");
-    const visible = await db.as(anon, "select id from public.names where id = 'radhe'");
+    await db.as(service, "update public.names set published = false where id = 'astaghfirullah'");
+    const visible = await db.as(anon, "select id from public.names where id = 'astaghfirullah'");
     expect(visible).toHaveLength(0);
 
     // The panel still sees it, which is what makes unpublishing reversible.
-    const toAdmin = await db.as(service, "select id from public.names where id = 'radhe'");
+    const toAdmin = await db.as(service, "select id from public.names where id = 'astaghfirullah'");
     expect(toAdmin).toHaveLength(1);
 
-    await db.as(service, "update public.names set published = true where id = 'radhe'");
+    await db.as(service, "update public.names set published = true where id = 'astaghfirullah'");
   });
 
   test("an id cannot be changed: counts are stored under it", async () => {
     expect(
-      await codeOf(db.as(service, "update public.names set id = 'radha2' where id = 'radha'")),
+      await codeOf(db.as(service, "update public.names set id = 'subhanallah2' where id = 'subhanallah'")),
     ).toBe("42501");
   });
 
   test("a name cannot be deleted, by anyone", async () => {
-    expect(await codeOf(db.as(service, "delete from public.names where id = 'radha'"))).toBe("42501");
-    expect(await codeOf(db.admin("delete from public.names where id = 'radha'"))).toBe("42501");
+    expect(await codeOf(db.as(service, "delete from public.names where id = 'subhanallah'"))).toBe("42501");
+    expect(await codeOf(db.admin("delete from public.names where id = 'subhanallah'"))).toBe("42501");
   });
 
   test("a visitor cannot write one", async () => {
     expect(
       await codeOf(
-        db.as(user(A), "update public.names set transliteration = 'Hacked' where id = 'radha'"),
+        db.as(user(A), "update public.names set transliteration = 'Hacked' where id = 'subhanallah'"),
       ),
     ).toBe("42501");
   });
@@ -431,7 +431,7 @@ describe("analytics", () => {
   test("counts the tables the system screen shows", async () => {
     const [row] = await db.as(service, "select public.admin_table_counts() as t");
     const t = row.t as Record<string, number>;
-    expect(t.names).toBe(45);
+    expect(t.names).toBe(14);
     // a, b, and the two the reconciliation tests added.
     expect(t.payments).toBe(4);
   });

@@ -68,7 +68,6 @@ const config = [
       // content/, with only the SUPPORT_EMAIL constant filled in.
       "src/app/(site)/terms/page.tsx",
       "src/app/(site)/refund-policy/page.tsx",
-      "src/components/NamJapCounter.tsx",
       "src/components/ProseWithAds.tsx",
       "src/lib/seo.tsx",
       // The home page inlines the name library as window.__njcNames
@@ -109,6 +108,16 @@ const config = [
       "src/lib/admin/audit.ts",
     ],
     rules: { "no-restricted-imports": "off" },
+  },
+
+  {
+    // The counter carried over from the Tasbih Counts app. Each of these reads a
+    // value that exists only in the browser (the session cookie, navigator,
+    // matchMedia, the date) once, after mount, so the server render and the
+    // first client render agree. That is the pattern this rule flags; it was
+    // written and tested against it in its original project.
+    files: ["src/components/counter/**/*.tsx", "src/components/site/**/*.tsx"],
+    rules: { "react-hooks/set-state-in-effect": "off" },
   },
 
   {

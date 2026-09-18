@@ -43,7 +43,12 @@ const app = join(next, "server", "app");
    placeholder that stopped the layout jumping; labelled fields and a real
    favourite button) went over by 0.4 KB each, after the header's new background
    work was moved to an idle chunk (lib/header-idle.ts) to win back what it could. */
-export const BUDGETS = { "/": 177, "/stats/": 156, "/streak/": 155, "/premium/": 155 };
+/* 2026-09-18, Tasbih Counts: "/" 177 → 196 and "/stats/" 156 → 160. The home page
+   now carries the Tasbih counter (React, its store and IndexedDB layer, the 99
+   Names, rites and routines) in place of the Nam Jap engine; Stats names every
+   one of those, so it takes the dhikr content too. The header's theme switch was
+   written without the counter's store so the other pages stayed where they were. */
+export const BUDGETS = { "/": 196, "/stats/": 160, "/streak/": 155, "/premium/": 155 };
 export const DEFAULT_BUDGET = 150;
 
 /** Strings that exist only inside a library that must never load up front. */
