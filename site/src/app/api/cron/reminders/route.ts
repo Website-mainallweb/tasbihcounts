@@ -54,8 +54,8 @@ export async function POST(request: Request) {
 
       for (const device of await store.tokens(row.userId)) {
         const result = await sendPush(device.token, {
-          title: "Time for your nam jap",
-          body: "A few minutes of chanting keeps your practice — and your streak — alive today.",
+          title: "Time for your dhikr",
+          body: "A few minutes of dhikr keeps your practice — and your streak — alive today.",
           link: `${SITE_URL}/`,
         });
         if (result === "sent") summary.sent += 1;

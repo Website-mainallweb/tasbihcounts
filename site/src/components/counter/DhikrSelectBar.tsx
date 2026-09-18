@@ -4,7 +4,7 @@
  * The dhikr selector, phone only.
  *
  * The chip row scrolls sideways, so on a phone most names are off screen and
- * the user has to hunt for them. bhaktinamjap.com puts a plain name selector
+ * the user has to hunt for them. tasbihcounts.com puts a plain name selector
  * on the counter screen instead, and that is the right instinct: the current
  * name is always visible and every other name is one tap away.
  *

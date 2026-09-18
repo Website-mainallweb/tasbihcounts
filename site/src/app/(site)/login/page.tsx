@@ -23,13 +23,13 @@ import { SUPPORT_EMAIL } from "@/lib/site";
  */
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = appPageMetadata("Log in", "Log in to your Bhakti Nam Jap Premium account.");
+export const metadata: Metadata = appPageMetadata("Log in", "Log in to your Tasbih Counts Premium account.");
 
 type Props = { searchParams: Promise<{ error?: string; next?: string; mode?: string }> };
 
 const POINTS = [
   ["No ads", "anywhere on the site."],
-  ["Every device, one practice", "— counts, malas, streak and history stay in step."],
+  ["Every device, one practice", "— counts, rounds, streak and history stay in step."],
   ["Safe if a phone is lost", "— your history lives in your account."],
   ["Gentle reminders", "at the time you choose."],
 ] as const;
@@ -60,7 +60,7 @@ export default async function LoginPage({ searchParams }: Props) {
         <section className="auth-page">
           <div className="auth-intro">
             <p className="eyebrow">Premium account</p>
-            <h1>Log in to Bhakti Nam Jap</h1>
+            <h1>Log in to Tasbih Counts</h1>
             <p>
               Your account was created when your Premium payment went through, with the email you paid with. Use that
               same address here, or the Google account that has it.

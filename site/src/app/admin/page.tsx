@@ -24,7 +24,7 @@ export default async function OverviewPage() {
     <>
       <div className="wrap">
         <p className="eyebrow">Overview</p>
-        <h1>Bhakti Nam Jap</h1>
+        <h1>Tasbih Counts</h1>
         <ModeBanner mode={o.mode} />
 
         {unreconciled.length === 0 ? (

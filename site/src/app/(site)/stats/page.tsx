@@ -7,7 +7,7 @@ import { appPageMetadata } from "@/lib/seo";
 /** Noindex, for the same reason as the streak page. */
 export const metadata: Metadata = appPageMetadata(
   "Stats",
-  "Your nam jap totals, day by day, month by month.",
+  "Your dhikr totals, day by day, month by month.",
 );
 
 export default function StatsPage() {

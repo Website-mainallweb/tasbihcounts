@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: `${SITE_NAME} – ${SITE_TAGLINE}`,
     short_name: SITE_NAME,
     description:
-      "An online Nam Jap counter to track daily mantra chanting, mala rounds and streaks.",
+      "An online tasbih counter to track daily dhikr, round rounds and streaks.",
     start_url: "/",
     scope: "/",
     display: "standalone",

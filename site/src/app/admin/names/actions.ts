@@ -18,17 +18,19 @@ import { getName, upsertName } from "@/lib/admin/db";
  */
 
 const shape = z.object({
-  // Lower-case letters and digits, like every existing id. Deliberately narrow:
+  // Lower-case letters, digits and single hyphens, like every existing id. Deliberately narrow:
   // this string ends up as a key in people's local storage and in a database
   // column, and it is permanent.
   id: z
     .string()
     .trim()
     .toLowerCase()
-    .regex(/^[a-z0-9]{1,64}$/, "letters and digits only"),
-  devanagari: z.string().trim().min(1).max(120),
-  transliteration: z.string().trim().min(1).max(120),
-  meaning: z.string().trim().min(1).max(200),
+    .max(64)
+    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "lower-case letters, digits and hyphens only"),
+  // The column is named devanagari (a shared schema); it holds the Arabic.
+  devanagari: z.string().trim().min(1).max(300),
+  transliteration: z.string().trim().min(1).max(300),
+  meaning: z.string().trim().min(1).max(300),
   grp: z.enum(["", "mantra"]),
   position: z.coerce.number().int().min(0).max(100000),
   published: z.enum(["yes", "no"]),

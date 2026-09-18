@@ -26,7 +26,7 @@ export const APP_NAV: AppDestination[] = [
   {
     href: "/",
     label: "Counter",
-    hint: "Chant and count",
+    hint: "Tap and count",
     icon: "M12 3a9 9 0 100 18 9 9 0 000-18zm0 4v5l3 2",
   },
   {
@@ -44,7 +44,7 @@ export const APP_NAV: AppDestination[] = [
   {
     href: "/#library",
     label: "Library",
-    hint: "Names and mantras",
+    hint: "Dhikr, routines, 99 Names",
     icon: "M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4zm0 13a3 3 0 013-3h11",
     sheet: true,
   },

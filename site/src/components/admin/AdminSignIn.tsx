@@ -31,7 +31,7 @@ export default function AdminSignIn() {
       const { error } = await browserSupabase().auth.signInWithOAuth({
         provider: "google",
         options: {
-          // Back to this host — which is admin.bhaktinamjap.com, so the session
+          // Back to this host — which is admin.tasbihcounts.com, so the session
           // cookie is set on the subdomain the panel is actually served from.
           redirectTo: `${window.location.origin}/auth/callback/?next=${encodeURIComponent("/admin/")}`,
           // Always offer the chooser. Landing in the panel as whichever Google

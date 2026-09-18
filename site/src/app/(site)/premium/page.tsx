@@ -24,7 +24,7 @@ export default function PremiumPage() {
         <section className="premium">
           <div className="premium-copy">
             <p className="eyebrow">Premium</p>
-            <h1>Bhakti Nam Jap Premium</h1>
+            <h1>Tasbih Counts Premium</h1>
             <p className="premium-lead">
               One payment of {CURRENT_PLAN.display}, for life. No subscription, no renewal, nothing to cancel.
             </p>
@@ -39,7 +39,7 @@ export default function PremiumPage() {
                 <strong>No ads.</strong> The whole site, on every device you log in on.
               </li>
               <li>
-                <strong>Your practice on all your devices.</strong> Counts, malas, streak and history sync, so a
+                <strong>Your practice on all your devices.</strong> Counts, rounds, streak and history sync, so a
                 phone and a laptop add up to one practice.
               </li>
               <li>

@@ -11,7 +11,7 @@ import { appPageMetadata } from "@/lib/seo";
  */
 export const metadata: Metadata = appPageMetadata(
   "Streak",
-  "Your day-by-day nam jap streak.",
+  "Your day-by-day dhikr streak.",
 );
 
 export default function StreakPage() {

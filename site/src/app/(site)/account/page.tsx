@@ -24,7 +24,7 @@ import { SUPPORT_EMAIL } from "@/lib/site";
  */
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = appPageMetadata("Your account", "Your Bhakti Nam Jap Premium account.");
+export const metadata: Metadata = appPageMetadata("Your account", "Your Tasbih Counts Premium account.");
 
 /* Supabase calls the email identity "email" whether the person signs in with a
    link, a code or a password — all three are the same identity. */
@@ -150,7 +150,7 @@ export default async function AccountPage() {
                 To delete your account and its synced data,{" "}
                 <a
                   href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Delete my account")}&body=${encodeURIComponent(
-                    `Please delete my Bhakti Nam Jap account and its synced data.\n\nAccount email: ${email}`,
+                    `Please delete my Tasbih Counts account and its synced data.\n\nAccount email: ${email}`,
                   )}`}
                 >
                   request account deletion

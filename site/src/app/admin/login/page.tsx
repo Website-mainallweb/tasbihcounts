@@ -26,9 +26,9 @@ export default async function AdminLoginPage() {
     <div className="signin">
       <div className="signin-card">
         <span className="side-mark" aria-hidden="true">
-          ॐ
+          ۞
         </span>
-        <p className="eyebrow">Bhakti Nam Jap</p>
+        <p className="eyebrow">Tasbih Counts</p>
         <h1>Admin</h1>
         <p className="lede">Sign in with the Google account that runs this site.</p>
 

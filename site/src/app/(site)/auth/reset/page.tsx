@@ -9,7 +9,7 @@ import { appPageMetadata } from "@/lib/seo";
  * like every sign-in page.
  */
 export const metadata: Metadata = {
-  ...appPageMetadata("Choose a new password", "Set a new password for your Bhakti Nam Jap account."),
+  ...appPageMetadata("Choose a new password", "Set a new password for your Tasbih Counts account."),
   referrer: "no-referrer",
 };
 

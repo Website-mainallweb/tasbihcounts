@@ -36,7 +36,7 @@ export default function InAppBrowserNotice() {
   return (
     <div className="inapp-notice" role="status">
       <p>
-        You are in an app&apos;s built-in browser. To keep your jap safe, log in and download backups,
+        You are in an app&apos;s built-in browser. To keep your dhikr safe, log in and download backups,
         open this page in <strong>Chrome</strong> or <strong>Safari</strong> — use the ⋮ or share menu, then
         &ldquo;Open in browser&rdquo;.
       </p>

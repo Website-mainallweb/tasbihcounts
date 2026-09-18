@@ -5,16 +5,16 @@
  */
 
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://bhaktinamjap.com"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://tasbihcounts.com"
 ).replace(/\/$/, "");
 
-export const SITE_NAME = "Bhakti Nam Jap";
-export const SITE_TAGLINE = "Digital Nam Jap Counter";
+export const SITE_NAME = "Tasbih Counts";
+export const SITE_TAGLINE = "Digital Tasbih Counter";
 export const LOCALE = "en_US";
 export const LANG = "en-US";
 export const TITLE_SEPARATOR = "-";
 
-export const PRIVACY_EMAIL = "japnamecontact@gmail.com";
+export const PRIVACY_EMAIL = "contact@tasbihcounts.com";
 
 /**
  * The one address the legal pages give for support, refunds and privacy
@@ -24,11 +24,18 @@ export const PRIVACY_EMAIL = "japnamecontact@gmail.com";
  */
 export const SUPPORT_EMAIL = `contact@${new URL(SITE_URL).hostname.replace(/^www\./, "")}`;
 
-export const SOCIAL = {
-  instagram: "https://www.instagram.com/bhaktinamjap/",
-  facebook: "https://www.facebook.com/profile.php?id=61582297268045",
+/**
+ * The site's social profiles. Empty until Tasbih Counts has them: the footer
+ * and the schema.org sameAs list show only the ones filled in.
+ */
+export const SOCIAL: { instagram: string; facebook: string } = {
+  instagram: "",
+  facebook: "",
 };
 
+// TODO(Tasbih Counts): still the Bhakti Nam Jap GA4 tag. Replace with the
+// Tasbih Counts property's tag before launch, or its visits land in the wrong
+// property. Analytics only runs on the live domain (app/(site)/layout.tsx).
 export const GOOGLE_TAG_ID = "GT-5R7TVL64";
 
 /**
@@ -95,19 +102,19 @@ export const AD_SLOTS = {
  * published, files and all, so every value in the head is unchanged.
  */
 export const LOGO = {
-  src: "/wp-content/uploads/2025/10/Bhakti-Nam-Jap-.png",
-  width: 675,
-  height: 222,
+  src: "/images/tasbih-counts-logo.png",
+  width: 1200,
+  height: 300,
   alt: SITE_NAME,
-  light: { src: "/images/logo-light-v2.png", width: 632, height: 197 },
-  dark: { src: "/images/logo-dark-v2.png", width: 632, height: 197 },
+  light: { src: "/images/logo-light.svg", width: 632, height: 158 },
+  dark: { src: "/images/logo-dark.svg", width: 632, height: 158 },
 };
 
 export const SOCIAL_IMAGE = {
-  src: "/wp-content/uploads/2025/10/BhaktiNamJap-Social-Image.png",
+  src: "/images/tasbih-counts-social.png",
   width: 1200,
   height: 630,
-  alt: "Bhakti Nam Jap counter",
+  alt: "Tasbih Counts — online tasbih counter",
   type: "image/png",
 };
 
@@ -121,7 +128,7 @@ export const ROBOTS_CONTENT =
   "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large";
 
 export const NAV = [
-  { label: "Nam Jap Counter", href: "/" },
+  { label: "Tasbih Counter", href: "/" },
   { label: "About Us", href: "/about-us/" },
   { label: "Contact Us", href: "/contact-us/" },
   { label: "Privacy Policy", href: "/privacy-policy/" },
@@ -130,44 +137,46 @@ export const NAV = [
 ];
 
 /**
- * Page-level SEO, lifted verbatim from Rank Math.
+ * Page-level SEO.
  * dateModified (B71): the last real change to the page's copy; move it with the copy.
  */
 export const PAGE_SEO = {
   home: {
     path: "/",
-    title: "Bhakti Nam Jap – Digital Nam Jap Counter",
+    title: "Tasbih Counter – Free Online Tasbeeh & Dhikr Counter | Tasbih Counts",
     description:
-      "Bhakti Nam Jap is an online Nam Jap counter to track daily mantra chanting. Stay focused, deepen devotion, and grow spiritually with ease.",
+      "Free online tasbih counter for dhikr. Tap anywhere to count, set 33, 99 or 100, guided 33-33-34 after salah, 99 Names of Allah. Works offline, no signup.",
     keywords: [
-      "Bhakti Nam Jap",
-      "Nam Jap Counter",
-      "Online Nam Jap Counter",
-      "नाम जप काउंटर",
+      "tasbih counter",
+      "online tasbih counter",
+      "tasbeeh counter",
+      "dhikr counter",
+      "zikr counter",
+      "digital tasbih",
     ],
     ogType: "website" as const,
-    datePublished: "2025-10-15T08:18:01+05:30",
-    dateModified: "2026-09-11T12:00:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
   about: {
     path: "/about-us/",
     title: `About Us ${TITLE_SEPARATOR} ${SITE_NAME}`,
     description:
-      "Discover the purpose behind Bhakti Nam Jap Counter — a free spiritual tool for mantra chanting, meditation, and devotion, made for seekers worldwide.",
-    keywords: ["Bhakti Nam Jap", "Nam jap", "Nam Jap Counter"],
+      "Why Tasbih Counts exists: a calm, free online tasbih counter that opens straight into counting, works offline and keeps your dhikr private.",
+    keywords: ["Tasbih Counts", "Tasbih Counter", "Dhikr Counter"],
     ogType: "article" as const,
-    datePublished: "2025-10-15T09:47:00+05:30",
-    dateModified: "2026-09-11T12:00:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
   contact: {
     path: "/contact-us/",
     title: `Contact Us ${TITLE_SEPARATOR} ${SITE_NAME}`,
     description:
-      "Get in touch with Bhakti Nam Jap Counter for support, feedback, or guidance. Connect with us to enhance your daily mantra chanting experience.",
-    keywords: ["Bhakti Nam Jap", "Nam Jap Counter", "Nam Jap"],
+      "Get in touch with Tasbih Counts for support, feedback or a correction to the religious content. We reply within 24–48 hours.",
+    keywords: ["Tasbih Counts", "Tasbih Counter", "Dhikr"],
     ogType: "article" as const,
-    datePublished: "2025-10-15T09:47:00+05:30",
-    dateModified: "2026-09-11T12:00:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
   privacy: {
     path: "/privacy-policy/",
@@ -175,41 +184,41 @@ export const PAGE_SEO = {
     // Rewritten with the policy itself: the old line promised "anonymous" and
     // said nothing of ads, analytics or the Premium plan.
     description:
-      "How Bhakti Nam Jap handles your data: your counts stay on your device, what ads and analytics use, and what the optional Premium plan needs.",
-    keywords: ["Bhakti Nam Jap", "Nam Jap Counter", "Nam Jap"],
+      "How Tasbih Counts handles your data: your counts stay on your device, what ads and analytics use, and what the optional Premium plan needs.",
+    keywords: ["Tasbih Counts", "Tasbih Counter", "Dhikr"],
     ogType: "article" as const,
-    datePublished: "2025-09-30T12:01:00+05:30",
-    dateModified: "2026-09-13T12:00:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
   terms: {
     path: "/terms/",
     title: `Terms of Service ${TITLE_SEPARATOR} ${SITE_NAME}`,
     description:
-      "The terms for using Bhakti Nam Jap, the free online nam jap counter, and its one-time ₹200 lifetime Premium plan.",
-    keywords: ["Bhakti Nam Jap", "Nam Jap Counter"],
+      "The terms for using Tasbih Counts, the free online tasbih counter, and its one-time ₹200 lifetime Premium plan.",
+    keywords: ["Tasbih Counts", "Tasbih Counter"],
     ogType: "article" as const,
-    datePublished: "2026-09-10T12:00:00+05:30",
-    dateModified: "2026-09-10T12:00:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
   refund: {
     path: "/refund-policy/",
     title: `Refund & Cancellation Policy ${TITLE_SEPARATOR} ${SITE_NAME}`,
     description:
-      "Bhakti Nam Jap Premium is a one-time ₹200 lifetime payment. How delivery works, why there is nothing to cancel, and when a refund is given.",
-    keywords: ["Bhakti Nam Jap", "Nam Jap Counter"],
+      "Tasbih Counts Premium is a one-time ₹200 lifetime payment. How delivery works, why there is nothing to cancel, and when a refund is given.",
+    keywords: ["Tasbih Counts", "Tasbih Counter"],
     ogType: "article" as const,
-    datePublished: "2026-09-10T12:00:00+05:30",
-    dateModified: "2026-09-13T12:00:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
   premium: {
     path: "/premium/",
     title: `Premium ${TITLE_SEPARATOR} ${SITE_NAME}`,
     description:
-      "Bhakti Nam Jap Premium: one payment of ₹200 for life — no ads, your practice on every device, and daily reminders.",
-    keywords: ["Bhakti Nam Jap", "Nam Jap Counter", "Premium"],
+      "Tasbih Counts Premium: one payment of ₹200 for life — no ads, your practice on every device, and daily reminders.",
+    keywords: ["Tasbih Counts", "Tasbih Counter", "Premium"],
     ogType: "article" as const,
-    datePublished: "2026-09-11T09:00:00+05:30",
-    dateModified: "2026-09-13T12:00:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
   blog: {
     path: "/blog/",
@@ -219,7 +228,7 @@ export const PAGE_SEO = {
     description: undefined as string | undefined,
     keywords: [] as string[],
     ogType: "website" as const,
-    datePublished: "2025-10-15T09:47:00+05:30",
-    dateModified: "2025-10-15T09:47:00+05:30",
+    datePublished: "2026-09-18T12:00:00+05:30",
+    dateModified: "2026-09-18T12:00:00+05:30",
   },
 };

@@ -36,18 +36,22 @@ export default function SiteFooter() {
           <div className="footer-brand">
             <BrandMark height={30} />
             <p className="tag">
-              {SITE_TAGLINE}. Count, chant and keep your daily sadhana in rhythm. The counter is free and keeps your
+              {SITE_TAGLINE}. Count your dhikr and keep your daily remembrance steady. The counter is free and keeps your
               practice on your own device; Premium adds sync across your devices.
             </p>
+            {(SOCIAL.instagram || SOCIAL.facebook) && (
             <div className="footer-social">
-              <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" aria-label="Bhakti Nam Jap on Instagram">
+              {SOCIAL.instagram && (
+              <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" aria-label="Tasbih Counts on Instagram">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.7" />
                   <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.7" />
                   <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
                 </svg>
               </a>
-              <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label="Bhakti Nam Jap on Facebook">
+              )}
+              {SOCIAL.facebook && (
+              <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label="Tasbih Counts on Facebook">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
                     d="M14 9V7.2c0-.8.3-1.2 1.2-1.2H17V3h-2.6C11.8 3 11 4.4 11 6.6V9H9v3h2v9h3v-9h2.2l.4-3H14z"
@@ -57,7 +61,9 @@ export default function SiteFooter() {
                   />
                 </svg>
               </a>
+              )}
             </div>
+            )}
           </div>
 
           <nav className="footer-col" aria-label="Footer">
@@ -88,7 +94,7 @@ export default function SiteFooter() {
           </nav>
         </div>
 
-        <p className="legal">Copyright © 2026 Bhakti Nam Jap</p>
+        <p className="legal">Copyright © 2026 Tasbih Counts</p>
       </div>
     </footer>
   );

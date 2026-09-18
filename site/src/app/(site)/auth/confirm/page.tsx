@@ -10,7 +10,7 @@ import { appPageMetadata } from "@/lib/seo";
  * fragment, which only the browser can read — see EmailLinkConfirm. Noindex, like
  * every sign-in page.
  */
-export const metadata: Metadata = appPageMetadata("Logging in", "Finishing logging in to Bhakti Nam Jap Premium.");
+export const metadata: Metadata = appPageMetadata("Logging in", "Finishing logging in to Tasbih Counts Premium.");
 
 export default function ConfirmPage() {
   return (

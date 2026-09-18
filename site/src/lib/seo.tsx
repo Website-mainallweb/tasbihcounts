@@ -82,7 +82,9 @@ export function jsonLd(key: PageKey, breadcrumbName?: string) {
       name: SITE_NAME,
       logo: logoObject,
       image: logoObject,
-      sameAs: [SOCIAL.instagram, SOCIAL.facebook],
+      ...(SOCIAL.instagram || SOCIAL.facebook
+        ? { sameAs: [SOCIAL.instagram, SOCIAL.facebook].filter(Boolean) }
+        : {}),
     },
     {
       "@type": "WebSite",

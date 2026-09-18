@@ -54,7 +54,7 @@ export default async function AnalyticsPage() {
         <h2>Practice that syncs</h2>
         <div className="grid">
           <Stat label="People syncing" value={count(a.synced_users)} sub={`of ${count(o.premium)} Premium`} />
-          <Stat label="Japs recorded" value={count(a.synced_japs)} sub={`${count(a.synced_rounds)} malas`} />
+          <Stat label="Counts recorded" value={count(a.synced_japs)} sub={`${count(a.synced_rounds)} rounds`} />
           <Stat
             label="Active"
             value={count(a.active_7d)}
@@ -62,17 +62,17 @@ export default async function AnalyticsPage() {
           />
         </div>
 
-        <h2>Most chanted</h2>
+        <h2>Most counted</h2>
         {a.top_names.length === 0 ? (
           <p className="note">Nothing has synced yet.</p>
         ) : (
           <div className="scroll">
             <table>
-              <caption className="sr-only">Names by total japs recorded.</caption>
+              <caption className="sr-only">Names by total counts recorded.</caption>
               <thead>
                 <tr>
                   <th scope="col">Name</th>
-                  <th scope="col">Japs</th>
+                  <th scope="col">Counts</th>
                   <th scope="col">People</th>
                 </tr>
               </thead>
@@ -91,14 +91,14 @@ export default async function AnalyticsPage() {
           </div>
         )}
         <p className="note">
-          An id that does not open is somebody&rsquo;s own custom mantra — those are theirs and are
+          An id that does not open is somebody&rsquo;s own custom dhikr — those are theirs and are
           not in the library.
           {a.unnamed_japs > 0 && (
             <>
               {" "}
-              A further <strong>{count(a.unnamed_japs)}</strong> japs are in the totals above but not
+              A further <strong>{count(a.unnamed_japs)}</strong> counts are in the totals above but not
               in this list: they were recorded before the counter tracked which name was being
-              chanted, so they belong to no name.
+              counted, so they belong to no name.
             </>
           )}
         </p>

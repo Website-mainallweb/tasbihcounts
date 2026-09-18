@@ -16,7 +16,7 @@ type Props = {
 
 export const PREMIUM_POINTS = [
   ["No ads", "A calm page on every device you log in on."],
-  ["Every device, one practice", "Counts, malas, streak and history stay in step."],
+  ["Every device, one practice", "Counts, rounds, streak and history stay in step."],
   ["Safe if a phone is lost", "Your history lives in your account, not one browser."],
   ["Gentle reminders", "A nudge at your time, only when practice is still waiting."],
 ] as const;
@@ -41,7 +41,7 @@ export default function AuthPanel({ tab, onTab, onClose, next, supportEmail }: P
   return (
     <div className="auth-panel">
       <aside className="auth-aside" aria-hidden="true">
-        <p className="auth-aside-kicker">Bhakti Nam Jap Premium</p>
+        <p className="auth-aside-kicker">Tasbih Counts Premium</p>
         <p className="auth-aside-title">Your practice, on every device.</p>
         <ul>
           {PREMIUM_POINTS.map(([t]) => (

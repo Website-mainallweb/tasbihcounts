@@ -26,11 +26,11 @@ export default function BlogPage() {
               its own, so it is named for screen readers without changing the look. */}
           <h1 className="sr-only">Blog</h1>
           <p className="om" aria-hidden="true">
-            ॐ
+            ۞
           </p>
-          <p>No posts have been published yet. New writing on nam jap and daily sadhana will appear here.</p>
+          <p>No posts have been published yet. New writing on dhikr and daily remembrance will appear here.</p>
           <Link className="btn" href="/">
-            Open the Nam Jap Counter
+            Open the Tasbih Counter
           </Link>
         </div>
       </div>

@@ -63,7 +63,7 @@ export default function SignOutButton() {
             Sign out anyway
           </button>
           <p className="auth-alert" role="alert">
-            Some chants from this device have not reached your account yet. Check your internet connection
+            Some counts from this device have not reached your account yet. Check your internet connection
             and try again — signing out now would lose them.
           </p>
         </>

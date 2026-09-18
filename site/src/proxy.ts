@@ -8,10 +8,10 @@ import { NextResponse, type NextRequest } from "next/server";
  * an access token is close to expiring the refreshed one has to be set here,
  * before the page renders.
  *
- * **Putting the admin panel on its own subdomain.** admin.bhaktinamjap.com is
+ * **Putting the admin panel on its own subdomain.** admin.tasbihcounts.com is
  * served by this same application (docs/ADMIN.md §1); its requests are rewritten
  * onto the /admin routes, and the same routes are hidden on the main domain. A
- * rewrite, not a redirect: the address bar keeps saying admin.bhaktinamjap.com,
+ * rewrite, not a redirect: the address bar keeps saying admin.tasbihcounts.com,
  * and the session cookie stays on the host it was set for.
  *
  * Neither job is an access check. docs/SECURITY.md §3: a proxy can be skipped —
@@ -32,7 +32,7 @@ function isAdminHost(request: NextRequest): boolean {
  *
  * /auth/callback/ is the one that matters and the one that caught this out:
  * Google returns the operator to whichever host started the sign-in, so the
- * callback has to run on admin.bhaktinamjap.com — and a rewrite would have sent
+ * callback has to run on admin.tasbihcounts.com — and a rewrite would have sent
  * it to /admin/auth/callback/, which does not exist. Sign-in would have failed
  * at the last step, with Google reporting success.
  *
@@ -46,7 +46,7 @@ export async function proxy(request: NextRequest) {
   const adminHost = isAdminHost(request);
 
   if (adminHost) {
-    // admin.bhaktinamjap.com/users/ → /admin/users/, and its root → /admin/.
+    // admin.tasbihcounts.com/users/ → /admin/users/, and its root → /admin/.
     // Already-prefixed paths pass through, so a link written as /admin/users/
     // works on the subdomain too.
     if (!pathname.startsWith("/admin") && !SHARED.test(pathname)) {

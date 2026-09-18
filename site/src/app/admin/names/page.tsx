@@ -41,7 +41,7 @@ export default async function NamesPage({ searchParams }: Props) {
         </p>
         <h1>Names</h1>
         <p className="lede">
-          What the counter offers to chant. Changes reach the site within a minute — no deploy. An
+          What the counter offers to count. Changes reach the site within a minute — no deploy. An
           id can never be changed and a name is never deleted, because people&rsquo;s counts are
           stored under it.
         </p>
@@ -73,15 +73,14 @@ export default async function NamesPage({ searchParams }: Props) {
                 <tr key={n.id}>
                   <td>{n.position}</td>
                   <td>
-                    {/* lang="hi" so a screen reader pronounces Devanagari as
-                        Hindi rather than spelling it out in English. */}
-                    <Link href={`/admin/names/${n.id}/`} lang="hi">
+                    {/* lang="ar" so a screen reader reads the Arabic as Arabic. */}
+                    <Link href={`/admin/names/${n.id}/`} lang="ar" dir="rtl">
                       {n.devanagari}
                     </Link>
                   </td>
                   <td>{n.transliteration}</td>
                   <td className="wrapcell">{n.meaning}</td>
-                  <td>{n.grp ?? "name"}</td>
+                  <td>{n.grp === "mantra" ? "longer" : "dhikr"}</td>
                   <td>
                     {n.published ? (
                       <span className="pill pill-good">yes</span>

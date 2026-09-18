@@ -18,10 +18,10 @@ export function Sidebar({ email }: { email: string }) {
     <aside className="admin-side">
       <div className="side-brand">
         <span className="side-mark" aria-hidden="true">
-          ॐ
+          ۞
         </span>
         <span className="side-name">
-          Bhakti Nam Jap
+          Tasbih Counts
           <small>Admin</small>
         </span>
       </div>

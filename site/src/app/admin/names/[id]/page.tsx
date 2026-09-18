@@ -43,7 +43,7 @@ export default async function EditNamePage({ params, searchParams }: Props) {
         <p className="eyebrow">
           id {name.id} · last changed {when(name.updated_at)}
         </p>
-        <h1 lang="hi">{name.devanagari}</h1>
+        <h1 lang="ar" dir="rtl">{name.devanagari}</h1>
 
         <div aria-live="polite">{m && <p className="banner">{m}</p>}</div>
 

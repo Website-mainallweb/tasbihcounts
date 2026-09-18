@@ -19,7 +19,7 @@ export type Plan = {
 
 export const CURRENT_PLAN: Plan = {
   id: "premium_lifetime_v1",
-  name: "Bhakti Nam Jap Premium — lifetime",
+  name: "Tasbih Counts Premium — lifetime",
   amount: 20000,
   currency: "INR",
   display: "₹200",

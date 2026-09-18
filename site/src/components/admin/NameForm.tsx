@@ -22,19 +22,19 @@ export function NameForm({ name }: { name?: NameRow }) {
 
       {isNew ? (
         <>
-          <label htmlFor="id">Id — permanent, letters and digits only</label>
+          <label htmlFor="id">Id — permanent, lower-case letters, digits and hyphens</label>
           <input
             id="id"
             name="id"
             type="text"
             required
             maxLength={64}
-            pattern="[a-z0-9]{1,64}"
-            placeholder="radhekrsna"
+            pattern="[a-z0-9]+(-[a-z0-9]+)*"
+            placeholder="ya-latif"
             autoComplete="off"
           />
           <p className="pending">
-            Everyone&rsquo;s counts for this name will be stored under this id, in their own browser
+            Everyone&rsquo;s counts for this dhikr will be stored under this id, in their own browser
             as well as here. It can never be changed afterwards, so choose it as you would a
             filename you will never rename.
           </p>
@@ -43,14 +43,15 @@ export function NameForm({ name }: { name?: NameRow }) {
         <input type="hidden" name="id" value={name.id} />
       )}
 
-      <label htmlFor="devanagari">Devanagari</label>
+      <label htmlFor="devanagari">Arabic</label>
       <input
         id="devanagari"
         name="devanagari"
         type="text"
         required
-        maxLength={120}
-        lang="hi"
+        maxLength={300}
+        lang="ar"
+        dir="rtl"
         defaultValue={name?.devanagari}
       />
 
@@ -60,7 +61,7 @@ export function NameForm({ name }: { name?: NameRow }) {
         name="transliteration"
         type="text"
         required
-        maxLength={120}
+        maxLength={300}
         defaultValue={name?.transliteration}
       />
 
@@ -70,14 +71,14 @@ export function NameForm({ name }: { name?: NameRow }) {
         name="meaning"
         type="text"
         required
-        maxLength={200}
+        maxLength={300}
         defaultValue={name?.meaning}
       />
 
       <label htmlFor="grp">Group</label>
       <select id="grp" name="grp" defaultValue={name?.grp ?? ""}>
-        <option value="">Name</option>
-        <option value="mantra">Mantra</option>
+        <option value="">Dhikr</option>
+        <option value="mantra">Longer adhkar and duas</option>
       </select>
 
       <label htmlFor="position">Position</label>

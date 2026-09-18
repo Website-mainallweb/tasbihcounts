@@ -205,7 +205,7 @@ export default function BuyPanel({ price, supportEmail }: Props) {
         order_id: orderId,
         amount,
         currency,
-        name: "Bhakti Nam Jap",
+        name: "Tasbih Counts",
         description: "Premium — lifetime",
         prefill: { email: normalised },
         readonly: { email: true },

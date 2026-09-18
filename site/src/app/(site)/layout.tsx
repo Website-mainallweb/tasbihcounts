@@ -29,7 +29,7 @@ import { ADSENSE_ACCOUNT, ANALYTICS_OVERRIDE, GOOGLE_TAG_ID, SITE_URL, SUPPORT_E
  * localhost hostname. The page is prerendered, so the build cannot tell where it
  * will be served; the browser can, and it checks before the tag is fetched.
  *
- * admin.bhaktinamjap.com is not on the list either, and this layout does not
+ * admin.tasbihcounts.com is not on the list either, and this layout does not
  * render there at all — two reasons the panel is never measured.
  */
 const siteHost = new URL(SITE_URL).hostname;
