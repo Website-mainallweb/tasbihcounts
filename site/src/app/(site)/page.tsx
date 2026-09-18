@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import AdSlot from "@/components/AdSlot";
 import ArticleFrame from "@/components/ArticleFrame";
-import NamJapCounter from "@/components/NamJapCounter";
+import TasbihCounter from "@/components/TasbihCounter";
 import ProseWithAds from "@/components/ProseWithAds";
 import { home } from "@/content/pages";
 import { libraryBootstrap, libraryNames } from "@/lib/counter/library";
@@ -29,25 +29,21 @@ export default async function HomePage() {
     <>
       <JsonLdScript data={jsonLd("home")} />
 
-      {/* Runs before the engine starts, so the counter boots with the current
-          library rather than swapping lists a moment after first paint. */}
+      {/* Runs before the counter starts, so it boots with the current library
+          rather than swapping lists a moment after first paint. */}
       <script
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: libraryBootstrap(names) }}
       />
 
-      {/* The WordPress home page carried its H1 and sub-line inside the old
-          counter widget. The new counter has no heading of its own, so the
-          same two lines sit above it and the H1 stays exactly as it was. */}
-      <section className="counter-slot" aria-label="Nam Jap Counter">
+      {/* The counter has no heading of its own, so the page's H1 and sub-line
+          sit above it. */}
+      <section className="counter-slot" aria-label="Tasbih counter">
         <div className="counter-head">
-          {/* lang="hi" so a screen reader uses a Hindi voice for it (#37). */}
-          <h1 className="dev" lang="hi">
-            नाम जप काउंटर
-          </h1>
-          <p>Spiritual Name Chanting Counter</p>
+          <h1>Online Tasbih Counter</h1>
+          <p>Tap to count your dhikr — free, offline, no signup</p>
         </div>
-        <NamJapCounter />
+        <TasbihCounter />
       </section>
 
       <div className="wrap home-article">

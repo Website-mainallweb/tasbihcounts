@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Literata, Noto_Sans_Devanagari, Tiro_Devanagari_Hindi } from "next/font/google";
+import { Inter, Literata, Noto_Naskh_Arabic } from "next/font/google";
 
 import { promoBootstrap } from "@/lib/promo";
+import { THEME_BOOTSTRAP } from "@/lib/theme-bootstrap";
 import { ADSENSE_ACCOUNT, LANG, ROBOTS_CONTENT, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 import "./counter.css";
@@ -12,7 +13,7 @@ import "./counter.css";
  *
  * The site's own furniture — header, footer, promo bar, analytics — moved to
  * app/(site)/layout.tsx when the admin panel joined this application
- * (docs/ADMIN.md §1). The panel is served from admin.bhaktinamjap.com, rendered
+ * (docs/ADMIN.md §1). The panel is served from admin.tasbihcounts.com, rendered
  * by the same Next app, and it must not inherit a visitor's header, a promo bar
  * or an ad. A route group is how the App Router says "this layout applies to
  * these routes and not those" without changing a single URL.
@@ -32,17 +33,11 @@ const inter = Inter({
   display: "swap",
 });
 
-const tiro = Tiro_Devanagari_Hindi({
-  subsets: ["devanagari", "latin"],
-  weight: "400",
-  variable: "--f-tiro",
-  display: "swap",
-});
-
-const notoDev = Noto_Sans_Devanagari({
-  subsets: ["devanagari", "latin"],
+/* The Arabic of every dhikr. Naskh, because it is what a reader sees in print. */
+const naskh = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
   weight: ["400", "500", "600"],
-  variable: "--f-noto-dev",
+  variable: "--font-naskh",
   display: "swap",
 });
 
@@ -79,8 +74,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fdf8f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#141210" },
+    { media: "(prefers-color-scheme: light)", color: "#faf8f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#121211" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -88,15 +83,15 @@ export const viewport: Viewport = {
   // The on-screen keyboard shrinks the page rather than floating over it, so a
   // field at the foot of a bottom sheet (a custom mantra, the target, search) or
   // of a form stays above the keyboard instead of hiding behind it. Chrome and
-  // Firefox honour this; iOS Safari needs the focus-scroll in counter-engine.js.
+  // Firefox honour this.
   interactiveWidget: "resizes-content",
 };
 
 /**
- * The counter stores its theme in localStorage and only applies it once React
- * has hydrated. Reading it before paint stops a light flash on a dark theme.
+ * The counter keeps its theme in its settings (stores/settings-store.ts). Reading
+ * it before paint stops a light flash on a dark theme.
  */
-const themeBootstrap = `(function(){try{var c=localStorage.getItem('njc.cold');var t=c?(JSON.parse(c).state||{}).theme:null;if(!t){var s=localStorage.getItem('njc.v1');t=s?JSON.parse(s).theme:null}if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}})()`;
+const themeBootstrap = THEME_BOOTSTRAP;
 
 /**
  * The password-reset link carries a one-time token in its query string. This is
@@ -117,7 +112,7 @@ export const revalidate = 60;
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const fontVars = `${literata.variable} ${inter.variable} ${tiro.variable} ${notoDev.variable}`;
+  const fontVars = `${literata.variable} ${inter.variable} ${naskh.variable}`;
 
   return (
     <html

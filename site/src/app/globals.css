@@ -1,12 +1,14 @@
 /* ==========================================================================
-   BHAKTI NAM JAP — site shell
+   TASBIH COUNTS — site shell
    The palette, radii, motion curves and fonts are the counter's own tokens,
    promoted from .njc to :root so the header, article and footer sit in the
    same design system. The counter writes its theme onto <html data-theme>,
    so switching theme inside the widget re-skins the whole page.
    ========================================================================== */
 
-/* ---------- 1. PRABHAT (dawn, default) ---------- */
+/* ---------- 1. SHELL TOKENS ----------
+   The colours below are the fallback only: counter.css, loaded after this
+   file, sets the palette for every theme (light, dark, noor, heritage). */
 :root {
   color-scheme: light;
   --bg: #fdf8f0;
@@ -53,90 +55,6 @@
      up. Article copy keeps its own narrower .wrap inside it. */
   --page-max: 1440px;
   --page-gutter: clamp(16px, 3vw, 44px);
-}
-
-/* ---------- 2. RATRI (night) ---------- */
-:root[data-theme="ratri"] {
-  color-scheme: dark;
-  --bg: #141210;
-  --bg-deep: #0e0c0b;
-  --surface: #1c1917;
-  --surface-2: #211d1a;
-  --surface-sunken: #161311;
-  --fg: #f4efe6;
-  --fg-muted: #a89d8e;
-  --fg-subtle: #918676;
-  --fg-on-accent: #1a0f06;
-  --accent: #e09a4e;
-  --accent-hover: #eeae66;
-  --accent-soft: #251b11;
-  /* Accent text on a dark pill: the accent itself passes (7.2:1). Without this
-     the header kept the light theme's #a85018 and failed contrast. */
-  --accent-ink: var(--accent);
-  /* B33: the light theme's #7b7568 was inherited here (3.8:1). */
-  --fg-faint: #918676;
-  --accent-line: #4a3722;
-  --warm: #e0705f;
-  --border: #2c2723;
-  --border-strong: #3e3730;
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 20px -6px rgb(0 0 0 / 0.5);
-  --glow: 224 154 78;
-  --glow-alpha: 0.1;
-}
-
-/* ---------- 3. KASHI (midnight indigo and gold) ---------- */
-:root[data-theme="kashi"] {
-  color-scheme: dark;
-  --bg: #070812;
-  --bg-deep: #03040a;
-  --surface: #0e1020;
-  --surface-2: #141728;
-  --surface-sunken: #0a0b15;
-  --fg: #eee9dd;
-  --fg-muted: #9a94a8;
-  --fg-subtle: #867f95;
-  --fg-on-accent: #070812;
-  --accent: #d6b169;
-  --accent-hover: #e4c383;
-  --accent-soft: #191529;
-  --accent-ink: var(--accent);
-  --fg-faint: #867f95;
-  --accent-line: #3d3453;
-  --warm: #d6b169;
-  --border: #1e2036;
-  --border-strong: #2e3150;
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.7);
-  --shadow-md: 0 2px 6px rgb(0 0 0 / 0.7);
-  --glow: 214 177 105;
-  --glow-alpha: 0.09;
-}
-
-/* ---------- 4. TULSI (deep green and sandal) ---------- */
-:root[data-theme="tulsi"] {
-  color-scheme: dark;
-  --bg: #0a1c14;
-  --bg-deep: #06130e;
-  --surface: #0f261c;
-  --surface-2: #132e23;
-  --surface-sunken: #0a1f17;
-  --fg: #f5efe2;
-  --fg-muted: #a8bcae;
-  --fg-subtle: #8ea695;
-  --fg-on-accent: #082016;
-  --accent: #dcc79c;
-  --accent-hover: #e9d7b1;
-  --accent-soft: #122c21;
-  --accent-ink: var(--accent);
-  --fg-faint: #8ea695;
-  --accent-line: #2b4b3b;
-  --warm: #cd8f52;
-  --border: #1b3b2c;
-  --border-strong: #2a5340;
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
-  --shadow-md: 0 2px 6px rgb(0 0 0 / 0.5);
-  --glow: 220 199 156;
-  --glow-alpha: 0.07;
 }
 
 /* Colour tokens are swapped on <html> when the counter changes theme.
@@ -738,16 +656,26 @@ body:has(.auth-page, .account-layout, .premium, .admin) .promo-bar {
   display: none;
 }
 
-:root[data-theme="ratri"] .brand .logo-light,
-:root[data-theme="kashi"] .brand .logo-light,
-:root[data-theme="tulsi"] .brand .logo-light {
+:root[data-theme="dark"] .brand .logo-light,
+:root[data-theme="noor"] .brand .logo-light,
+:root[data-theme="heritage"] .brand .logo-light {
   display: none;
 }
 
-:root[data-theme="ratri"] .brand .logo-dark,
-:root[data-theme="kashi"] .brand .logo-dark,
-:root[data-theme="tulsi"] .brand .logo-dark {
+:root[data-theme="dark"] .brand .logo-dark,
+:root[data-theme="noor"] .brand .logo-dark,
+:root[data-theme="heritage"] .brand .logo-dark {
   display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .brand .logo-light {
+    display: none;
+  }
+
+  :root:not([data-theme]) .brand .logo-dark {
+    display: block;
+  }
 }
 
 .site-nav {
@@ -858,9 +786,9 @@ body:has(.auth-page, .account-layout, .premium, .admin) .promo-bar {
 }
 
 /* B53: on the dark themes the button is pale gold, and a gold crown vanished on it. */
-:root[data-theme="ratri"] .btn-primary .crown,
-:root[data-theme="kashi"] .btn-primary .crown,
-:root[data-theme="tulsi"] .btn-primary .crown {
+:root[data-theme="dark"] .btn-primary .crown,
+:root[data-theme="noor"] .btn-primary .crown,
+:root[data-theme="heritage"] .btn-primary .crown {
   color: currentColor;
   filter: none;
 }
