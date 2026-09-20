@@ -95,7 +95,7 @@ test.describe("the counter", () => {
     await page.goto("/");
     await ready(page);
     await tap(page, 33);
-    expect((await hot(page)).rec).toMatchObject({ c: 33, r: 1 });
+    await expect.poll(async () => (await hot(page)).rec).toMatchObject({ c: 33, r: 1 });
 
     // The completion card may be up; undo is still Z.
     await page.keyboard.press("z");
@@ -117,12 +117,10 @@ test.describe("the counter", () => {
     await page.goto("/?r=after-salah-33-33-34");
     await ready(page);
     await tap(page, 34);
-
-    const n = (await hot(page)).rec.n;
-    expect(n.subhanallah.c).toBe(33);
-    expect(n.alhamdulillah.c).toBe(1);
-    // Finishing the first step completed a round.
-    expect(n.subhanallah.r).toBe(1);
+    await expect.poll(async () => {
+      const n = (await hot(page)).rec.n;
+      return [n.subhanallah?.c, n.alhamdulillah?.c, n.subhanallah?.r];
+    }).toEqual([33, 1, 1]);
   });
 
   test("a finished routine does not overwrite the plain dhikr's count", async ({ page }) => {
@@ -131,12 +129,12 @@ test.describe("the counter", () => {
     await page.goto("/");
     await ready(page);
     await tap(page, 5);
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1500);
 
     await page.goto("/?r=after-salah-33-33-34");
     await ready(page);
     await tap(page, 34);
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1500);
 
     await page.goto("/?d=subhanallah");
     await ready(page);

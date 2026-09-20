@@ -41,7 +41,7 @@ export default async function HomePage() {
       <section className="counter-slot" aria-label="Tasbih counter">
         <div className="counter-head">
           <h1>Online Tasbih Counter</h1>
-          <p>Tap to count your dhikr — free, offline, no signup</p>
+          <p>Free digital tasbeeh and dhikr counter — works offline</p>
         </div>
         <TasbihCounter />
       </section>

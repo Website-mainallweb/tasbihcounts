@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { home as homeHtml } from "@/content/pages";
 import {
   ADSENSE_ACCOUNT,
   LOCALE,
@@ -28,9 +29,9 @@ export function pageMetadata(key: PageKey): Metadata {
   return {
     title: page.title,
     description: page.description,
-    // No keywords meta. Rank Math kept the focus keywords in the database and
-    // never printed them, so printing them here would be a change to the head.
-    // They still travel in the Article schema, exactly as before.
+    // Google ignores the keywords meta; Bing and smaller engines still read it.
+    // The home page carries its full set, the rest none.
+    ...(key === "home" ? { keywords: page.keywords } : {}),
     alternates: { canonical: url },
     openGraph: {
       type: page.ogType,
@@ -129,6 +130,37 @@ export function jsonLd(key: PageKey, breadcrumbName?: string) {
     },
   ];
 
+  if (isHome) {
+    graph.push(
+      {
+        "@type": "WebApplication",
+        "@id": `${url}#app`,
+        name: `${SITE_NAME} - Online Tasbih Counter`,
+        alternateName: ["Digital Tasbih", "Tasbeeh Counter", "Dhikr Counter", "Zikr Counter", "Digital Misbaha"],
+        url,
+        description: page.description,
+        applicationCategory: "LifestyleApplication",
+        operatingSystem: "Any (web browser)",
+        browserRequirements: "Requires JavaScript",
+        inLanguage: LOCALE.replace("_", "-"),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        featureList: [
+          "Tap anywhere to count",
+          "Targets of 33, 99, 100 or any number",
+          "After-salah 33-33-34 guided routine",
+          "99 Names of Allah counter",
+          "Tawaf and Sa'i counter",
+          "Works offline",
+          "Streaks and totals",
+          "Full screen, dark mode and nine languages",
+        ],
+        publisher: { "@id": personId },
+      },
+      { "@type": "FAQPage", "@id": `${url}#faq`, mainEntity: homeFaq() },
+    );
+  }
+
   if (key !== "blog") {
     graph.push({
       "@type": "Article",
@@ -149,6 +181,29 @@ export function jsonLd(key: PageKey, breadcrumbName?: string) {
   }
 
   return { "@context": "https://schema.org", "@graph": graph };
+}
+
+const decode = (x: string) =>
+  x
+    .replace(/<[^>]+>/g, "")
+    .replace(/&amp;/g, "&")
+    .replace(/&rsquo;|&#8217;/g, "’")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .trim();
+
+/** The visible FAQ on the home page, as schema.org questions. Read from the copy itself so the two cannot drift. */
+function homeFaq() {
+  const faq = homeHtml.slice(homeHtml.indexOf('id="faq"'));
+  const out: Record<string, unknown>[] = [];
+  for (const m of faq.matchAll(/<h3>(.*?)<\/h3>\s*<p>(.*?)<\/p>/gs)) {
+    out.push({
+      "@type": "Question",
+      name: decode(m[1]),
+      acceptedAnswer: { "@type": "Answer", text: decode(m[2]) },
+    });
+  }
+  return out;
 }
 
 export function JsonLdScript({ data }: { data: object }) {
